@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>AgruPay — Tus gastos se anotan solos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;700&display=swap">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#0B0E14;color:#EDF0F4;font-family:Geist,-apple-system,"SF Pro Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8FA8FF;text-decoration:none}
+a:hover{color:#EDF0F4}
+*{box-sizing:border-box}
+::selection{background:#2E5BFF;color:#fff}
+@keyframes ap-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ap-pulse{0%{box-shadow:0 0 0 0 rgba(46,91,255,.55)}100%{box-shadow:0 0 0 14px rgba(46,91,255,0)}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:#0B0E14;overflow-x:clip">
+  <div data-progress="1" style="position:fixed;top:0;left:0;height:2px;width:0;background:#2E5BFF;z-index:60;box-shadow:0 0 12px #2E5BFF"></div>
+
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(20px,3vw,40px);background:linear-gradient(rgba(11,14,20,.85),rgba(11,14,20,0))">
+    <a href="#top" style="display:flex;align-items:center;gap:10px;color:#EDF0F4">
+      <img src="assets/icon.png" alt="AgruPay" style="width:30px;height:30px;border-radius:8px">
+      <span style="font-weight:700;font-size:17px;letter-spacing:-0.4px">AgruPay</span>
+    </a>
+    <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px;height:20px;overflow:hidden;font-size:14px;font-weight:500">
+      <a href="#top" style="color:#9AA3B2">Recorrido</a>
+      <a href="#funciones" style="color:#9AA3B2">Funciones</a>
+      <a href="#privacidad" style="color:#9AA3B2">Privacidad</a>
+    </div>
+    <a href="#descargar" style="display:flex;align-items:center;height:40px;padding:0 18px;border-radius:12px;background:#2E5BFF;color:#fff;font-size:14px;font-weight:600;white-space:nowrap" style-hover="background:#4A70FF;color:#fff">Descargar</a>
+  </nav>
+
+  <section id="top" data-seq="1" style="position:relative;height:1100vh">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;perspective:1600px">
+      <div data-glow="1" style="position:absolute;left:50%;top:50%;width:760px;height:760px;margin:-380px 0 0 -380px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.42),rgba(46,91,255,.08) 45%,transparent 70%);filter:blur(20px);pointer-events:none;will-change:transform,background"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%);mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%)"></div>
+
+      <div data-phone="1" style="position:absolute;left:50%;top:50%;width:360px;height:753px;margin:-376px 0 0 -180px;border-radius:56px;padding:12px;background:linear-gradient(160deg,#2A3242,#0F121A 40%,#1E222D);box-shadow:0 80px 140px -40px rgba(46,91,255,.55),0 0 0 0.5px rgba(255,255,255,.14) inset;transform-style:preserve-3d;will-change:transform">
+        <div style="position:relative;width:336px;height:729px;border-radius:44px;overflow:hidden;background:#0B0E14">
+          <div data-screen="1" style="--bg:#0B0E14;--sf:#161922;--el:#1E222D;--hl:rgba(255,255,255,.07);--lb:#EDF0F4;--sec:#9AA3B2;--ac:#0A84FF;--at:#64B3FF;--acs:rgba(10,132,255,.16);--tr:#2A3242;--sel:#232838;--pos:#10B981;position:absolute;left:0;top:0;width:393px;height:852px;transform:scale(.855);transform-origin:0 0;overflow:hidden;background:var(--bg);color:var(--lb)">
+
+            <div data-scr="dash" style="position:absolute;inset:0;background:var(--bg);will-change:transform;transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+              <div data-sky="neb" style="position:absolute;inset:0;pointer-events:none;clip-path:circle(0px at 50% 100%)">
+                <div style="position:absolute;inset:0;background:#06061A"></div>
+                <div data-nglow="0" style="position:absolute;left:-135px;top:-120px;width:413px;height:413px;border-radius:999px;background:radial-gradient(circle,rgba(124,58,237,.55),transparent 68%)"></div>
+                <div data-nglow="1" style="position:absolute;left:195px;top:37px;width:334px;height:334px;border-radius:999px;background:radial-gradient(circle,rgba(219,39,119,.42),transparent 68%)"></div>
+                <div data-nglow="2" style="position:absolute;left:-0px;top:215px;width:354px;height:354px;border-radius:999px;background:radial-gradient(circle,rgba(8,145,178,.3),transparent 68%)"></div>
+                <div data-stars="neb" style="position:absolute;left:0;top:0;width:1px;height:1px;border-radius:9px"></div>
+                <div data-shoot="1" style="position:absolute;left:330px;top:70px;width:90px;height:1.6px;border-radius:9px;background:linear-gradient(90deg,#fff,rgba(255,255,255,0));transform:rotate(-18deg);opacity:0"></div>
+              </div>
+              <div data-sky="aur" style="position:absolute;inset:0;pointer-events:none;clip-path:circle(0px at 50% 100%)">
+                <div style="position:absolute;inset:0;background:#04110F"></div>
+                <div style="position:absolute;left:0;right:0;top:0;height:364px;background:linear-gradient(#01060D,#031219 45%,#05211F 78%,#04110F)"></div>
+                <div data-stars="aur" style="position:absolute;left:0;top:0;width:1px;height:1px;border-radius:9px"></div>
+                <div style="position:absolute;left:-40px;top:20px;width:472px;height:472px;border-radius:999px;background:radial-gradient(circle,rgba(43,227,160,.22),transparent 68%)"></div>
+                <div data-rib="0" style="position:absolute;left:-60px;top:40px;width:520px;height:110px;border-radius:50%;background:linear-gradient(rgba(34,211,238,0),rgba(34,211,238,.7) 30%,#34D399 65%,rgba(52,211,153,0));filter:blur(14px);opacity:.36"></div>
+                <div data-rib="1" style="position:absolute;left:-60px;top:110px;width:520px;height:70px;border-radius:50%;background:linear-gradient(rgba(167,243,208,0),rgba(167,243,208,.7) 30%,#10B981 65%,rgba(16,185,129,0));filter:blur(12px);opacity:.26"></div>
+                <div data-rib="2" style="position:absolute;left:-60px;top:10px;width:520px;height:56px;border-radius:50%;background:linear-gradient(rgba(129,140,248,0),rgba(129,140,248,.7) 30%,#22D3EE 65%,rgba(34,211,238,0));filter:blur(10px);opacity:.2"></div>
+                <svg width="393" height="420" viewBox="0 0 393 420" style="position:absolute;left:0;top:0"><defs><linearGradient id="apm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#010806"></stop><stop offset="1" stop-color="#04110F"></stop></linearGradient></defs><polygon points="0,340 31,316 71,334 118,304 165,324 216,310 259,332 307,300 354,322 393,314 393,390 0,390" fill="url(#apm)"></polygon></svg>
+              </div>
+
+              <div data-dashscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;will-change:transform">
+                <div style="display:flex;flex-direction:column;gap:8px;padding:4px 2px 0;margin-bottom:20px">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="font-size:13.5px;font-weight:600;color:var(--sec);flex:1;transition:background-color .8s ease,color .8s ease,border-color .8s ease">Gastos en Octubre 2026</span>
+                    <span style="width:28px;height:28px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+                    <span style="width:28px;height:28px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;opacity:.5;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <div style="display:flex;align-items:baseline;gap:6px">
+                      <span data-amount="1" style="font-size:46px;font-weight:700;letter-spacing:-1.8px;font-variant-numeric:tabular-nums">S/ 2,527</span>
+                      <span data-cents="1" style="font-size:18px;font-weight:600;color:var(--sec);font-variant-numeric:tabular-nums;transition:background-color .8s ease,color .8s ease,border-color .8s ease">.10</span>
+                    </div>
+                    <span style="width:32px;height:32px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:15px;height:15px;background:var(--sec);-webkit-mask:url(assets/icons/eye.svg) center/contain no-repeat;mask:url(assets/icons/eye.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+                  </div>
+                  <div style="align-self:flex-start;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:8px;background:var(--acs);color:var(--at);font-size:12.5px;font-weight:600;transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                    <span style="display:block;flex:none;width:11px;height:11px;background:var(--at);-webkit-mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span><span data-delta="1">S/ 233 vs. septiembre</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:6px;padding:0 2px;margin-bottom:30px">
+                  <div style="display:flex;align-items:flex-start;gap:12px">
+                    <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+                      <span style="font-size:15px;font-weight:600">Últimos 7 días</span>
+                      <span data-chartsub="1" style="font-size:12.5px;color:var(--sec);font-variant-numeric:tabular-nums;transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 576 · 13 movimientos</span>
+                    </div>
+                    <div style="display:flex;gap:2px;padding:2px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                      <span style="font-size:12px;font-weight:600;padding:6px 11px;border-radius:99px;background:var(--sel);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Semana</span>
+                      <span style="font-size:12px;color:var(--sec);padding:6px 11px;transition:background-color .8s ease,color .8s ease,border-color .8s ease">Mes</span>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;gap:10px;height:152px;padding:0 14px">
+                    <sc-for list="{{ bars }}" as="b" hint-placeholder-count="7">
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px">
+                        <div style="height:100px;width:100%;display:flex;align-items:flex-end;justify-content:center">
+                          <div data-bar="{{ b.i }}" style="width:29px;border-radius:5px;height:{{ b.h }}px;background:{{ b.bg }};transition:height .5s cubic-bezier(.3,1.4,.5,1),background-color .8s"></div>
+                        </div>
+                        <span style="font-size:11.5px;font-weight:{{ b.fw }};color:{{ b.fc }}">{{ b.l }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="display:flex;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">OCTUBRE · ESTADÍSTICAS</span></div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Neto</span><span style="font-size:19px;font-weight:700;color:var(--pos);white-space:nowrap;transition:background-color .8s ease,color .8s ease,border-color .8s ease">+S/ 1,388</span></div>
+                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Ritmo</span><span style="font-size:19px;font-weight:700">62%</span></div>
+                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Por día</span><span style="font-size:19px;font-weight:700">S/ 145</span></div>
+                </div>
+
+                <div style="display:flex;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">ATAJOS</span></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Pendientes</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
+                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:30px;font-weight:700;color:var(--at);transition:background-color .8s ease,color .8s ease,border-color .8s ease">2</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">de este mes</span></div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="font-size:16px;font-weight:600">Historial</span>
+                      <span data-badge="1" style="font-size:11px;font-weight:700;color:#fff;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--ac);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease">2</span>
+                      <span style="flex:1"></span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:2px"><span data-movcount="1" style="font-size:30px;font-weight:700">46</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">movimientos este mes</span></div>
+                  </div>
+                  <div data-tapt="tile-cat" style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Categorías</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                      <div style="display:flex;align-items:center;gap:9px"><span style="width:30px;height:30px;border-radius:9px;background:rgba(255,159,10,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#FF9F0A;-webkit-mask:url(assets/icons/utensils.svg) center/contain no-repeat;mask:url(assets/icons/utensils.svg) center/contain no-repeat"></span></span><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:13.5px">Comida</span><span style="font-size:12px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 412.40</span></div></div>
+                      <div style="display:flex;align-items:center;gap:9px"><span style="width:30px;height:30px;border-radius:9px;background:rgba(64,200,224,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#40C8E0;-webkit-mask:url(assets/icons/shopping-cart.svg) center/contain no-repeat;mask:url(assets/icons/shopping-cart.svg) center/contain no-repeat"></span></span><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:13.5px">Supermercado</span><span style="font-size:12px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 386.20</span></div></div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Amigos</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
+                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:22px;font-weight:700">S/ 85</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">te deben</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">2 cobros</span></div>
+                  </div>
+                </div>
+              </div>
+              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(var(--bg) 50%,transparent);opacity:{{ dashFade }};pointer-events:none;transition:background-color .8s ease,color .8s ease,border-color .8s ease" data-dashfade="1"></div>
+              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;gap:8px">
+                <div style="display:flex;align-items:center;gap:8px;height:38px;padding:0 12px 0 8px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
+                  <span style="width:22px;height:22px;border-radius:7px;background:var(--acs);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:12px;height:12px;background:var(--at);-webkit-mask:url(assets/icons/landmark.svg) center/contain no-repeat;mask:url(assets/icons/landmark.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+                  <span style="font-size:14px;font-weight:600;white-space:nowrap">Todas las cuentas</span>
+                  <span style="display:block;flex:none;width:11px;height:11px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span>
+                </div>
+                <span style="flex:1"></span>
+                <span data-tapt="ast" style="position:relative;width:38px;height:38px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:18px;height:18px;background:var(--at);-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:99px;background:var(--ac);border:2px solid var(--bg);transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+                <span data-tapt="gear" style="width:38px;height:38px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:18px;height:18px;background:var(--sec);-webkit-mask:url(assets/icons/settings.svg) center/contain no-repeat;mask:url(assets/icons/settings.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
+              </div>
+              <div data-dim="dash" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none"></div>
+            </div>
+
+            <div data-scr="mov" style="position:absolute;inset:0;background:#0B0E14;opacity:0;will-change:opacity">
+              <div data-movscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;will-change:transform">
+                <div style="display:flex;flex-direction:column;gap:3px;padding:2px 2px 14px"><span style="font-size:32px;font-weight:700;letter-spacing:-0.8px">Movimientos</span><span data-movsub="1" style="font-size:13.5px;color:#9AA3B2">47 movimientos · octubre</span></div>
+                <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">TUS CUENTAS</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">Ocultar</span></div>
+                <div style="position:relative;height:122px;margin:0 -22px 12px;overflow:hidden">
+                  <div data-track="1" style="position:absolute;left:0;top:0;display:flex;gap:12px;padding:8px 88px 8px 22px;will-change:transform">
+                    <sc-for list="{{ cards }}" as="cd" hint-placeholder-count="6">
+                      <div data-card="{{ cd.key }}" style="position:relative;flex:none;width:152px;height:96px;border-radius:12px">
+                        <div data-ring="{{ cd.key }}" style="position:absolute;inset:-5px;border-radius:16px;border:2px solid #EDF0F4;opacity:{{ cd.ring }};transition:opacity .25s"></div>
+                        <div style="position:absolute;inset:0;border-radius:12px;overflow:hidden;background:{{ cd.bg }};box-shadow:0 3px 6px {{ cd.shadow }}">
+                          <div style="position:absolute;{{ cd.motif }}"></div>
+                          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,0) 60%);mix-blend-mode:soft-light"></div>
+                          <div style="position:absolute;inset:0;border-radius:12px;border:0.75px solid rgba(255,255,255,.25)"></div>
+                          <div style="position:absolute;inset:0;padding:9px 11px;display:flex;flex-direction:column;justify-content:space-between">
+                            <div style="display:flex;align-items:center;justify-content:space-between;height:20px">
+                              <span style="width:20px;height:20px;border-radius:99px;background:#fff center/cover no-repeat;background-image:url({{ cd.logo }});border:0.75px solid rgba(255,255,255,.6);opacity:{{ cd.logoO }}"></span>
+                              <span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.5px;color:rgba(255,255,255,.9)">{{ cd.digits }}</span>
+                            </div>
+                            <span style="width:20px;height:15px;border-radius:3px;background:linear-gradient(135deg,#F4DC9A,#C9A24E);border:0.5px solid rgba(0,0,0,.18)"></span>
+                            <div style="display:flex;flex-direction:column;gap:1px">
+                              <span style="font-size:13.5px;font-weight:700;color:#fff">{{ cd.title }}</span>
+                              <span style="font-size:10.5px;font-weight:500;color:rgba(255,255,255,.78)">{{ cd.line }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="position:absolute;right:0;top:0;bottom:0;display:flex;align-items:center">
+                    <div style="width:30px;height:100%;background:linear-gradient(90deg,rgba(11,14,20,0),#0B0E14)"></div>
+                    <div style="height:100%;display:flex;align-items:center;padding-right:22px;background:#0B0E14">
+                      <span style="width:52px;height:96px;border-radius:12px;border:1px dashed rgba(154,163,178,.45);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#64B3FF">Editar</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                  <div style="flex:1;display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:12px;background:#161922;border:0.5px solid rgba(255,255,255,.07)"><span style="display:block;flex:none;width:15px;height:15px;background:#8A93A3;-webkit-mask:url(assets/icons/search.svg) center/contain no-repeat;mask:url(assets/icons/search.svg) center/contain no-repeat"></span><span style="font-size:15px;color:#8A93A3">Buscar comercio o monto</span></div>
+                  <div style="display:flex;align-items:center;height:40px;padding:0 14px;border-radius:12px;background:#161922;border:0.5px solid rgba(255,255,255,.07);font-size:14px;font-weight:600;color:#64B3FF">Seleccionar</div>
+                </div>
+                <div style="display:flex;gap:4px;padding:4px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);margin-bottom:18px">
+                  <span style="flex:1;height:32px;border-radius:99px;background:#0A84FF;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center">Gastos</span>
+                  <span style="flex:1;height:32px;color:#9AA3B2;font-size:13px;display:flex;align-items:center;justify-content:center">Ingresos</span>
+                  <span style="flex:1;height:32px;color:#9AA3B2;font-size:13px;display:flex;align-items:center;justify-content:center">Por cobrar</span>
+                </div>
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;margin-bottom:20px">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">{{ d.title }}</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">{{ d.total }}</span></div>
+                    <div style="border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
+                      <sc-for list="{{ d.rows }}" as="r" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-top:{{ r.sep }}">
+                          <div style="position:relative;width:40px;height:40px;flex:none">
+                            <span style="position:absolute;inset:0;border-radius:11.8px;display:flex;align-items:center;justify-content:center;background:{{ r.bg }}"><span style="width:20px;height:20px;background:{{ r.fg }};-webkit-mask:url({{ r.icon }}) center/contain no-repeat;mask:url({{ r.icon }}) center/contain no-repeat"></span></span>
+                            <span style="position:absolute;right:-4px;bottom:-4px;width:17px;height:17px;border-radius:99px;border:2px solid #161922;background:#fff center/cover no-repeat;background-image:url({{ r.badge }});opacity:{{ r.bo }}"></span>
+                          </div>
+                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                            <span style="font-size:15.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
+                            <div style="display:flex;align-items:baseline;gap:8px">
+                              <span style="font-size:{{ r.subSize }};font-weight:{{ r.subW }};color:{{ r.subC }};padding:{{ r.subPad }};border-radius:99px;background:{{ r.subBg }}">{{ r.sub }}</span>
+                              <span style="font-size:12px;color:#8A93A3">{{ r.time }}</span>
+                            </div>
+                          </div>
+                          <span style="font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums">{{ r.amount }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
+              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;justify-content:flex-end">
+                <div style="display:flex;gap:2px;padding:3px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
+                  <span style="width:32px;height:32px;border-radius:99px;background:#232838;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#EDF0F4;-webkit-mask:url(assets/icons/list.svg) center/contain no-repeat;mask:url(assets/icons/list.svg) center/contain no-repeat"></span></span>
+                  <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#9AA3B2;-webkit-mask:url(assets/icons/chart-column.svg) center/contain no-repeat;mask:url(assets/icons/chart-column.svg) center/contain no-repeat"></span></span>
+                </div>
+              </div>
+            </div>
+
+            <div data-scr="cat" style="position:absolute;inset:0;background:#0B0E14;transform:translateX(100%);box-shadow:-20px 0 40px rgba(0,0,0,.5);will-change:transform">
+              <div style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column">
+                <div style="display:flex;flex-direction:column;gap:3px;padding:2px 2px 14px"><span style="font-size:32px;font-weight:700;letter-spacing:-0.8px">Categorías</span><span style="font-size:13.5px;color:#9AA3B2">octubre 2026</span></div>
+                <div style="display:flex;align-items:center;gap:18px;padding:14px 2px 0;margin-bottom:24px">
+                  <div style="position:relative;width:150px;height:150px;flex:none">
+                    <svg width="150" height="150" viewBox="0 0 150 150" style="transform:rotate(-90deg)">
+                      <sc-for list="{{ donut }}" as="s" hint-placeholder-count="5">
+                        <circle cx="75" cy="75" r="60" fill="none" stroke="{{ s.c }}" stroke-width="18" stroke-dasharray="{{ s.dash }}" stroke-dashoffset="{{ s.off }}"></circle>
+                      </sc-for>
+                    </svg>
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px"><span style="font-size:12px;color:#9AA3B2">Total</span><span style="font-size:20px;font-weight:700">S/ 2,612</span></div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+                    <sc-for list="{{ donut }}" as="s" hint-placeholder-count="5">
+                      <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:99px;background:{{ s.c }}"></span><span style="flex:1;font-size:13px">{{ s.short }}</span><span style="font-size:12.5px;color:#9AA3B2;font-variant-numeric:tabular-nums">{{ s.pct }}</span></div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">EN QUÉ SE FUE</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">Día 18 de 31</span></div>
+                <div style="border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
+                  <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+                    <div style="display:flex;flex-direction:column;gap:10px;padding:13px 14px;border-top:{{ c.sep }}">
+                      <div style="display:flex;align-items:center;gap:12px">
+                        <span style="width:36px;height:36px;border-radius:10.6px;display:flex;align-items:center;justify-content:center;flex:none;background:{{ c.bg }}"><span style="width:18px;height:18px;background:{{ c.fg }};-webkit-mask:url({{ c.icon }}) center/contain no-repeat;mask:url({{ c.icon }}) center/contain no-repeat"></span></span>
+                        <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15.5px;font-weight:600">{{ c.name }}</span><span style="font-size:12.5px;color:{{ c.noteC }}">{{ c.note }}</span></div>
+                        <span style="font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums">{{ c.amount }}</span>
+                      </div>
+                      <div style="position:relative;height:12px;display:{{ c.barDisplay }}">
+                        <div style="position:absolute;left:0;right:0;top:2px;height:8px;border-radius:99px;background:#2A3242"></div>
+                        <div data-pace="{{ c.w }}" style="position:absolute;left:0;top:2px;height:8px;width:0;border-radius:99px;background:{{ c.fill }}"></div>
+                        <div style="position:absolute;top:0;height:12px;width:2px;left:58%;margin-left:-1px;background:#EDF0F4"></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
+              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center"><span style="width:38px;height:38px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:18px;height:18px;background:#9AA3B2;-webkit-mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;mask:url(assets/icons/chevron-left.svg) center/contain no-repeat"></span></span></div>
+            </div>
+
+            <div data-scr="ami" style="position:absolute;inset:0;background:#0B0E14;opacity:0;will-change:opacity">
+              <div data-amiscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;gap:12px;will-change:transform">
+                <div style="border-radius:22px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
+                  <div style="height:104px;background:linear-gradient(135deg,#2E5BFF,#0A84FF 45%,#64B3FF);position:relative;overflow:hidden">
+                    <div style="position:absolute;right:-40px;top:-60px;width:200px;height:200px;border-radius:999px;border:18px solid rgba(255,255,255,.12)"></div>
+                  </div>
+                  <div style="position:relative;display:flex;align-items:flex-end;gap:12px;padding:0 14px;margin-top:-38px">
+                    <div style="width:92px;height:92px;border-radius:99px;background:rgba(10,132,255,.22) center/cover no-repeat;background-image:url({{ mePhoto }});border:4px solid #161922;box-shadow:0 2px 6px rgba(0,0,0,.18)"></div>
+                    <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:6px"><span style="font-size:20px;font-weight:700">Joseph M.</span><span style="font-size:12.5px;color:#9AA3B2">«Ahorrando para Cusco»</span></div>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:14px 16px">
+                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;color:#9AA3B2">Tu gasto de octubre</span><span style="font-size:28px;font-weight:700;letter-spacing:-0.5px">S/ 2,612.00</span></div>
+                    <span style="display:flex;align-items:center;gap:5px;height:26px;padding:0 8px 0 10px;border-radius:99px;background:rgba(10,132,255,.12);color:#64B3FF;font-size:11.5px;font-weight:600"><span style="display:block;flex:none;width:11px;height:11px;background:#64B3FF;-webkit-mask:url(assets/icons/eye.svg) center/contain no-repeat;mask:url(assets/icons/eye.svg) center/contain no-repeat"></span>lo ven 3 amigos<span style="display:block;flex:none;width:10px;height:10px;background:#64B3FF;-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat"></span></span>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px">
+                  <span style="flex:1;height:44px;border-radius:99px;background:#0A84FF;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:600"><span style="display:block;flex:none;width:13px;height:13px;background:#fff;-webkit-mask:url(assets/icons/user-plus.svg) center/contain no-repeat;mask:url(assets/icons/user-plus.svg) center/contain no-repeat"></span>Invitar</span>
+                  <span style="flex:1;height:44px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:600"><span style="display:block;flex:none;width:13px;height:13px;background:#EDF0F4;-webkit-mask:url(assets/icons/bell-ring.svg) center/contain no-repeat;mask:url(assets/icons/bell-ring.svg) center/contain no-repeat"></span>Cobrar</span>
+                </div>
+                <div style="display:flex;flex-direction:column">
+                  <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">DE TUS AMIGOS</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">3 te comparten</span></div>
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <sc-for list="{{ feed }}" as="f" hint-placeholder-count="3">
+                      <div data-feed="1" style="display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
+                        <div style="display:flex;align-items:center;gap:12px">
+                          <span style="width:44px;height:44px;border-radius:99px;flex:none;background:{{ f.bg }} center/cover no-repeat;background-image:url({{ f.photo }});box-shadow:{{ f.ringPro }}"></span>
+                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                            <div style="display:flex;align-items:center;gap:5px"><span style="font-size:16px;font-weight:600">{{ f.name }}</span><span style="display:{{ f.pro }}"><span style="display:block;flex:none;width:11px;height:11px;background:#C4B5FD;-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat"></span></span></div>
+                            <span style="font-size:12.5px;color:#9AA3B2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.status }}</span>
+                          </div>
+                          <span style="font-size:17px;font-weight:700">{{ f.total }}</span>
+                        </div>
+                        <div style="display:flex;gap:6px;overflow:hidden">
+                          <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="2">
+                            <span style="flex:none;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:99px;font-size:11.5px;font-weight:600;color:{{ ch.c }};background:{{ ch.bg }}"><span style="width:10px;height:10px;background:{{ ch.c }};-webkit-mask:url({{ ch.icon }}) center/contain no-repeat;mask:url({{ ch.icon }}) center/contain no-repeat"></span>{{ ch.t }}</span>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
+              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;justify-content:flex-end">
+                <div style="display:flex;gap:2px;padding:3px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
+                  <span style="width:32px;height:32px;border-radius:99px;background:#232838;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#EDF0F4;-webkit-mask:url(assets/icons/users.svg) center/contain no-repeat;mask:url(assets/icons/users.svg) center/contain no-repeat"></span></span>
+                  <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#9AA3B2;-webkit-mask:url(assets/icons/hand-coins.svg) center/contain no-repeat;mask:url(assets/icons/hand-coins.svg) center/contain no-repeat"></span></span>
+                </div>
+              </div>
+            </div>
+
+            <div data-tabbar="1" style="position:absolute;left:0;right:0;bottom:0;height:120px;pointer-events:none">
+              <div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(rgba(0,0,0,0),var(--bg) 70%);transition:background .8s"></div>
+              <div style="position:absolute;left:16px;right:92px;bottom:26px;height:62px;border-radius:99px;background:rgba(36,40,52,.72);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:0.5px solid rgba(255,255,255,.12);display:flex;align-items:center;padding:4px;box-shadow:0 10px 30px rgba(0,0,0,.35)">
+                <div data-tabpill="1" style="position:absolute;top:4px;left:4px;width:67px;height:54px;border-radius:99px;background:rgba(255,255,255,.1);will-change:transform"></div>
+                <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+                  <div data-tapt="{{ t.key }}" style="position:relative;flex:1;height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
+                    <span data-tabicon="{{ t.key }}" style="width:21px;height:21px;background:#EDF0F4;-webkit-mask:url({{ t.icon }}) center/contain no-repeat;mask:url({{ t.icon }}) center/contain no-repeat"></span>
+                    <span data-tablabel="{{ t.key }}" style="font-size:10px;font-weight:600;color:#EDF0F4">{{ t.title }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div data-tapt="plus" style="position:absolute;right:16px;bottom:26px;width:62px;height:62px;border-radius:99px;background:rgba(36,40,52,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)"><span style="display:block;flex:none;width:24px;height:24px;background:#EDF0F4;-webkit-mask:url(assets/icons/plus.svg) center/contain no-repeat;mask:url(assets/icons/plus.svg) center/contain no-repeat"></span></div>
+              <div data-bubble="1" data-tapt="bubble" style="position:absolute;right:19px;bottom:102px;width:56px;height:56px;border-radius:99px;background:rgba(36,40,52,.85);backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transform-origin:50% 100%;box-shadow:0 10px 30px rgba(0,0,0,.4)"><span style="display:block;flex:none;width:20px;height:20px;background:#EDF0F4;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></div>
+            </div>
+
+            <div data-scrim="1" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none"></div>
+
+            <div data-dict="1" style="position:absolute;left:0;right:0;bottom:0;height:620px;border-radius:28px 28px 0 0;background:#1E222D;transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:20px 16px 34px;will-change:transform">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span data-dicttitle="1" style="font-size:19px;font-weight:700;letter-spacing:-0.3px">Escuchando…</span><span data-dicthint="1" style="font-size:12.5px;color:#9AA3B2">Di el monto y en qué gastaste</span></div>
+                <span style="width:32px;height:32px;border-radius:99px;background:#161922;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:14px;height:14px;background:#9AA3B2;-webkit-mask:url(assets/icons/x.svg) center/contain no-repeat;mask:url(assets/icons/x.svg) center/contain no-repeat"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;height:84px;padding:0 4px">
+                <span style="width:60px;height:60px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 0 0 8px rgba(10,132,255,.18)"><span style="display:block;flex:none;width:24px;height:24px;background:#fff;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
+                <div data-wave="1" style="flex:1;height:60px;display:flex;align-items:center;gap:3px">
+                  <sc-for list="{{ waveBars }}" as="w" hint-placeholder-count="28"><span data-wbar="1" style="flex:1;height:6px;border-radius:99px;background:#0A84FF"></span></sc-for>
+                </div>
+              </div>
+              <div style="min-height:66px;padding:0 4px;font-size:22px;font-weight:600;letter-spacing:-0.4px;line-height:1.25"><span data-said="1"></span><span data-caret="1" style="color:#0A84FF">|</span></div>
+              <div data-dcard="1" style="display:flex;flex-direction:column;padding:14px;border-radius:22px;background:#161922;border:0.5px solid rgba(255,255,255,.07);opacity:0;transform:translateY(-14px)">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="width:44px;height:44px;border-radius:13px;background:rgba(255,159,10,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:22px;height:22px;background:#FF9F0A;-webkit-mask:url(assets/icons/utensils.svg) center/contain no-repeat;mask:url(assets/icons/utensils.svg) center/contain no-repeat"></span></span>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16.5px;font-weight:600">Chifa</span><span style="font-size:12.5px;color:#9AA3B2">Comida · Por voz</span></div>
+                  <span style="font-size:19px;font-weight:700;letter-spacing:-0.3px">–S/ 40.00</span>
+                </div>
+                <div style="height:0.5px;background:rgba(255,255,255,.06);margin-top:12px"></div>
+                <div data-dpending="1" style="display:flex;align-items:center;gap:10px;padding-top:12px">
+                  <svg width="28" height="28" viewBox="0 0 28 28" style="transform:rotate(-90deg)"><circle cx="14" cy="14" r="12" fill="none" stroke="#2A3242" stroke-width="2.5"></circle><circle data-dring="1" cx="14" cy="14" r="12" fill="none" stroke="#0A84FF" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="0"></circle></svg>
+                  <span style="flex:1;font-size:12.5px;color:#9AA3B2">Se registra en 5 s</span>
+                  <span style="height:32px;padding:0 14px;border-radius:99px;background:#1E222D;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;font-size:13px;font-weight:600;color:#FF6961">Cancelar</span>
+                  <span style="height:32px;padding:0 14px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;font-size:13px;font-weight:600;color:#fff">Editar</span>
+                </div>
+                <div data-dsaved="1" style="display:none;align-items:center;gap:8px;padding-top:12px;font-size:13px;font-weight:600;color:#10B981"><span style="display:block;flex:none;width:16px;height:16px;background:#10B981;-webkit-mask:url(assets/icons/circle-check.svg) center/contain no-repeat;mask:url(assets/icons/circle-check.svg) center/contain no-repeat"></span>Registrado</div>
+              </div>
+              <span style="flex:1"></span>
+              <div style="display:flex;gap:10px">
+                <span style="width:46px;height:46px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
+                <span style="flex:1;height:46px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">Listo</span>
+              </div>
+            </div>
+
+            <div data-themesheet="1" style="position:absolute;left:0;right:0;bottom:0;height:300px;border-radius:28px 28px 0 0;background:var(--el);transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:10px 22px 0;will-change:transform;transition:background-color .8s">
+              <span style="align-self:center;width:36px;height:5px;border-radius:99px;background:rgba(255,255,255,.25)"></span>
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:22px;font-weight:700;letter-spacing:-0.5px">Apariencia</span><span style="font-size:13.5px;color:var(--sec);transition:color .8s">Temas · Premium</span></div>
+              <div style="display:flex;padding:6px 0 0"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:color .8s">DE NOCHE</span></div>
+              <div style="display:flex;justify-content:space-between">
+                <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="5">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:62px">
+                    <div style="position:relative;width:56px;height:56px">
+                      <div data-swring="{{ sw.key }}" style="position:absolute;inset:-4px;border-radius:99px;border:2px solid var(--lb);opacity:0;transition:opacity .25s"></div>
+                      <div data-tapt="sw-{{ sw.key }}" style="position:absolute;inset:0;border-radius:99px;background:{{ sw.g }}"></div>
+                    </div>
+                    <span style="font-size:11.5px;font-weight:600">{{ sw.name }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <span data-themeblurb="1" style="font-size:13px;color:var(--sec);text-align:center;transition:color .8s">Nubes de color que respiran y estrellas.</span>
+            </div>
+
+            <div data-sheet="1" style="position:absolute;left:0;right:0;bottom:0;height:760px;border-radius:28px 28px 0 0;background:#1E222D;transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:10px 22px 0;will-change:transform">
+              <span style="align-self:center;width:36px;height:5px;border-radius:99px;background:rgba(255,255,255,.25)"></span>
+              <div style="display:flex;align-items:center;gap:8px;padding-top:8px"><span style="display:block;flex:none;width:20px;height:20px;background:#64B3FF;-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat"></span><span style="font-size:24px;font-weight:700;letter-spacing:-0.5px">Tu resumen</span></div>
+              <span style="font-size:13.5px;color:#9AA3B2;margin-top:-8px">Sábado 18 de octubre</span>
+              <sc-for list="{{ brief }}" as="b" hint-placeholder-count="3">
+                <div data-brief="1" style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);opacity:0">
+                  <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:{{ b.bg }}"><span style="width:15px;height:15px;background:{{ b.fg }};-webkit-mask:url({{ b.icon }}) center/contain no-repeat;mask:url({{ b.icon }}) center/contain no-repeat"></span></span><span style="font-size:15.5px;font-weight:600">{{ b.title }}</span></div>
+                  <span style="font-size:14px;line-height:1.45;color:#9AA3B2">{{ b.body }}</span>
+                  <span style="align-self:flex-start;font-size:13px;font-weight:600;color:#64B3FF;padding:7px 12px;border-radius:99px;background:rgba(10,132,255,.2)">{{ b.cta }}</span>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;gap:10px;height:48px;padding:0 8px 0 16px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);margin-top:4px">
+                <span data-typed="1" style="flex:1;font-size:15px;white-space:nowrap;overflow:hidden"></span>
+                <span style="width:34px;height:34px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:16px;height:16px;background:#fff;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
+              </div>
+            </div>
+
+            <div data-notif="1" style="position:absolute;left:10px;right:10px;top:54px;padding:13px 14px;border-radius:24px;background:rgba(44,49,62,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;gap:12px;align-items:flex-start;transform:translateY(-200%);opacity:0;box-shadow:0 20px 40px rgba(0,0,0,.4);z-index:5;will-change:transform">
+              <span style="width:38px;height:38px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none"><img src="assets/gmail.png" alt="Gmail" style="width:24px;height:24px;object-fit:contain"></span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <div style="display:flex;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:600">Notificaciones BCP</span><span style="font-size:13px;color:#9AA3B2">ahora</span></div>
+                <span style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Realizaste un consumo con tu Tarjeta de Crédito BCP</span>
+                <span style="font-size:14px;color:#C5CBD6;line-height:1.3">Consumo de S/ 84.90 en PLAZA VEA con tu tarjeta ••4821.</span>
+              </div>
+            </div>
+            <div data-reg="1" style="position:absolute;left:0;right:0;top:186px;display:flex;justify-content:center;opacity:0;z-index:5;pointer-events:none">
+              <span style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:99px;background:rgba(10,132,255,.2);border:0.5px solid rgba(10,132,255,.4);font-size:10px;font-weight:700;letter-spacing:.06em;color:#64B3FF;backdrop-filter:blur(10px)"><span style="display:block;flex:none;width:10px;height:10px;background:#64B3FF;-webkit-mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;mask:url(assets/icons/arrow-up.svg) center/contain no-repeat"></span>REGISTRADO EN AGRUPAY</span>
+            </div>
+
+            <div data-tap="1" style="position:absolute;left:0;top:0;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:99px;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);opacity:0;pointer-events:none;z-index:6;will-change:transform,opacity"></div>
+
+            <div style="position:absolute;left:0;right:0;top:0;height:54px;display:flex;justify-content:space-between;align-items:center;padding:6px 34px 0 44px;font-size:17px;font-weight:600;z-index:4;pointer-events:none;color:#EDF0F4">
+              <span>9:41</span>
+              <span style="display:flex;align-items:center;gap:6px"><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/signal.svg) center/contain no-repeat;mask:url(assets/icons/signal.svg) center/contain no-repeat"></span><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/wifi.svg) center/contain no-repeat;mask:url(assets/icons/wifi.svg) center/contain no-repeat"></span><span style="display:block;flex:none;width:22px;height:22px;background:#EDF0F4;-webkit-mask:url(assets/icons/battery-full.svg) center/contain no-repeat;mask:url(assets/icons/battery-full.svg) center/contain no-repeat"></span></span>
+            </div>
+            <div style="position:absolute;top:11px;left:50%;margin-left:-62px;width:124px;height:36px;border-radius:20px;background:#000;z-index:7"></div>
+            <div style="position:absolute;bottom:8px;left:50%;margin-left:-70px;width:140px;height:5px;border-radius:99px;background:rgba(255,255,255,.6);z-index:7"></div>
+          </div>
+        </div>
+      </div>
+
+      <sc-for list="{{ panels }}" as="pn" hint-placeholder-count="0">
+        <div data-panel="{{ pn.i }}" style="position:absolute;top:50%;display:flex;flex-direction:column;gap:18px;max-width:min(470px,88vw);opacity:0;will-change:opacity,transform,filter">
+          <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8FA8FF">{{ pn.tag }}</span>
+          <h2 style="margin:0;font-size:clamp(36px,4.4vw,60px);line-height:1;letter-spacing:-0.04em;font-weight:700;text-wrap:balance">{{ pn.title }}</h2>
+          <p style="margin:0;font-size:17px;line-height:1.5;color:#9AA3B2;text-wrap:pretty">{{ pn.body }}</p>
+        </div>
+      </sc-for>
+      <div data-panel="0" style="position:absolute;left:clamp(20px,6vw,96px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;max-width:min(520px,88vw);will-change:opacity,transform,filter">
+        <div style="display:flex;align-items:center;gap:10px;align-self:flex-start;white-space:nowrap;height:32px;padding:0 14px 0 10px;border-radius:99px;background:rgba(46,91,255,.14);border:0.5px solid rgba(46,91,255,.45);font-size:13px;font-weight:500;color:#B8C8FF">
+          <span style="width:8px;height:8px;border-radius:99px;background:#2E5BFF;animation:ap-pulse 1.6s infinite"></span>Para iPhone · Hecha en Perú
+        </div>
+        <h1 style="margin:0;font-size:clamp(46px,6.2vw,88px);line-height:.95;letter-spacing:-0.045em;font-weight:800;text-wrap:balance">Tus gastos se anotan <span style="background:linear-gradient(100deg,#2E5BFF 10%,#8FA8FF 60%,#EDF0F4);-webkit-background-clip:text;background-clip:text;color:transparent">solos.</span></h1>
+        <p style="margin:0;font-size:18px;line-height:1.5;color:#9AA3B2;max-width:26em;text-wrap:pretty">Vincula tu Gmail y AgruPay lee los correos de tu banco. Cada consumo, Yapeo y Plin aparece en tu iPhone sin que escribas nada.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="#descargar" style="display:flex;align-items:center;white-space:nowrap;height:52px;padding:0 24px;border-radius:14px;background:#EDF0F4;color:#0B0E14;font-size:15px;font-weight:600" style-hover="background:#fff;color:#0B0E14">Descargar en App Store</a>
+        </div>
+      </div>
+
+      <div data-hint="1" style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none">
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8A93A3">DESLIZA</span>
+        <span style="width:1px;height:40px;background:linear-gradient(#8FA8FF,transparent)"></span>
+      </div>
+      <div style="position:absolute;right:clamp(10px,1.6vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;pointer-events:none">
+        <sc-for list="{{ ticks }}" as="tk" hint-placeholder-count="8"><span data-tick="{{ tk }}" style="width:2px;height:24px;border-radius:2px;background:rgba(255,255,255,.18);transition:all .4s"></span></sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:2;padding:60px 0 100px;display:flex;flex-direction:column;gap:28px">
+    <div style="text-align:center;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8A93A3">LEE LOS CORREOS DE</div>
+    <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)">{{ marquee }}</div>
+  </section>
+
+  <section id="funciones" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 24px;display:flex;flex-direction:column;gap:40px">
+    <h2 data-reveal="0" style="opacity:0;transform:translateY(20px);margin:0;font-size:clamp(36px,4.6vw,58px);line-height:1;letter-spacing:-0.04em;font-weight:700;max-width:14em;text-wrap:balance">Todo lo demás, también resuelto.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px">
+      <sc-for list="{{ features }}" as="ft" hint-placeholder-count="6">
+        <div data-reveal="{{ ft.delay }}" data-tilt="1" style="opacity:0;transform:translateY(20px);position:relative;padding:26px;min-height:200px;border-radius:24px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:space-between;gap:28px;overflow:hidden;transition:border-color .3s" style-hover="border-color:rgba(46,91,255,.5)">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:#8FA8FF">{{ ft.tag }}</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:21px;font-weight:700;letter-spacing:-0.5px">{{ ft.title }}</div>
+            <div style="font-size:15px;line-height:1.5;color:#9AA3B2;text-wrap:pretty">{{ ft.body }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="privacidad" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:100px 24px">
+    <div data-reveal="0" style="opacity:0;transform:translateY(20px);position:relative;border-radius:36px;padding:clamp(36px,6vw,80px);background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:48px;align-items:end">
+      <div style="position:absolute;inset:0;background:radial-gradient(800px circle at 0% 100%,rgba(46,91,255,.22),transparent 60%);pointer-events:none"></div>
+      <div style="position:relative;display:flex;flex-direction:column;gap:20px">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8FA8FF">PRIVACIDAD</div>
+        <h2 style="margin:0;font-size:clamp(36px,4.6vw,58px);line-height:1;letter-spacing:-0.04em;font-weight:700;text-wrap:balance">Tus gastos se quedan en tu iPhone.</h2>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column">
+        <sc-for list="{{ privacy }}" as="pv" hint-placeholder-count="3">
+          <div style="display:flex;gap:16px;padding:18px 0;border-top:0.5px solid rgba(255,255,255,.08)">
+            <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#8FA8FF;padding-top:3px">{{ pv.n }}</span>
+            <span style="font-size:17px;line-height:1.45">{{ pv.t }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="descargar" style="position:relative;z-index:2;padding:120px 24px 140px;display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center">
+    <div data-reveal="0" style="opacity:0;transform:translateY(20px);position:relative">
+      <div style="position:absolute;inset:-40px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.6),transparent 65%);filter:blur(10px)"></div>
+      <img src="assets/icon.png" alt="AgruPay" style="position:relative;width:112px;height:112px;border-radius:25px;box-shadow:0 30px 60px -20px rgba(46,91,255,.7)">
+    </div>
+    <h2 data-reveal="80" style="opacity:0;transform:translateY(20px);margin:0;font-size:clamp(44px,7vw,88px);line-height:.95;letter-spacing:-0.045em;font-weight:800;max-width:11em;text-wrap:balance">Deja de anotar. Empieza a entender.</h2>
+    <p data-reveal="140" style="opacity:0;transform:translateY(20px);margin:0;font-size:18px;color:#9AA3B2;max-width:30em">Funciona también sin cuenta: anotas tus gastos a mano, por voz o desde un atajo.</p>
+    <a data-reveal="200" href="#" style="opacity:0;transform:translateY(20px);display:flex;align-items:center;height:60px;padding:0 32px;border-radius:18px;background:#2E5BFF;color:#fff;font-size:17px;font-weight:600;box-shadow:0 20px 50px -15px rgba(46,91,255,.8)" style-hover="background:#4A70FF;color:#fff">Descargar en App Store</a>
+  </section>
+
+  <footer style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:32px 24px 48px;border-top:0.5px solid rgba(255,255,255,.08);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;font-size:13px;color:#8A93A3">
+    <div style="display:flex;align-items:center;gap:10px"><img src="assets/icon.png" alt="" style="width:22px;height:22px;border-radius:6px"><span>© 2026 AgruPay</span></div>
+    <div style="display:flex;gap:24px"><a href="#" style="color:#8A93A3">Privacidad</a><a href="#" style="color:#8A93A3">Términos</a><a href="#" style="color:#8A93A3">Soporte</a></div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const IC = n => 'assets/icons/' + n + '.svg';
+const SEP = '0.5px solid rgba(255,255,255,.06)';
+const THEMES = {
+  base: { bg: '#0B0E14', sf: '#161922', el: '#1E222D', hl: 'rgba(255,255,255,.07)', lb: '#EDF0F4', sec: '#9AA3B2', ac: '#0A84FF', at: '#64B3FF', acs: 'rgba(10,132,255,.16)', tr: '#2A3242', sel: '#232838', pos: '#10B981', glow: 'rgba(46,91,255,.42)' },
+  neb: { bg: '#06061A', sf: 'rgba(16,14,44,.84)', el: '#15133A', hl: 'rgba(190,170,255,.16)', lb: '#F1EEFF', sec: '#A9A6CC', ac: '#8B5CF6', at: '#C4B5FD', acs: 'rgba(139,92,246,.22)', tr: 'rgba(190,170,255,.16)', sel: 'rgba(139,92,246,.24)', pos: '#5EEAD4', glow: 'rgba(139,92,246,.5)' },
+  aur: { bg: '#04110F', sf: 'rgba(8,30,27,.86)', el: '#0B2522', hl: 'rgba(110,231,183,.14)', lb: '#E8FFF6', sec: '#9CC3B6', ac: '#34D399', at: '#6EE7B7', acs: 'rgba(52,211,153,.22)', tr: 'rgba(110,231,183,.14)', sel: 'rgba(52,211,153,.24)', pos: '#6EE7B7', glow: 'rgba(52,211,153,.42)' },
+};
+const PANELS = [
+  null,
+  { tag: '01 — CORREO', title: 'Te llega el correo del banco. AgruPay lo anota.', body: 'Vincula tu Gmail y AgruPay lee los correos de BCP, BBVA, Interbank, Scotiabank, Yape y Plin. Solo lectura: no escribimos ni enviamos correos.' },
+  { tag: '02 — MOVIMIENTOS', title: 'Tus tarjetas, en un carrusel.', body: 'Cada cuenta se viste como la de su banco. Toca una para ver solo sus movimientos, o «Todas» para verlo todo.' },
+  { tag: '03 — RITMO', title: 'Sabes si vas rápido antes de fin de mes.', body: 'Ves de un vistazo en qué se te fue el mes. Y a las categorías que quieras ponles un límite: la marca te dice por dónde va el mes y si vas más rápido que él.' },
+  { tag: '04 — AMIGOS', title: 'Y si quieres, lo comparas con tus patas.', body: 'Tú eliges, por persona, si ve tu total del mes, algunas categorías o nada. Ellos deciden lo mismo contigo.' },
+  { tag: '05 — VOZ', title: 'Dicta tus gastos.', body: 'Mantén presionado el + y di el monto y en qué gastaste. Cada movimiento se registra solo a los 5 segundos, salvo que lo canceles o lo edites.' },
+  { tag: '06 — TEMAS PREMIUM', title: 'Un cielo vivo en tu Resumen.', body: 'Nebulosa, Aurora, Atardecer y más: fondos animados que tiñen toda la app.' },
+  { tag: '07 — ASISTENTE', title: 'Pregúntale a tu mes.', body: 'Cada día, un resumen con lo que cambió. Y respuestas sobre tus números cuando las necesites.' },
+];
+
+class Component extends DCLogic {
+  rootRef = React.createRef();
+
+  componentDidMount() {
+    const root = this.rootRef.current;
+    const q = s => root.querySelector(s), qa = s => [...root.querySelectorAll(s)];
+    this.io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, d = +el.getAttribute('data-reveal') || 0;
+      el.style.transition = `opacity .9s cubic-bezier(.2,.8,.2,1) ${d}ms, transform .9s cubic-bezier(.2,.8,.2,1) ${d}ms`;
+      el.style.opacity = '1'; el.style.transform = 'none';
+      this.io.unobserve(el);
+    }), { threshold: .18 });
+    const scan = () => qa('[data-reveal]').forEach(el => { if (!el.__o) { el.__o = 1; this.io.observe(el); } });
+    scan(); this.scanT = setTimeout(scan, 800);
+    this.mx = 0; this.my = 0;
+    this.onMove = e => {
+      this.mx = e.clientX / innerWidth - .5; this.my = e.clientY / innerHeight - .5;
+      const card = e.target.closest && e.target.closest('[data-tilt]');
+      if (card) { const r = card.getBoundingClientRect(); card.style.background = `radial-gradient(400px circle at ${e.clientX - r.left}px ${e.clientY - r.top}px, rgba(46,91,255,.16), #161922 60%)`; }
+    };
+    addEventListener('mousemove', this.onMove, { passive: true });
+
+    // stars
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    qa('[data-stars]').forEach(el => {
+      const n = el.getAttribute('data-stars') === 'neb' ? 80 : 55, maxY = el.getAttribute('data-stars') === 'neb' ? 600 : 320;
+      const tint = el.getAttribute('data-stars') === 'neb' ? '233,227,255' : '230,255,244';
+      el.style.boxShadow = Array.from({ length: n }, () => `${Math.round(rnd() * 393)}px ${Math.round(rnd() * maxY)}px 0 ${rnd() < .15 ? 1 : 0}px rgba(${tint},${(.35 + rnd() * .6).toFixed(2)})`).join(',');
+    });
+
+    const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+    const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const E = {};
+    ['seq', 'phone', 'glow', 'progress', 'dashscroll', 'movscroll', 'amiscroll', 'track', 'sheet', 'scrim', 'notif', 'reg', 'tap', 'amount', 'cents', 'delta', 'chartsub', 'badge', 'movcount', 'typed', 'hint', 'screen', 'dict', 'said', 'caret', 'dcard', 'dpending', 'dsaved', 'dring', 'dicthint', 'themesheet', 'themeblurb', 'bubble', 'tabpill', 'shoot', 'movsub'].forEach(k => E[k] = q(`[data-${k}]`));
+    E.dash = q('[data-scr="dash"]'); E.mov = q('[data-scr="mov"]'); E.cat = q('[data-scr="cat"]'); E.ami = q('[data-scr="ami"]');
+    E.dim = q('[data-dim="dash"]'); E.neb = q('[data-sky="neb"]'); E.aur = q('[data-sky="aur"]');
+    const panels = qa('[data-panel]').sort((a, b) => a.getAttribute('data-panel') - b.getAttribute('data-panel'));
+    const ticks = qa('[data-tick]'), wbars = qa('[data-wbar]'), nglow = qa('[data-nglow]'), ribs = qa('[data-rib]');
+    const tabKeys = ['tab-res', 'tab-mov', 'tab-met', 'tab-ami'];
+    const offsetIn = (el, stop) => { let x = 0, y = 0; while (el && el !== stop) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return { x, y }; };
+    // [rotX, rotY, rotZ, txFrac, tyFrac, scale]
+    const C = [.04, .16, .30, .43, .555, .685, .815, .945];
+    const P = [[24, -26, 9, .2, 0, .92], [0, 16, -2, -.2, 0, 1], [0, -16, 2, .2, 0, 1], [0, 16, -2, -.2, 0, 1], [0, -16, 2, .2, 0, 1], [0, 16, -2, -.2, 0, 1], [0, -14, 2, .2, 0, 1], [0, 14, -2, -.2, 0, 1]];
+    const WIN = [[-1, .085], [.105, .215], [.235, .355], [.375, .485], [.505, .615], [.635, .745], [.765, .875], [.895, 2]];
+    const TAPS = [['tab-mov', .232, .03], ['card-bcp', .3, .03], ['tab-res', .367, .025], ['tile-cat', .388, .028], ['tab-ami', .497, .03], ['plus', .632, .05], ['bubble', .66, .025], ['tab-res', .757, .025], ['gear', .773, .025], ['sw-neb', .795, .025], ['sw-aur', .833, .025], ['ast', .887, .03]];
+    const phrase = '¿En qué gasté más esta semana?', said = 'Cuarenta soles en el chifa con tarjeta';
+    let ps = 0, smx = 0, smy = 0, lastStage = -1, lastAmt = '', lastTheme = '', lastTab = '';
+    const tabX = k => 4 + tabKeys.indexOf(k) * (E.tabpill.parentElement.clientWidth - 8) / 4;
+
+    const frame = () => {
+      const r = E.seq.getBoundingClientRect();
+      const h = document.documentElement.scrollHeight - innerHeight;
+      E.progress.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+      if (r.bottom < -100 || r.top > innerHeight) return;
+      const p = window.__apP != null ? window.__apP : clamp(-r.top / Math.max(1, r.height - innerHeight));
+      ps = window.__apP != null ? p : ps + (p - ps) * .12;
+      smx += (this.mx - smx) * .06; smy += (this.my - smy) * .06;
+      const W = innerWidth, H = innerHeight, narrow = W < 900, time = performance.now() / 1000;
+
+      let i = 0; while (i < WIN.length - 1 && ps > WIN[i][1] - .012) i++;
+      let j = i, t = 0;
+      if (i > 0 && ps < WIN[i][0] + .012) { j = i; i = i - 1; t = ss(WIN[i][1] - .012, WIN[j][0] + .012, ps); }
+      const pose = P[i].map((v, k) => lerp(v, P[j][k], t));
+      if (ps < C[0]) { const k = ss(0, C[0], ps); pose[0] = lerp(34, P[0][0], k); pose[4] = lerp(.12, P[0][4], k); }
+      const fit = Math.min(1.05, (H * .86) / 753) * (narrow ? .78 : 1);
+      const tx = narrow ? 0 : pose[3] * W, ty = narrow ? -H * .12 : pose[4] * H;
+      E.phone.style.transform = `translate3d(${tx}px,${ty}px,0) rotateX(${pose[0] - smy * 6}deg) rotateY(${pose[1] + smx * 8}deg) rotateZ(${pose[2]}deg) scale(${fit * pose[5]})`;
+      E.glow.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${1 + Math.sin(ps * 14) * .06})`;
+
+      // 1 · correo
+      const nIn = ss(.12, .14, ps) * (1 - ss(.185, .2, ps));
+      E.notif.style.transform = `translateY(calc(${lerp(-100, 0, nIn)}% - ${((1 - nIn) * 70).toFixed(1)}px))`;
+      E.notif.style.opacity = nIn.toFixed(3);
+      const reg = ss(.16, .17, ps) * (1 - ss(.205, .215, ps));
+      E.reg.style.opacity = (reg * (.6 + .4 * Math.abs(Math.sin(time * 6)))).toFixed(3);
+      const added = ss(.17, .2, ps);
+      const amt = 2527.1 + 84.9 * added;
+      const s = 'S/ ' + Math.floor(amt).toLocaleString('en-US'), c = '.' + String(Math.round((amt % 1) * 100)).padStart(2, '0');
+      if (s + c !== lastAmt) {
+        lastAmt = s + c; E.amount.textContent = s; E.cents.textContent = c;
+        E.delta.textContent = 'S/ ' + Math.round(233 + 85 * added) + ' vs. septiembre';
+        E.chartsub.textContent = 'S/ ' + Math.round(576 + 85 * added) + ' · ' + (added > .5 ? 14 : 13) + ' movimientos';
+        E.badge.textContent = added > .5 ? '3' : '2'; E.movcount.textContent = added > .5 ? '47' : '46';
+        const tb = q('[data-bar="6"]'); if (tb) tb.style.height = Math.round(lerp(20, 60, added)) + 'px';
+      }
+
+      // tabs
+      const tab = ps < .232 ? 'tab-res' : ps < .367 ? 'tab-mov' : ps < .497 ? 'tab-res' : ps < .757 ? 'tab-ami' : 'tab-res';
+      if (tab !== lastTab) {
+        lastTab = tab;
+        E.tabpill.style.transition = 'transform .35s cubic-bezier(.3,1.3,.5,1)';
+        E.tabpill.style.transform = `translateX(${tabX(tab) - 4}px)`;
+        tabKeys.forEach(k => { const on = k === tab; q(`[data-tabicon="${k}"]`).style.background = on ? 'var(--at)' : '#EDF0F4'; q(`[data-tablabel="${k}"]`).style.color = on ? 'var(--at)' : '#EDF0F4'; });
+      }
+      E.mov.style.opacity = tab === 'tab-mov' ? 1 : 0;
+      E.ami.style.opacity = tab === 'tab-ami' ? 1 : 0;
+      const trackX = -70 * ss(.26, .285, ps);
+      E.track.style.transform = `translateX(${trackX}px)`;
+      const bcp = ps > .3;
+      qa('[data-ring]').forEach(el => { const key = el.getAttribute('data-ring'); el.style.opacity = (bcp ? key === 'bcp' : key === 'all') ? 1 : 0; });
+      E.movsub.textContent = bcp ? '14 movimientos · BCP Crédito' : '47 movimientos · octubre';
+      E.movscroll.style.transform = `translateY(${-260 * ss(.315, .35, ps)}px)`;
+
+      // categorías
+      const dashY = -230 * ss(.372, .382, ps) * (1 - ss(.75, .76, ps));
+      E.dashscroll.style.transform = `translateY(${dashY}px)`;
+      const ct = ss(.392, .41, ps) * (1 - ss(.493, .5, ps));
+      E.cat.style.transform = `translateX(${(1 - ct) * 100}%)`;
+      E.dash.style.transform = `translateX(${-ct * 30}%)`;
+      E.dim.style.opacity = (ct * .35).toFixed(3);
+      const catFill = ss(.41, .46, ps);
+      E.cat.querySelectorAll('[data-pace]').forEach((el, k) => { el.style.width = (+el.getAttribute('data-pace') * ss(0, 1, catFill * 1.4 - k * .1)) + '%'; });
+      E.amiscroll.style.transform = `translateY(${-150 * ss(.56, .6, ps)}px)`;
+
+      // voz
+      const bub = ss(.638, .65, ps) * (1 - ss(.66, .668, ps));
+      E.bubble.style.opacity = bub.toFixed(3); E.bubble.style.transform = `scale(${lerp(.4, 1, bub)})`;
+      const ds = ss(.664, .68, ps) * (1 - ss(.743, .755, ps));
+      E.dict.style.transform = `translateY(${(1 - ds) * 100}%)`;
+      const sayN = Math.round(said.length * ss(.685, .71, ps));
+      if (E.said.textContent.length !== sayN) E.said.textContent = said.slice(0, sayN);
+      E.caret.style.opacity = Math.sin(time * 7) > 0 ? 1 : 0;
+      const listening = ps > .68 && ps < .713;
+      wbars.forEach((b, k) => { const v = listening ? .25 + .75 * Math.abs(Math.sin(time * 5 + k * .7) * Math.sin(time * 2.3 + k * .31)) : .1; b.style.height = Math.round(6 + v * 48) + 'px'; });
+      const dc = ss(.712, .722, ps);
+      E.dcard.style.opacity = dc; E.dcard.style.transform = `translateY(${(1 - dc) * -14}px)`;
+      E.dring.style.strokeDashoffset = (75.4 * ss(.722, .738, ps)).toFixed(1);
+      const saved = ps > .738;
+      E.dpending.style.display = saved ? 'none' : 'flex'; E.dsaved.style.display = saved ? 'flex' : 'none';
+      E.dicthint.textContent = saved ? '1 movimiento registrado por voz' : 'Di el monto y en qué gastaste';
+
+      // temas
+      const thS = ss(.778, .79, ps) * (1 - ss(.858, .87, ps));
+      E.themesheet.style.transform = `translateY(${(1 - thS) * 100}%)`;
+      const nebR = 1100 * ss(.797, .815, ps), aurR = 1100 * ss(.835, .853, ps);
+      E.neb.style.clipPath = `circle(${nebR.toFixed(0)}px at 70px 770px)`;
+      E.aur.style.clipPath = `circle(${aurR.toFixed(0)}px at 200px 770px)`;
+      const theme = ps > .84 ? 'aur' : ps > .802 ? 'neb' : 'base';
+      if (theme !== lastTheme) {
+        lastTheme = theme; const T = THEMES[theme];
+        ['bg', 'sf', 'el', 'hl', 'lb', 'sec', 'ac', 'at', 'acs', 'tr', 'sel', 'pos'].forEach(k => E.screen.style.setProperty('--' + k, T[k]));
+        E.glow.style.background = `radial-gradient(circle,${T.glow},rgba(46,91,255,.06) 45%,transparent 70%)`;
+        qa('[data-swring]').forEach(el => el.style.opacity = el.getAttribute('data-swring') === theme ? 1 : 0);
+        E.themeblurb.textContent = theme === 'aur' ? 'Cintas boreales sobre un cielo nocturno.' : 'Nubes de color que respiran y estrellas.';
+        qa('[data-bar]').forEach(b => { b.style.background = b.getAttribute('data-bar') === '6' ? 'var(--ac)' : 'var(--tr)'; });
+      }
+      if (nebR > 0) {
+        const br = .5 + .5 * Math.sin(time * 2 * Math.PI / 14);
+        nglow[0].style.transform = `translate(${24 * br}px,${-8 * br}px) scale(${1 + .2 * br})`;
+        nglow[1].style.transform = `scale(${1.1 - .15 * (.5 + .5 * Math.sin(time * .37))})`;
+        nglow[2].style.transform = `scale(${1 + .12 * (.5 + .5 * Math.sin(time * .31))})`;
+        const cyc = (time / 11) % 1, pr = Math.min(cyc / .09, 1);
+        E.shoot.style.opacity = cyc < .09 ? (1 - pr * .6) : 0;
+        E.shoot.style.transform = `translate(${-260 * pr}px,${86 * pr}px) rotate(-18deg)`;
+      }
+      if (aurR > 0) {
+        const sw = Math.sin(time * 2 * Math.PI / 16);
+        ribs.forEach((rb, k) => { const d = [-28, 22, -14][k]; rb.style.transform = `translateX(${d * sw}px) skewY(${Math.sin(time / 9 * 6.28 + k * 1.6) * 6}deg)`; rb.style.opacity = ([.26, .18, .12][k] + [.14, .12, .1][k] * (.5 + .5 * Math.sin(time * 1.05 + k))) * 1.4; });
+      }
+
+      // asistente
+      const sh = ss(.897, .915, ps);
+      E.sheet.style.transform = `translateY(${(1 - sh) * 100}%)`;
+      E.scrim.style.opacity = (Math.max(sh, ds) * .5).toFixed(3);
+      E.sheet.querySelectorAll('[data-brief]').forEach((el, k) => { const o = ss(.91 + k * .012, .925 + k * .012, ps); el.style.opacity = o; el.style.transform = `translateY(${(1 - o) * 16}px)`; });
+      const n = Math.round(phrase.length * ss(.955, .985, ps));
+      if (E.typed.textContent.length !== n) E.typed.textContent = phrase.slice(0, n);
+
+      // toques
+      let tapO = 0, tapS = 1;
+      for (const [k, at, dur] of TAPS) {
+        const w = clamp((ps - (at - dur / 2)) / dur);
+        if (w > 0 && w < 1) {
+          const el = root.querySelector(`[data-tapt="${k}"]`) || (k === 'card-bcp' ? q('[data-card="bcp"]') : null);
+          if (el) {
+            const o = offsetIn(el, E.screen);
+            let dy = 0, dx = 0;
+            if (el.closest('[data-dashscroll]')) dy = dashY;
+            if (el.closest('[data-movscroll]')) dy = -260 * ss(.315, .35, ps);
+            if (el.closest('[data-track]')) dx = trackX;
+            E.tap.style.left = (o.x + el.offsetWidth / 2 + dx) + 'px'; E.tap.style.top = (o.y + el.offsetHeight / 2 + dy) + 'px';
+          }
+          if (k === 'plus') { tapO = Math.sin(w * Math.PI); tapS = w < .2 ? lerp(1.4, .85, w * 5) : w < .8 ? .85 + .05 * Math.sin(time * 10) : lerp(.85, 1.2, (w - .8) * 5); }
+          else { tapO = Math.sin(w * Math.PI); tapS = w < .5 ? lerp(1.4, .8, w * 2) : lerp(.8, 1.2, (w - .5) * 2); }
+        }
+      }
+      E.tap.style.opacity = tapO.toFixed(3); E.tap.style.transform = `scale(${tapS})`;
+
+      // paneles
+      let active = 0;
+      panels.forEach((el, k) => {
+        const [a, b] = WIN[k];
+        const o = ss(a - .02, a + .015, ps) * (1 - ss(b - .015, b + .02, ps));
+        if (o > .5) active = k;
+        const dir = k % 2 ? 1 : -1;
+        el.style.opacity = o.toFixed(3);
+        el.style.transform = narrow ? `translateY(${(1 - o) * 30}px)` : `translate(${(1 - o) * 40 * dir}px, -50%)`;
+        el.style.filter = o > .99 ? 'none' : `blur(${((1 - o) * 12).toFixed(1)}px)`;
+        el.style.pointerEvents = o > .5 ? 'auto' : 'none';
+      });
+      if (active !== lastStage) {
+        lastStage = active;
+        ticks.forEach((tk, k) => { tk.style.background = k === active ? '#EDF0F4' : 'rgba(255,255,255,.18)'; tk.style.height = k === active ? '40px' : '24px'; });
+      }
+      E.hint.style.opacity = narrow ? '0' : String(1 - ss(0, .025, ps));
+    };
+    this.onResize = () => {
+      const narrow = innerWidth < 900;
+      panels.forEach(el => {
+        const k = +el.getAttribute('data-panel');
+        if (narrow) Object.assign(el.style, { top: 'auto', bottom: '28px', left: '20px', right: '20px', padding: '20px', borderRadius: '22px', background: 'rgba(11,14,20,.82)', backdropFilter: 'blur(14px)' });
+        else Object.assign(el.style, { top: '50%', bottom: '', padding: '', background: '', backdropFilter: '', left: k % 2 ? 'auto' : 'clamp(20px,6vw,96px)', right: k % 2 ? 'clamp(20px,6vw,96px)' : 'auto' });
+      });
+    };
+    this.onResize(); addEventListener('resize', this.onResize);
+    window.__apStep = frame;
+    const loop = () => { if (this.dead) return; this.raf = requestAnimationFrame(loop); frame(); };
+    loop();
+  }
+  componentWillUnmount() {
+    this.dead = 1; cancelAnimationFrame(this.raf); clearTimeout(this.scanT);
+    this.io && this.io.disconnect();
+    removeEventListener('mousemove', this.onMove); removeEventListener('resize', this.onResize);
+  }
+
+  renderVals() {
+    const vals = [62, 140, 210, 35, 88, 41, 20], labels = ['J', 'V', 'S', 'D', 'L', 'M', 'X'];
+    const bars = vals.map((v, i) => ({ i, h: i === 6 ? 20 : Math.max(4, Math.round(v / 210 * 100)), l: labels[i], bg: i === 6 ? 'var(--ac)' : 'var(--tr)', fw: i === 6 ? 600 : 400, fc: i === 6 ? 'var(--at)' : 'var(--sec)' }));
+    const cat = { Comida: ['utensils', '#FF9F0A'], Supermercado: ['shopping-cart', '#40C8E0'], Transporte: ['car', '#0A84FF'], Suscripciones: ['repeat', '#BF5AF2'], Entretenimiento: ['tv', '#5E5CE6'], Salud: ['briefcase-medical', '#FF375F'], Sin: ['inbox', '#98989D'] };
+    const hex2 = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+    const row = (name, c, sub, time, amount, badge) => {
+      const [ic, col] = cat[c], un = c === 'Sin';
+      return { name, icon: IC(ic), fg: col, bg: hex2(col, .22), sub, time, amount, badge: badge || 'assets/yape.png', bo: badge ? 1 : 0,
+        subSize: un ? '11px' : '12.5px', subW: un ? 600 : 400, subC: un ? '#64B3FF' : '#9AA3B2', subPad: un ? '3px 8px' : '0', subBg: un ? 'rgba(10,132,255,.2)' : 'transparent' };
+    };
+    const withSep = rs => rs.map((r, k) => ({ ...r, sep: k ? SEP : '0' }));
+    const days = [
+      { title: 'HOY', total: 'S/ 222.30', rows: withSep([row('Plaza Vea', 'Supermercado', 'Supermercado', '09:42', 'S/ 84.90', 'assets/bcp.jpg'), row('Jorge M.', 'Sin', 'Asignar categoría', '21:04', 'S/ 120.00', 'assets/yape.png'), row('Uber', 'Transporte', 'Transporte', '08:15', 'S/ 17.40', 'assets/bcp.jpg')]) },
+      { title: 'AYER', total: 'S/ 158.40', rows: withSep([row('Tambo', 'Comida', 'Comida', '19:20', 'S/ 12.40', 'assets/yape.png'), row('Netflix', 'Suscripciones', 'Suscripciones', '07:00', 'S/ 44.90', 'assets/bbva.png'), row('Inkafarma', 'Salud', 'Salud', '13:31', 'S/ 56.30', 'assets/interbank.png'), row('Andrea R.', 'Sin', 'Asignar categoría', '22:02', 'S/ 44.80', 'assets/plin.png')]) },
+    ];
+    const cards = [
+      { key: 'all', bg: 'linear-gradient(135deg,#3A3A40,#16161A)', shadow: 'rgba(22,22,26,.45)', motif: 'width:137px;height:137px;right:-60px;bottom:-75px;border-radius:999px;border:10px solid rgba(255,255,255,.12)', logo: 'assets/icon.png', logoO: 0, digits: '5 cuentas', title: 'Todas', line: '47 movimientos', ring: 1 },
+      { key: 'bcp', bg: 'linear-gradient(135deg,#0A3A9E,#002169)', shadow: 'rgba(0,33,105,.45)', motif: 'inset:0;background:linear-gradient(90deg,#FF7800,rgba(255,120,0,.75));opacity:.9;clip-path:polygon(62% 100%,86% 100%,110% 0,86% 0)', logo: 'assets/bcp.jpg', logoO: 1, digits: '•• 4821', title: 'BCP Crédito', line: '14 movimientos', ring: 0 },
+      { key: 'bbva', bg: 'linear-gradient(135deg,#1973B8,#072146)', shadow: 'rgba(7,33,70,.45)', motif: 'width:144px;height:144px;right:-58px;top:-58px;border-radius:999px;border:14px solid rgba(255,255,255,.10)', logo: 'assets/bbva.png', logoO: 1, digits: '•• 0193', title: 'BBVA Débito', line: '9 movimientos', ring: 0 },
+      { key: 'ibk', bg: 'linear-gradient(135deg,#12B563,#05783D)', shadow: 'rgba(5,120,61,.45)', motif: 'inset:0;background:rgba(0,57,166,.85);clip-path:ellipse(60% 70% at 100% 100%)', logo: 'assets/interbank.png', logoO: 1, digits: '•• 7710', title: 'Interbank', line: '6 movimientos', ring: 0 },
+      { key: 'yape', bg: 'linear-gradient(135deg,#8E2BA3,#4A0F5C)', shadow: 'rgba(74,15,92,.45)', motif: 'width:152px;height:106px;right:-70px;bottom:-50px;border-radius:50%;background:radial-gradient(rgba(16,212,194,.75),rgba(16,212,194,0) 70%)', logo: 'assets/yape.png', logoO: 1, digits: '', title: 'Yape', line: '12 movimientos', ring: 0 },
+      { key: 'plin', bg: 'linear-gradient(135deg,#16C7E0,#0070B8)', shadow: 'rgba(0,112,184,.45)', motif: 'width:152px;height:106px;right:-70px;bottom:-50px;border-radius:50%;background:radial-gradient(rgba(124,242,255,.75),rgba(124,242,255,0) 70%)', logo: 'assets/plin.png', logoO: 1, digits: '', title: 'Plin', line: '6 movimientos', ring: 0 },
+    ];
+    const D = [['Comida', 412], ['Supermercado', 386], ['Entretenimiento', 240], ['Transporte', 128], ['Suscripciones', 66]];
+    const short = { Supermercado: 'Super.', Entretenimiento: 'Entr.', Transporte: 'Transp.', Suscripciones: 'Suscr.' };
+    const tot = D.reduce((s, d) => s + d[1], 0), circ = 2 * Math.PI * 60;
+    let acc = 0;
+    const donut = D.map(([n, v]) => { const len = v / tot * circ; const o = { c: cat[n][1], dash: `${Math.max(0, len - 3)} ${circ}`, off: -acc, short: short[n] || n, pct: Math.round(v / tot * 100) + '%' }; acc += len; return o; });
+    const cats = [
+      ['Comida', 'S/ 412.40', 'Vas más rápido que el mes', '#FF9F0A', 69, '#FF9F0A'],
+      ['Supermercado', 'S/ 386.20', 'Sin límite', '#9AA3B2', 0, ''],
+      ['Entretenimiento', 'S/ 240.00', 'Pasaste el límite por S/ 40', '#FF6961', 100, '#FF6961'],
+      ['Transporte', 'S/ 128.30', 'Vas a buen ritmo', '#10B981', 43, '#0A84FF'],
+      ['Suscripciones', 'S/ 66.80', 'Vas a buen ritmo', '#10B981', 55, '#0A84FF'],
+    ].map(([n, a, note, nc, w, fill], k) => { const [ic, col] = cat[n]; return { name: n, amount: a, note, noteC: nc, w, fill, icon: IC(ic), fg: col, bg: hex2(col, .22), barDisplay: w ? 'block' : 'none', sep: k ? SEP : '0' }; });
+    const chip = (n, v) => ({ t: n + ' ' + v, c: cat[n][1], bg: hex2(cat[n][1], .14), icon: IC(cat[n][0]) });
+    const peng = ({ coat, beak, face = 'high', tuft = 'spikes', extra, accent }) => {
+      const N = '#1e1a6b', R = 'stroke="' + N + '" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"';
+      const body = 'M215 560 C205 470 200 390 222 320 C245 250 310 228 370 228 C440 228 500 250 515 320 C530 390 525 470 520 560 C520 600 460 616 370 616 C280 616 215 600 215 560 Z';
+      const fc = face === 'high' ? 'M370 302 C350 270 298 262 264 290 C236 316 232 380 236 450 C240 520 242 580 246 630 L496 630 C498 580 500 520 502 450 C504 380 500 316 476 290 C442 262 390 270 370 302 Z' : 'M240 480 C262 436 320 420 370 420 C420 420 478 436 500 480 C502 540 500 590 496 630 L246 630 C242 590 238 540 240 480 Z';
+      const tf = tuft === 'leaf' ? 'M386 238 C368 228 352 212 362 202 C372 193 390 206 398 220 C406 204 426 196 436 206 C444 218 428 232 410 238 Z' : 'M356 240 L346 196 L372 222 L382 182 L398 220 L424 190 L416 240 Z';
+      const eye = (x, y) => `<circle cx="${x}" cy="${y}" r="24" fill="${N}"/><circle cx="${x - 9}" cy="${y - 9}" r="8" fill="#fff"/><circle cx="${x + 9}" cy="${y + 10}" r="3.5" fill="#fff"/>`;
+      const ex = extra === 'gentoo' ? '<path d="M282 322 C290 300 322 294 344 310 C328 314 312 318 294 328 Z M476 322 C468 300 436 294 414 310 C430 314 446 318 464 328 Z" fill="#fff"/>'
+        : extra === 'emperor' ? `<path d="M226 360 C250 370 268 410 262 452 C250 440 236 420 228 400 Z M514 360 C490 370 472 410 478 452 C490 440 504 420 512 400 Z" fill="${accent}"/>` : '';
+      const crest = extra === 'rockhopper' ? `<path d="M336 326 C308 314 268 300 214 286 C238 300 236 302 206 310 C236 314 240 318 214 334 C258 326 290 330 334 338 Z M422 326 C450 314 490 300 544 286 C520 300 522 302 552 310 C522 314 518 318 544 334 C500 326 468 330 424 338 Z" fill="${accent}" stroke="${N}" stroke-width="4" stroke-linejoin="round"/>` : '';
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="180 180 390 390"><defs><clipPath id="b"><path d="${body}"/></clipPath></defs>`
+        + `<path d="${tf}" fill="${coat}" ${R}/>`
+        + `<path d="M248 445 C212 428 172 385 166 342 C162 318 180 310 202 322 C238 342 258 372 264 402 Z" fill="${coat}" ${R}/>`
+        + `<path d="M502 448 C540 468 576 508 586 544 C591 566 576 574 554 563 C530 550 512 532 500 522 Z" fill="${coat}" ${R}/>`
+        + `<path d="${body}" fill="${coat}"/><g clip-path="url(#b)"><path d="${fc}" fill="#fff"/>${ex}</g><path d="${body}" fill="none" ${R}/>`
+        + eye(318, 352) + eye(440, 355) + crest
+        + `<path d="M346 374 C348 360 408 358 412 374 C414 394 396 408 379 408 C361 408 344 394 346 374 Z" fill="${beak}" stroke="${N}" stroke-width="6" stroke-linejoin="round"/>`
+        + `<path d="M368 386 C374 380 386 380 392 386 C388 395 372 395 368 386 Z" fill="#f06a7a" stroke="${N}" stroke-width="3"/></svg>`;
+      return '"data:image/svg+xml,' + encodeURIComponent(svg) + '"';
+    };
+    const feed = [
+      { photo: peng({ coat: '#2b2f4a', beak: '#ff9f0a', extra: 'rockhopper', accent: '#ffd23f' }), ini: 'A', name: 'Andrea', status: '«Este mes sí cumplo»', total: 'S/ 1,930.00', bg: 'rgba(255,159,10,.2)', fg: '#FF9F0A', pro: 'block', ringPro: '0 0 0 2px #0B0E14, 0 0 0 4px #8B5CF6', chips: [chip('Comida', '538'), chip('Transporte', '210')] },
+      { photo: peng({ coat: '#1f6f5c', beak: '#ff6b3d', face: 'low', tuft: 'leaf', extra: 'gentoo' }), ini: 'D', name: 'Diego', status: 'Su gasto de octubre', total: 'S/ 1,412.50', bg: 'rgba(16,185,129,.2)', fg: '#10B981', pro: 'none', ringPro: 'none', chips: [chip('Comida', '305'), chip('Supermercado', '290')] },
+      { photo: peng({ coat: '#5b3f8c', beak: '#ffb020', extra: 'emperor', accent: '#ffc94d' }), ini: 'M', name: 'Mafer', status: '«Modo ahorro»', total: 'S/ 2,240.80', bg: 'rgba(191,90,242,.2)', fg: '#D8A6F0', pro: 'none', ringPro: 'none', chips: [chip('Comida', '790'), chip('Entretenimiento', '320')] },
+    ];
+    const tabs = [['tab-res', 'chart-pie', 'Resumen'], ['tab-mov', 'list', 'Movimientos'], ['tab-met', 'target', 'Metas'], ['tab-ami', 'users', 'Amigos']].map(([key, ic, title]) => ({ key, icon: IC(ic), title }));
+    const sw = (stops, pos) => `radial-gradient(circle at ${pos}, ${stops.map((s, i) => `#${s} ${Math.round(i / (stops.length - 1) * 100)}%`).join(',')})`;
+    const swatches = [
+      { key: 'neb', name: 'Nebulosa', g: sw(['C084FC', '6D28D9', '06061A'], '30% 30%') },
+      { key: 'obs', name: 'Obsidiana', g: sw(['F6E7B8', 'B8892F', '0B0A08'], '30% 30%') },
+      { key: 'aur', name: 'Aurora', g: sw(['A5F3FC', '10B981', '04110F'], '30% 30%') },
+      { key: 'sun', name: 'Atardecer', g: sw(['FDE68A', 'FB7185', '3B0F2E'], '30% 70%') },
+      { key: 'aby', name: 'Abismo', g: sw(['CFFAFE', '22D3EE', '0E7490', '03141A'], '30% 30%') },
+    ];
+    const brief = [
+      { title: 'Vas S/ 318 arriba de septiembre', body: 'A esta altura del mes pasado llevabas S/ 2,294. La diferencia está casi toda en Entretenimiento.', cta: 'Ver categorías', icon: IC('trending-up'), fg: '#64B3FF', bg: 'rgba(10,132,255,.2)' },
+      { title: 'Comida va más rápido que el mes', body: 'Llevas el 69% de tu límite y va el 58% del mes. Te quedan S/ 188 para 13 días.', cta: 'Ver Comida', icon: IC('utensils'), fg: '#FF9F0A', bg: 'rgba(255,159,10,.2)' },
+      { title: 'Luz del Sur se cobra en 4 días', body: 'El mes pasado fueron S/ 128.00.', cta: 'Ver comprometido', icon: IC('zap'), fg: '#FFD60A', bg: 'rgba(255,214,10,.2)' },
+    ];
+    const features = [
+      { tag: 'DIVIDIR', title: 'Por cobrar', body: 'Divide una cuenta entre amigos y AgruPay detecta cuándo te pagan por Yape o Plin.' },
+      { tag: 'RECURRENTES', title: 'Lo comprometido', body: 'Suscripciones y pagos fijos del mes, con recordatorio antes de que se cobren.' },
+      { tag: 'WIDGETS', title: 'Tu límite en la pantalla de inicio', body: 'Mira cómo vas en una categoría sin abrir la app.' },
+      { tag: 'SIRI', title: 'Atajos', body: 'Anota un gasto desde Siri o un atajo, sin abrir la app.' },
+      { tag: 'BLOQUEO', title: 'Face ID y montos ocultos', body: 'Bloquea la app y tapa las cifras con un toque cuando alguien mira.' },
+      { tag: 'CUENTAS', title: 'Sin contar dos veces', body: 'Marca tus cuentas y lo que se mueve entre ellas se registra como traslado, no como gasto.' },
+    ].map((f, i) => ({ ...f, delay: (i % 3) * 90 }));
+    const privacy = [
+      { n: '01', t: 'Solo lectura. No escribimos ni enviamos correos.' },
+      { n: '02', t: 'Tus movimientos se guardan en tu iPhone, no en un servidor.' },
+      { n: '03', t: 'Con amigos solo se comparten los totales que tú marcaste.' },
+    ];
+    const panels = PANELS.slice(1).map((p, k) => ({ ...p, i: k + 1 }));
+    const banks = [['bcp.jpg', 'BCP'], ['bbva.png', 'BBVA'], ['interbank.png', 'Interbank'], ['scotiabank.png', 'Scotiabank'], ['mibanco.png', 'Mibanco'], ['yape.png', 'Yape'], ['plin.png', 'Plin'], ['gmail.png', 'Gmail']];
+    const h = React.createElement;
+    const marquee = h('div', { style: { display: 'flex', gap: 14, width: 'max-content', animation: 'ap-marquee 32s linear infinite' } },
+      [...banks, ...banks].map(([src, name], k) => h('div', { key: k, style: { display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 12px', borderRadius: 18, background: '#161922', border: '0.5px solid rgba(255,255,255,.07)', flex: 'none' } },
+        h('div', { style: { width: 44, height: 44, borderRadius: 12, background: '#fff', overflow: 'hidden' } }, h('img', { src: 'assets/' + src, alt: name, style: { width: '100%', height: '100%', objectFit: 'cover' } })),
+        h('span', { style: { fontSize: 17, fontWeight: 600, color: '#EDF0F4' } }, name))));
+    return { rootRef: this.rootRef, bars, days, cards, donut, cats, feed, mePhoto: peng({ coat: '#1d3a6e', beak: '#ffb020' }), tabs, swatches, brief, features, privacy, panels, marquee,
+      ticks: [0, 1, 2, 3, 4, 5, 6, 7], waveBars: Array.from({ length: 28 }, (_, k) => k), dashFade: 1 };
+  }
+}
+</script>
+</body>
+</html>
