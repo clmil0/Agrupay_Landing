@@ -31,7 +31,7 @@ a:hover{color:#EDF0F4}
       <img src="assets/icon.png" alt="AgruPay" style="width:30px;height:30px;border-radius:8px">
       <span style="font-weight:700;font-size:17px;letter-spacing:-0.4px">AgruPay</span>
     </a>
-    <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px;height:20px;overflow:hidden;font-size:14px;font-weight:500">
+    <div data-navlinks="1" style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px;height:20px;overflow:hidden;font-size:14px;font-weight:500">
       <a href="#top" style="color:#9AA3B2">Recorrido</a>
       <a href="#funciones" style="color:#9AA3B2">Funciones</a>
       <a href="#privacidad" style="color:#9AA3B2">Privacidad</a>
@@ -39,13 +39,36 @@ a:hover{color:#EDF0F4}
     <a href="#descargar" style="display:flex;align-items:center;height:40px;padding:0 18px;border-radius:12px;background:#2E5BFF;color:#fff;font-size:14px;font-weight:600;white-space:nowrap" style-hover="background:#4A70FF;color:#fff">Descargar</a>
   </nav>
 
-  <section id="top" data-seq="1" style="position:relative;height:1100vh">
+  <section id="top" data-seq="1" style="position:relative;height:1020vh">
     <div style="position:sticky;top:0;height:100vh;overflow:hidden;perspective:1600px">
       <div data-glow="1" style="position:absolute;left:50%;top:50%;width:760px;height:760px;margin:-380px 0 0 -380px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.42),rgba(46,91,255,.08) 45%,transparent 70%);filter:blur(20px);pointer-events:none;will-change:transform,background"></div>
       <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%);mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%)"></div>
 
-      <div data-phone="1" style="position:absolute;left:50%;top:50%;width:360px;height:753px;margin:-376px 0 0 -180px;border-radius:56px;padding:12px;background:linear-gradient(160deg,#2A3242,#0F121A 40%,#1E222D);box-shadow:0 80px 140px -40px rgba(46,91,255,.55),0 0 0 0.5px rgba(255,255,255,.14) inset;transform-style:preserve-3d;will-change:transform">
-        <div style="position:relative;width:336px;height:729px;border-radius:44px;overflow:hidden;background:#0B0E14">
+      <div data-phone="1" style="position:absolute;left:50%;top:50%;width:360px;height:753px;margin:-376px 0 0 -180px;border-radius:56px;padding:12px;background:linear-gradient(160deg,#2A3242,#0F121A 40%,#1E222D);box-shadow:0 0 0 0.5px rgba(255,255,255,.14) inset,0 0 0 1.5px rgba(150,165,190,.35) inset;transform-style:preserve-3d;will-change:transform">
+        <!-- canto metálico: capas apiladas hacia atrás + botones laterales -->
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#58606E,#212429 14%,#212429 86%,#58606E);transform:translateZ(-2px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#565E6C,#202328 14%,#202328 86%,#565E6C);transform:translateZ(-4px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#545C6A,#202328 14%,#202328 86%,#545C6A);transform:translateZ(-6px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#525A68,#1F2227 14%,#1F2227 86%,#525A68);transform:translateZ(-8px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4F5765,#1E2126 14%,#1E2126 86%,#4F5765);transform:translateZ(-10px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4D5563,#1E2126 14%,#1E2126 86%,#4D5563);transform:translateZ(-12px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4B5361,#1D2025 14%,#1D2025 86%,#4B5361);transform:translateZ(-14px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#49515F,#1C1F24 14%,#1C1F24 86%,#49515F);transform:translateZ(-16px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#474F5D,#1B1E23 14%,#1B1E23 86%,#474F5D);transform:translateZ(-18px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#454D5B,#1A1D22 14%,#1A1D22 86%,#454D5B);transform:translateZ(-20px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#434B59,#1A1D22 14%,#1A1D22 86%,#434B59);transform:translateZ(-22px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#404856,#191C21 14%,#191C21 86%,#404856);transform:translateZ(-24px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3E4654,#181B20 14%,#181B20 86%,#3E4654);transform:translateZ(-26px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3C4452,#181B20 14%,#181B20 86%,#3C4452);transform:translateZ(-28px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3A4250,#171A1F 14%,#171A1F 86%,#3A4250);transform:translateZ(-30px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#38404E,#16191E 14%,#16191E 86%,#38404E);transform:translateZ(-32px);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(160deg,#1C212C,#0C0E14 55%,#161A23);box-shadow:0 80px 140px -40px rgba(46,91,255,.55);transform:translateZ(-33px);pointer-events:none"></div>
+        <div style="position:absolute;left:-2px;top:150px;width:20px;height:34px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
+        <div style="position:absolute;left:-2px;top:212px;width:20px;height:62px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
+        <div style="position:absolute;left:-2px;top:290px;width:20px;height:62px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
+        <div style="position:absolute;left:calc(100% + 2px);top:236px;width:20px;height:96px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
+
+        <div style="position:relative;width:336px;height:729px;border-radius:44px;overflow:hidden;background:#0B0E14;transform:translateZ(1px)">
           <div data-screen="1" style="--bg:#0B0E14;--sf:#161922;--el:#1E222D;--hl:rgba(255,255,255,.07);--lb:#EDF0F4;--sec:#9AA3B2;--ac:#0A84FF;--at:#64B3FF;--acs:rgba(10,132,255,.16);--tr:#2A3242;--sel:#232838;--pos:#10B981;position:absolute;left:0;top:0;width:393px;height:852px;transform:scale(.855);transform-origin:0 0;overflow:hidden;background:var(--bg);color:var(--lb)">
 
             <div data-scr="dash" style="position:absolute;inset:0;background:var(--bg);will-change:transform;transition:background-color .8s ease,color .8s ease,border-color .8s ease">
@@ -458,11 +481,13 @@ a:hover{color:#EDF0F4}
         <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8A93A3">DESLIZA</span>
         <span style="width:1px;height:40px;background:linear-gradient(#8FA8FF,transparent)"></span>
       </div>
-      <div style="position:absolute;right:clamp(10px,1.6vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;pointer-events:none">
+      <div data-ticks="1" style="position:absolute;right:clamp(10px,1.6vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;pointer-events:none">
         <sc-for list="{{ ticks }}" as="tk" hint-placeholder-count="8"><span data-tick="{{ tk }}" style="width:2px;height:24px;border-radius:2px;background:rgba(255,255,255,.18);transition:all .4s"></span></sc-for>
       </div>
     </div>
   </section>
+
+  <button data-skip="1" type="button" style="position:fixed;right:clamp(16px,2vw,28px);bottom:24px;z-index:55;display:flex;align-items:center;gap:8px;height:42px;padding:0 16px 0 18px;border-radius:13px;border:0.5px solid rgba(255,255,255,.16);background:rgba(22,25,34,.78);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#EDF0F4;font:600 14px Geist,-apple-system,system-ui,sans-serif;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s ease,background-color .2s ease" style-hover="background:rgba(46,91,255,.9)">Saltar recorrido<span style="display:block;width:14px;height:14px;background:#EDF0F4;-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat"></span></button>
 
   <section style="position:relative;z-index:2;padding:60px 0 100px;display:flex;flex-direction:column;gap:28px">
     <div style="text-align:center;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8A93A3">LEE LOS CORREOS DE</div>
@@ -572,7 +597,7 @@ class Component extends DCLogic {
     const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
     const lerp = (a, b, t) => a + (b - a) * t;
     const E = {};
-    ['seq', 'phone', 'glow', 'progress', 'dashscroll', 'movscroll', 'amiscroll', 'track', 'sheet', 'scrim', 'notif', 'reg', 'tap', 'amount', 'cents', 'delta', 'chartsub', 'badge', 'movcount', 'typed', 'hint', 'screen', 'dict', 'said', 'caret', 'dcard', 'dpending', 'dsaved', 'dring', 'dicthint', 'themesheet', 'themeblurb', 'bubble', 'tabpill', 'shoot', 'movsub'].forEach(k => E[k] = q(`[data-${k}]`));
+    ['seq', 'phone', 'glow', 'progress', 'dashscroll', 'movscroll', 'amiscroll', 'track', 'sheet', 'scrim', 'notif', 'reg', 'tap', 'amount', 'cents', 'delta', 'chartsub', 'badge', 'movcount', 'typed', 'hint', 'screen', 'dict', 'said', 'caret', 'dcard', 'dpending', 'dsaved', 'dring', 'dicthint', 'themesheet', 'themeblurb', 'bubble', 'tabpill', 'shoot', 'movsub', 'skip'].forEach(k => E[k] = q(`[data-${k}]`));
     E.dash = q('[data-scr="dash"]'); E.mov = q('[data-scr="mov"]'); E.cat = q('[data-scr="cat"]'); E.ami = q('[data-scr="ami"]');
     E.dim = q('[data-dim="dash"]'); E.neb = q('[data-sky="neb"]'); E.aur = q('[data-sky="aur"]');
     const panels = qa('[data-panel]').sort((a, b) => a.getAttribute('data-panel') - b.getAttribute('data-panel'));
@@ -585,6 +610,26 @@ class Component extends DCLogic {
     const WIN = [[-1, .085], [.105, .215], [.235, .355], [.375, .485], [.505, .615], [.635, .745], [.765, .875], [.895, 2]];
     const TAPS = [['tab-mov', .232, .03], ['card-bcp', .3, .03], ['tab-res', .367, .025], ['tile-cat', .388, .028], ['tab-ami', .497, .03], ['plus', .632, .05], ['bubble', .66, .025], ['tab-res', .757, .025], ['gear', .773, .025], ['sw-neb', .795, .025], ['sw-aur', .833, .025], ['ast', .887, .03]];
     const phrase = '¿En qué gasté más esta semana?', said = 'Cuarenta soles en el chifa con tarjeta';
+    // El inicio del recorrido es corto: el primer 3 % del scroll lleva al hero directo al primer capítulo
+    const A0 = .03, mapP = r => r < A0 ? lerp(.06, .105, r / A0) : lerp(.105, 1, (r - A0) / (1 - A0));
+    let snap = true, panelH = [];
+    const measure = () => { panelH = panels.map(el => el.offsetHeight); };
+    const seqRange = () => { const top = E.seq.getBoundingClientRect().top + scrollY; return [top, top + E.seq.offsetHeight]; };
+    // Saltos sin reproducir el recorrido: se llega de golpe y la animación no persigue el scroll
+    const jump = y => { snap = true; scrollTo({ top: y, behavior: 'instant' }); };
+    this.onNav = e => {
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (a) {
+        const id = a.getAttribute('href').slice(1), [s0, s1] = seqRange();
+        if (!id || id === 'top') { e.preventDefault(); jump(0); history.replaceState(null, '', location.pathname); return; }
+        const tgt = document.getElementById(id); if (!tgt) return;
+        const y = tgt.getBoundingClientRect().top + scrollY;
+        if (y >= s1 && scrollY < s1) { e.preventDefault(); jump(s1); setTimeout(() => scrollTo({ top: y, behavior: 'smooth' }), 60); history.replaceState(null, '', '#' + id); }
+        return;
+      }
+      if (e.target.closest && e.target.closest('[data-skip]')) jump(seqRange()[1]);
+    };
+    root.addEventListener('click', this.onNav);
     let ps = 0, smx = 0, smy = 0, lastStage = -1, lastAmt = '', lastTheme = '', lastTab = '';
     const tabX = k => 4 + tabKeys.indexOf(k) * (E.tabpill.parentElement.clientWidth - 8) / 4;
 
@@ -592,9 +637,12 @@ class Component extends DCLogic {
       const r = E.seq.getBoundingClientRect();
       const h = document.documentElement.scrollHeight - innerHeight;
       E.progress.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+      const raw = clamp(-r.top / Math.max(1, r.height - innerHeight));
+      const showSkip = r.top < innerHeight * .5 && r.bottom > innerHeight * 1.2;
+      E.skip.style.opacity = showSkip ? '1' : '0'; E.skip.style.pointerEvents = showSkip ? 'auto' : 'none';
       if (r.bottom < -100 || r.top > innerHeight) return;
-      const p = window.__apP != null ? window.__apP : clamp(-r.top / Math.max(1, r.height - innerHeight));
-      ps = window.__apP != null ? p : ps + (p - ps) * .12;
+      const p = window.__apP != null ? window.__apP : mapP(raw);
+      ps = window.__apP != null || snap ? p : ps + (p - ps) * .12; snap = false;
       smx += (this.mx - smx) * .06; smy += (this.my - smy) * .06;
       const W = innerWidth, H = innerHeight, narrow = W < 900, time = performance.now() / 1000;
 
@@ -602,9 +650,12 @@ class Component extends DCLogic {
       let j = i, t = 0;
       if (i > 0 && ps < WIN[i][0] + .012) { j = i; i = i - 1; t = ss(WIN[i][1] - .012, WIN[j][0] + .012, ps); }
       const pose = P[i].map((v, k) => lerp(v, P[j][k], t));
-      if (ps < C[0]) { const k = ss(0, C[0], ps); pose[0] = lerp(34, P[0][0], k); pose[4] = lerp(.12, P[0][4], k); }
-      const fit = Math.min(1.05, (H * .86) / 753) * (narrow ? .78 : 1);
-      const tx = narrow ? 0 : pose[3] * W, ty = narrow ? -H * .12 : pose[4] * H;
+      // En pantallas angostas el celular usa el espacio entre la barra y la tarjeta de texto
+      let fit = Math.min(1.05, (H * .86) / 753), tx = pose[3] * W, ty = pose[4] * H;
+      if (narrow) {
+        const top = 70, bottom = lerp(panelH[i] || 0, panelH[j] || 0, t) + 96, avail = Math.max(140, H - top - bottom);
+        fit = Math.min(1.05, avail * .94 / 753, W * .82 / 360); tx = 0; ty = top + avail / 2 - H / 2;
+      }
       E.phone.style.transform = `translate3d(${tx}px,${ty}px,0) rotateX(${pose[0] - smy * 6}deg) rotateY(${pose[1] + smx * 8}deg) rotateZ(${pose[2]}deg) scale(${fit * pose[5]})`;
       E.glow.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${1 + Math.sin(ps * 14) * .06})`;
 
@@ -743,17 +794,26 @@ class Component extends DCLogic {
         lastStage = active;
         ticks.forEach((tk, k) => { tk.style.background = k === active ? '#EDF0F4' : 'rgba(255,255,255,.18)'; tk.style.height = k === active ? '40px' : '24px'; });
       }
-      E.hint.style.opacity = narrow ? '0' : String(1 - ss(0, .025, ps));
+      E.hint.style.opacity = narrow ? '0' : String(1 - ss(0, .4, raw / A0));
     };
     this.onResize = () => {
       const narrow = innerWidth < 900;
       panels.forEach(el => {
         const k = +el.getAttribute('data-panel');
-        if (narrow) Object.assign(el.style, { top: 'auto', bottom: '28px', left: '20px', right: '20px', padding: '20px', borderRadius: '22px', background: 'rgba(11,14,20,.82)', backdropFilter: 'blur(14px)' });
-        else Object.assign(el.style, { top: '50%', bottom: '', padding: '', background: '', backdropFilter: '', left: k % 2 ? 'auto' : 'clamp(20px,6vw,96px)', right: k % 2 ? 'clamp(20px,6vw,96px)' : 'auto' });
+        if (narrow) Object.assign(el.style, { top: 'auto', bottom: '80px', left: '16px', right: '16px', margin: '0 auto', padding: '18px 20px', borderRadius: '22px', background: 'rgba(11,14,20,.82)', backdropFilter: 'blur(14px)' });
+        else Object.assign(el.style, { top: '50%', bottom: '', margin: '', padding: '', background: '', backdropFilter: '', left: k % 2 ? 'auto' : 'clamp(20px,6vw,96px)', right: k % 2 ? 'clamp(20px,6vw,96px)' : 'auto' });
+        const h = el.querySelector('h1,h2'), b = el.querySelector('p');
+        if (h.__fs == null) { h.__fs = h.style.fontSize; b.__fs = b.style.fontSize; b.__lh = b.style.lineHeight; el.__gap = el.style.gap; }
+        h.style.fontSize = narrow ? (k ? 'clamp(26px,6.4vw,36px)' : 'clamp(34px,8.4vw,52px)') : h.__fs;
+        b.style.fontSize = narrow ? '15px' : b.__fs; b.style.lineHeight = narrow ? '1.45' : b.__lh;
+        el.style.gap = narrow ? '12px' : el.__gap;
       });
+      measure();
+      q('[data-ticks]').style.display = narrow ? 'none' : 'flex';
+      q('[data-navlinks]').style.visibility = innerWidth < 600 ? 'hidden' : 'visible';
     };
     this.onResize(); addEventListener('resize', this.onResize);
+    document.fonts && document.fonts.ready.then(() => !this.dead && this.onResize());
     window.__apStep = frame;
     const loop = () => { if (this.dead) return; this.raf = requestAnimationFrame(loop); frame(); };
     loop();
@@ -761,7 +821,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this.dead = 1; cancelAnimationFrame(this.raf); clearTimeout(this.scanT);
     this.io && this.io.disconnect();
-    removeEventListener('mousemove', this.onMove); removeEventListener('resize', this.onResize);
+    removeEventListener('mousemove', this.onMove); this.rootRef.current && this.rootRef.current.removeEventListener('click', this.onNav); removeEventListener('resize', this.onResize);
   }
 
   renderVals() {
