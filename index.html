@@ -496,12 +496,12 @@ a:hover{color:#EDF0F4}
 
   <section id="funciones" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 24px;display:flex;flex-direction:column;gap:40px">
     <h2 data-reveal="0" style="opacity:0;transform:translateY(20px);margin:0;font-size:clamp(36px,4.6vw,58px);line-height:1;letter-spacing:-0.04em;font-weight:700;max-width:14em;text-wrap:balance">Todo lo demás, también resuelto.</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px">
       <sc-for list="{{ features }}" as="ft" hint-placeholder-count="6">
-        <div data-reveal="{{ ft.delay }}" data-tilt="1" style="opacity:0;transform:translateY(20px);position:relative;padding:26px;min-height:200px;border-radius:24px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:space-between;gap:28px;overflow:hidden;transition:border-color .3s" style-hover="border-color:rgba(46,91,255,.5)">
+        <div data-reveal="{{ ft.delay }}" data-tilt="1" style="opacity:0;transform:translateY(20px);position:relative;padding:clamp(22px,2.4vw,28px);border-radius:24px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:flex-start;gap:16px;overflow:hidden;transition:border-color .3s" style-hover="border-color:rgba(46,91,255,.5)">
           <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:#8FA8FF">{{ ft.tag }}</div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="font-size:21px;font-weight:700;letter-spacing:-0.5px">{{ ft.title }}</div>
+            <div style="font-size:21px;line-height:1.2;font-weight:700;letter-spacing:-0.5px;text-wrap:balance">{{ ft.title }}</div>
             <div style="font-size:15px;line-height:1.5;color:#9AA3B2;text-wrap:pretty">{{ ft.body }}</div>
           </div>
         </div>
