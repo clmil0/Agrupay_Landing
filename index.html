@@ -912,12 +912,15 @@ class Component extends DCLogic {
       { n: '03', t: 'Con amigos solo se comparten los totales que tú marcaste.' },
     ];
     const panels = PANELS.slice(1).map((p, k) => ({ ...p, i: k + 1 }));
-    const banks = [['bcp.jpg', 'BCP'], ['bbva.png', 'BBVA'], ['interbank.png', 'Interbank'], ['scotiabank.png', 'Scotiabank'], ['mibanco.png', 'Mibanco'], ['yape.png', 'Yape'], ['plin.png', 'Plin'], ['gmail.png', 'Gmail']];
+    const banks = [['bcp.jpg', 'BCP'], ['bbva.png', 'BBVA'], ['interbank.png', 'Interbank'], ['scotiabank.png', 'Scotiabank'], ['mibanco.png', 'Mibanco'], ['yape.png', 'Yape'], ['plin.png', 'Plin'], ['gmail.png', 'Gmail'], ['outlook.png', 'Outlook', 6]];
     const h = React.createElement;
-    const marquee = h('div', { style: { display: 'flex', gap: 14, width: 'max-content', animation: 'ap-marquee 32s linear infinite' } },
-      [...banks, ...banks].map(([src, name], k) => h('div', { key: k, style: { display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 12px', borderRadius: 18, background: '#161922', border: '0.5px solid rgba(255,255,255,.07)', flex: 'none' } },
-        h('div', { style: { width: 44, height: 44, borderRadius: 12, background: '#fff', overflow: 'hidden' } }, h('img', { src: 'assets/' + src, alt: name, style: { width: '100%', height: '100%', objectFit: 'cover' } })),
-        h('span', { style: { fontSize: 17, fontWeight: 600, color: '#EDF0F4' } }, name))));
+    // Dos filas en sentidos opuestos; la segunda arranca por la mitad para mostrar los que la primera aún no enseña
+    const half = Math.ceil(banks.length / 2), rows = [banks, [...banks.slice(half), ...banks.slice(0, half)]];
+    const marquee = h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } }, rows.map((list, r) =>
+      h('div', { key: r, style: { display: 'flex', gap: 14, width: 'max-content', animation: `ap-marquee ${r ? 38 : 32}s linear infinite${r ? ' reverse' : ''}` } },
+        [...list, ...list].map(([src, name, pad], k) => h('div', { key: k, style: { display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 12px', borderRadius: 18, background: '#161922', border: '0.5px solid rgba(255,255,255,.07)', flex: 'none' } },
+          h('div', { style: { width: 44, height: 44, borderRadius: 12, background: '#fff', overflow: 'hidden', padding: pad || 0, boxSizing: 'border-box' } }, h('img', { src: 'assets/' + src, alt: name, style: { width: '100%', height: '100%', objectFit: pad ? 'contain' : 'cover' } })),
+          h('span', { style: { fontSize: 17, fontWeight: 600, color: '#EDF0F4' } }, name))))));
     return { rootRef: this.rootRef, bars, days, cards, donut, cats, feed, mePhoto: peng({ coat: '#1d3a6e', beak: '#ffb020' }), tabs, swatches, brief, features, privacy, panels, marquee,
       ticks: [0, 1, 2, 3, 4, 5, 6, 7], waveBars: Array.from({ length: 28 }, (_, k) => k), dashFade: 1 };
   }
