@@ -89,8 +89,8 @@ section{position:relative}
 .clock{position:absolute;top:58px;left:0;right:0;text-align:center}
 .clock .d{font-size:15px;font-weight:600;color:rgba(255,255,255,.85)}
 .clock .t{font-size:clamp(64px,22vw,82px);font-weight:700;letter-spacing:-.03em;line-height:1;color:rgba(255,255,255,.94)}
-.stack{position:absolute;left:10px;right:10px;top:46%;display:flex;flex-direction:column;gap:8px}
-.notif{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:20px;background:rgba(32,40,66,.62);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);border:1px solid rgba(255,255,255,.08);transition:transform .7s cubic-bezier(.2,.9,.25,1),opacity .6s,filter .6s;will-change:transform,opacity}
+.stack{position:absolute;left:10px;right:10px;bottom:30px;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.notif{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:20px;background:rgba(32,40,66,.62);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);border:1px solid rgba(255,255,255,.08);transform-origin:50% 0;will-change:transform,opacity}
 .notif img{width:36px;height:36px;border-radius:9px;flex:none}
 .notif .b{flex:1;min-width:0}
 .notif .top{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;font-weight:600;line-height:1.25}
@@ -98,8 +98,6 @@ section{position:relative}
 .notif .tt{font-size:13px;font-weight:600;line-height:1.3;margin-top:1px}
 .notif .bd{font-size:12.5px;line-height:1.32;color:rgba(255,255,255,.82)}
 .notif .tag{display:inline-block;padding:0 6px;border-radius:6px;background:rgba(46,230,166,.18);color:#7FF5C9;font-size:11px;font-weight:600;margin-left:3px}
-.notif.enter{transform:translateY(-30px) scale(.94);opacity:0;filter:blur(4px)}
-.notif.leave{transform:translateY(10px) scale(.9);opacity:0}
 .float{position:absolute;padding:10px 14px;border-radius:16px;background:rgba(14,20,40,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line2);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 20px 40px -20px rgba(0,0,0,.8);animation:bob 6s ease-in-out infinite;white-space:nowrap}
 .float .ic{width:15px;height:15px}
 .f1{left:-6%;top:40%;color:#7FF5C9}
@@ -653,18 +651,40 @@ footer nav a:hover{color:var(--tx)}
     el.innerHTML = `<img src="assets/icon-192.png" alt=""><div class="b"><div class="top"><span>AlTanto</span><span>${when}</span></div><div class="tt">${n.t}</div><div class="bd">${n.b}${n.rule ? '<span class="tag">tu regla</span>' : ''}</div></div>`;
     return el;
   };
+  // Pila anclada abajo, como en iOS: el nuevo entra arriba y los demás se reacomodan
+  // con FLIP (se mide antes y después y se anima la diferencia), sin saltos.
+  const MAX = 3, EASE = 'cubic-bezier(.22,1,.36,1)';
+  const look = k => ({ transform: `scale(${1 - k * .035})`, opacity: String(Math.max(0, 1 - k * .14)) });
   let ni = 0;
-  const push = () => {
+  const push = (instant) => {
     const n = NOTIFS[ni % NOTIFS.length]; ni++;
-    $$('.notif .top span:last-child').forEach((s, k) => s.textContent = (k + 1) * 2 + ' min');
+    const old = [...stack.children].filter(c => !c.dataset.leaving);
+    const before = new Map(old.map(c => [c, c.getBoundingClientRect().top]));
+    old.forEach((c, k) => c.querySelector('.top span:last-child').textContent = (k + 1) * 3 + ' min');
+
+    // El más antiguo sale de la pila sin ocupar espacio: queda fijo donde estaba y se desvanece
+    if (old.length >= MAX) {
+      const last = old.pop();
+      last.dataset.leaving = 1;
+      Object.assign(last.style, { position: 'absolute', left: 0, right: 0, top: last.offsetTop + 'px', zIndex: -1 });
+      last.animate([{ opacity: last.style.opacity || 1, transform: last.style.transform }, { opacity: 0, transform: 'translateY(10px) scale(.86)' }], { duration: instant ? 0 : 260, easing: 'ease-out', fill: 'forwards' })
+        .onfinish = () => last.remove();
+    }
+
     const el = make(n, 'ahora');
-    el.classList.add('enter'); stack.prepend(el);
-    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
-    const all = stack.children;
-    [...all].forEach((c, k) => { c.style.transform = k ? `scale(${1 - k * .03})` : ''; c.style.opacity = k > 2 ? 0 : 1 - k * .12; });
-    if (all.length > 4) { const last = all[all.length - 1]; last.classList.add('leave'); setTimeout(() => last.remove(), 600); }
+    stack.insertBefore(el, stack.firstChild);
+    const live = [el, ...old];
+    live.forEach((c, k) => Object.assign(c.style, look(k)));
+    if (instant || reduce) return;
+
+    old.forEach((c, k) => {
+      const dy = before.get(c) - c.getBoundingClientRect().top;
+      const from = look(k), to = look(k + 1);
+      c.animate([{ transform: `translateY(${dy}px) ${from.transform}`, opacity: from.opacity }, { transform: to.transform, opacity: to.opacity }], { duration: 650, easing: EASE });
+    });
+    el.animate([{ transform: 'translateY(-18px) scale(.92)', opacity: 0, filter: 'blur(6px)' }, { transform: 'none', opacity: 1, filter: 'blur(0)' }], { duration: 650, easing: EASE });
   };
-  push(); push(); push();
+  push(true); push(true); push(true);
   if (!reduce) setInterval(() => { if (!document.hidden) push(); }, 2800);
 
   // Inclinación del celular con el mouse
