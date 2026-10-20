@@ -265,9 +265,6 @@ section{position:relative}
 .perk b{display:block;font-size:15px}
 .perk div>span{font-size:13.5px;color:var(--sec)}
 .plans{display:flex;flex-direction:column;gap:12px}
-.seg{display:flex;padding:4px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
-.seg button{flex:1;height:38px;border-radius:10px;border:0;background:transparent;font-weight:600;font-size:14px;color:var(--sec);transition:all .25s}
-.seg button[aria-pressed="true"]{background:#fff;color:#0B0F24}
 .plan{padding:24px;border-radius:22px;background:rgba(255,255,255,.04);border:1px solid rgba(196,181,253,.3)}
 .plan .pr{font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
 .plan .pr small{font-size:16px;font-weight:600;color:var(--sec);letter-spacing:0}
@@ -540,10 +537,9 @@ footer nav a:hover{color:var(--tx)}
             </div>
           </div>
           <div class="plans">
-            <div class="seg" role="group" aria-label="Plan"><button type="button" aria-pressed="true" data-plan="anual">Anual</button><button type="button" aria-pressed="false" data-plan="mensual">Mensual</button></div>
             <div class="plan">
-              <div class="pr" id="price">S/ 99.90 <small id="per">al año</small></div>
-              <div class="dt" id="pdetail"><span>S/ 8.33 al mes</span><span class="save">AHORRA 35%</span></div>
+              <div class="pr" id="price">TBD</div>
+              <div class="dt" id="pdetail"><span>Precio por anunciar · habrá plan mensual y anual</span></div>
               <a class="btn" href="#descargar">Probar 7 días gratis</a>
             </div>
             <div class="free"><span class="ic" style="--i:url(assets/icons/circle-check.svg)"></span>Gratis sigues teniendo 3 meses de historial, respaldo local y todos los temas de uno y dos colores.</div>
@@ -578,7 +574,7 @@ footer nav a:hover{color:var(--tx)}
         <details data-reveal><summary>¿AlTanto lee todos mis correos?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>No. Solo busca los correos que envían tus bancos y billeteras, y en modo lectura. Puedes detener la lectura de un correo cuando quieras y tus movimientos se quedan en el teléfono. Más detalles en la <a href="privacidad/" style="color:var(--sky)">Política de privacidad</a>.</p></details>
         <details data-reveal><summary>¿Y si pago en efectivo?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>Mantén presionado el «+» y dilo: «Almuerzo de hoy, 25 soles». También puedes escribirlo, o anotarlo desde un widget o un atajo de Siri.</p></details>
         <details data-reveal><summary>¿Necesito crear una cuenta?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>No para empezar. AlTanto funciona también sin cuenta: anotas tus gastos a mano, por voz o desde un atajo. La cuenta sirve para lo social y el respaldo.</p></details>
-        <details data-reveal><summary>¿Cuánto cuesta?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>Lo esencial es gratis. AlTanto Pro cuesta S/ 12.90 al mes o S/ 99.90 al año, con 7 días de prueba gratis.</p></details>
+        <details data-reveal><summary>¿Cuánto cuesta?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>Lo esencial es gratis. El precio de AlTanto Pro todavía está por anunciarse; tendrá plan mensual y anual, con 7 días de prueba gratis.</p></details>
       </div>
     </div>
   </section>
@@ -780,14 +776,6 @@ footer nav a:hover{color:var(--tx)}
     b.querySelector('span:last-child').textContent = 'Recordado a Diego y Lucía';
     setTimeout(() => b.querySelector('span:last-child').textContent = 'Recordar', 2600);
   });
-
-  // Planes Pro
-  const PLANS = { anual: ['S/ 99.90', 'al año', '<span>S/ 8.33 al mes</span><span class="save">AHORRA 35%</span>'], mensual: ['S/ 12.90', 'al mes', '<span>Cancela cuando quieras</span>'] };
-  $$('.seg button').forEach(b => b.addEventListener('click', () => {
-    $$('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
-    const [p, per, d] = PLANS[b.dataset.plan];
-    $('#price').innerHTML = `${p} <small>${per}</small>`; $('#pdetail').innerHTML = d;
-  }));
 
   // Ojo de montos ocultos
   const md = $('#maskDemo');
