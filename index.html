@@ -1,934 +1,779 @@
 <!DOCTYPE html>
-<html>
+<html lang="es-PE">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlTanto — Y… ¿ya estás AlTanto de tus gastos?</title>
+<meta name="description" content="AlTanto lee los correos de tu banco y anota cada consumo, Yape y Plin en tu iPhone. Tino lo clasifica y tú solo confirmas.">
+<meta property="og:title" content="AlTanto — Y… ¿ya estás AlTanto de tus gastos?">
+<meta property="og:description" content="Tu banco te escribe. AlTanto lo anota, lo clasifica y te avisa.">
+<meta property="og:image" content="assets/icon-512.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta name="theme-color" content="#0B0E14">
-<script src="./support.js"></script>
+<meta name="theme-color" content="#070B18">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#070B18;--sf:#0E1428;--el:#151C35;--el2:#1C2442;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --tx:#EEF2FF;--sec:#9AA6C4;--mute:#6E7A99;
+  --blue:#2E5BFF;--blue2:#4F82FF;--sky:#A9C0FF;--mint:#2EE6A6;--amber:#FF9F0A;--violet:#8B5CF6;
+  --r:24px;--max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Geist,-apple-system,"SF Pro Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+::selection{background:var(--blue);color:#fff}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+.mono{font-family:"Geist Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky)}
+.grad{background:linear-gradient(100deg,#6F97FF 0%,#A9C0FF 45%,#2EE6A6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2{margin:0;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:-.04em;font-weight:700;text-wrap:balance}
+.lead{margin:0;font-size:clamp(16px,1.6vw,18px);color:var(--sec);text-wrap:pretty;max-width:36em}
+.ic{display:inline-block;flex:none;width:16px;height:16px;background:currentColor;-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:var(--r)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:16px;font-weight:600;font-size:15px;white-space:nowrap;border:0;transition:transform .2s,background-color .2s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-pri{background:var(--blue);color:#fff;box-shadow:0 18px 40px -14px rgba(46,91,255,.9)}
+.btn-pri:hover{background:#4A70FF}
+.btn-sec{background:rgba(255,255,255,.06);border:1px solid var(--line2);color:var(--tx)}
+.btn-sec:hover{background:rgba(255,255,255,.1)}
+.apple{width:18px;height:18px}
+[data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+[data-reveal].in{opacity:1;transform:none}
+section{position:relative}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;transition:background-color .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(7,11,24,.78);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.4px}
+.brand img{width:32px;height:32px;border-radius:9px}
+.links{display:flex;gap:28px;font-size:14px;font-weight:500;color:var(--sec)}
+.links a:hover{color:var(--tx)}
+.nav .btn{height:40px;padding:0 18px;border-radius:12px;font-size:14px}
+@media (max-width:860px){.links{display:none}}
+
+/* hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding:110px 0 70px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto;height:120%;background:radial-gradient(50% 45% at 72% 42%,rgba(46,91,255,.38),transparent 70%),radial-gradient(30% 30% at 88% 20%,rgba(46,230,166,.14),transparent 70%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 60% 60% at 60% 45%,#000,transparent);mask-image:radial-gradient(ellipse 60% 60% at 60% 45%,#000,transparent);pointer-events:none}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,72px);align-items:center}
+.pill{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 14px 0 10px;border-radius:99px;background:rgba(46,91,255,.14);border:1px solid rgba(79,130,255,.4);font-size:13px;font-weight:500;color:#C9D6FF;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:99px;background:var(--mint);box-shadow:0 0 0 0 rgba(46,230,166,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{to{box-shadow:0 0 0 12px rgba(46,230,166,0)}}
+.hero h1{margin:22px 0 0;font-size:clamp(46px,7.4vw,96px);line-height:.94;letter-spacing:-.05em;font-weight:800;text-wrap:balance}
+.hero h1 .y{display:block;color:var(--sec);font-weight:700;font-size:.62em;letter-spacing:-.035em;margin-bottom:.12em}
+.hero .lead{margin-top:24px;font-size:clamp(17px,1.8vw,20px)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.trust{display:flex;align-items:center;gap:14px;margin-top:34px;color:var(--mute);font-size:13px}
+.trust .logos{display:flex}
+.trust .logos img{width:30px;height:30px;border-radius:9px;border:2px solid var(--bg);background:#fff;object-fit:cover;margin-left:-8px}
+.trust .logos img:first-child{margin-left:0}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr}.hero{padding-top:100px}.hero-copy{text-align:center}.hero .lead{margin-inline:auto}.cta-row,.trust{justify-content:center}}
+
+/* phone */
+.phone-stage{position:relative;display:flex;justify-content:center;perspective:1400px}
+.phone{position:relative;width:min(330px,82vw,calc((100svh - 190px) * .478));min-width:260px;aspect-ratio:330/690;border-radius:54px;padding:11px;background:linear-gradient(150deg,#3A4560,#12182A 38%,#252E46);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 0 0 2.5px rgba(150,170,210,.25),0 60px 120px -40px rgba(46,91,255,.75),0 30px 60px -30px rgba(0,0,0,.8);transform-style:preserve-3d;transition:transform .25s ease-out}
+.screen{position:relative;width:100%;height:100%;border-radius:44px;overflow:hidden;background:#05070F}
+.island{position:absolute;top:11px;left:50%;width:30%;height:30px;margin-left:-15%;border-radius:20px;background:#000;z-index:5}
+.homebar{position:absolute;bottom:8px;left:50%;width:36%;height:5px;margin-left:-18%;border-radius:9px;background:rgba(255,255,255,.55);z-index:5}
+.lock{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 0%,#2349E8 0%,#1B2E8C 38%,#0A0F2A 72%,#05070F 100%)}
+.lock::before{content:"";position:absolute;width:70%;aspect-ratio:1;right:-25%;top:30%;border-radius:999px;background:radial-gradient(circle,rgba(46,230,166,.35),transparent 65%);filter:blur(10px)}
+.status{position:absolute;top:16px;left:0;right:0;display:flex;justify-content:space-between;padding:0 28px 0 32px;font-size:14px;font-weight:600;z-index:4}
+.status .r{display:flex;gap:5px;align-items:center}
+.clock{position:absolute;top:58px;left:0;right:0;text-align:center}
+.clock .d{font-size:15px;font-weight:600;color:rgba(255,255,255,.85)}
+.clock .t{font-size:clamp(64px,22vw,82px);font-weight:700;letter-spacing:-.03em;line-height:1;color:rgba(255,255,255,.94)}
+.stack{position:absolute;left:10px;right:10px;top:46%;display:flex;flex-direction:column;gap:8px}
+.notif{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:20px;background:rgba(32,40,66,.62);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);border:1px solid rgba(255,255,255,.08);transition:transform .7s cubic-bezier(.2,.9,.25,1),opacity .6s,filter .6s;will-change:transform,opacity}
+.notif img{width:36px;height:36px;border-radius:9px;flex:none}
+.notif .b{flex:1;min-width:0}
+.notif .top{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;font-weight:600;line-height:1.25}
+.notif .top span:last-child{font-weight:400;color:rgba(255,255,255,.6);font-size:12px;flex:none}
+.notif .tt{font-size:13px;font-weight:600;line-height:1.3;margin-top:1px}
+.notif .bd{font-size:12.5px;line-height:1.32;color:rgba(255,255,255,.82)}
+.notif .tag{display:inline-block;padding:0 6px;border-radius:6px;background:rgba(46,230,166,.18);color:#7FF5C9;font-size:11px;font-weight:600;margin-left:3px}
+.notif.enter{transform:translateY(-30px) scale(.94);opacity:0;filter:blur(4px)}
+.notif.leave{transform:translateY(10px) scale(.9);opacity:0}
+.float{position:absolute;padding:10px 14px;border-radius:16px;background:rgba(14,20,40,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line2);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 20px 40px -20px rgba(0,0,0,.8);animation:bob 6s ease-in-out infinite;white-space:nowrap}
+.float .ic{width:15px;height:15px}
+.f1{left:-6%;top:40%;color:#7FF5C9}
+.f2{right:-8%;top:26%;color:var(--sky);animation-delay:-3s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+@media (max-width:520px){.f1{left:0;top:6%}.f2{right:0;top:auto;bottom:4%}}
+
+/* marquee */
+.banks{padding:40px 0 80px}
+.banks .mono{text-align:center;color:var(--mute);margin-bottom:24px}
+.mq{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq-row{display:flex;gap:14px;width:max-content;animation:mq 36s linear infinite}
+.mq-row.rev{animation-direction:reverse;animation-duration:44s;margin-top:14px}
+.mq:hover .mq-row{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.chip{display:flex;align-items:center;gap:12px;padding:10px 20px 10px 10px;border-radius:18px;background:var(--sf);border:1px solid var(--line);font-weight:600;font-size:16px}
+.chip img{width:42px;height:42px;border-radius:12px;background:#fff;object-fit:cover}
+.chip img.pad{padding:7px;object-fit:contain}
+
+/* how */
+.how{padding:90px 0}
+.sec-head{display:flex;flex-direction:column;gap:18px;margin-bottom:48px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+.step{padding:28px;position:relative;overflow:hidden}
+.step .n{font-family:"Geist Mono",monospace;font-size:13px;color:var(--mute)}
+.step h3{margin:44px 0 8px;font-size:23px;letter-spacing:-.5px;line-height:1.15}
+.step p{margin:0;color:var(--sec);font-size:15px}
+.step .glyph{position:absolute;top:22px;right:22px;width:52px;height:52px;border-radius:16px;display:grid;place-items:center}
+.step .glyph .ic{width:24px;height:24px}
+.step .line{position:absolute;left:28px;right:28px;bottom:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent);transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.2,.8,.2,1) .3s}
+.step.in .line{transform:scaleX(1)}
+@media (max-width:900px){.steps{grid-template-columns:1fr}}
+
+/* split sections */
+.split{padding:100px 0}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);align-items:center}
+.split-grid.flip .copy{order:2}
+.copy{display:flex;flex-direction:column;gap:20px}
+.ticks{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.ticks li{display:flex;gap:12px;font-size:16px;color:#D3DAEE}
+.ticks li .ic{margin-top:4px;color:var(--mint)}
+@media (max-width:900px){.split-grid{grid-template-columns:1fr}.split-grid.flip .copy{order:0}}
+
+/* Tino demo */
+.demo{padding:22px;position:relative;overflow:hidden}
+.demo::before{content:"";position:absolute;inset:-40% -20% auto auto;width:70%;aspect-ratio:1;background:radial-gradient(circle,rgba(46,91,255,.32),transparent 65%);pointer-events:none}
+.mail{position:relative;padding:14px 16px;border-radius:16px;background:var(--el);border:1px solid var(--line);font-size:13px}
+.mail .from{display:flex;align-items:center;gap:10px;font-weight:600}
+.mail .from img{width:28px;height:28px;border-radius:8px;object-fit:cover;background:#fff}
+.mail .raw{margin-top:10px;font-family:"Geist Mono",monospace;font-size:12px;color:var(--sec);line-height:1.6}
+.mail .raw b{color:var(--tx);font-weight:600;background:rgba(255,159,10,.14);padding:1px 4px;border-radius:5px}
+.arrow{display:flex;justify-content:center;padding:10px 0;color:var(--mute)}
+.sheet{position:relative;padding:18px;border-radius:20px;background:#0B1022;border:1px solid var(--line2)}
+.sheet-h{display:flex;align-items:center;gap:12px}
+.mlogo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:18px;color:#fff;background:linear-gradient(140deg,#E11D48,#9F1239)}
+.sheet-h .nm{font-weight:700;font-size:17px;letter-spacing:-.3px}
+.sheet-h .sub{font-size:13px;color:var(--sec)}
+.sheet-h .amt{margin-left:auto;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.cat{display:flex;align-items:center;gap:7px;height:36px;padding:0 12px 0 8px;border-radius:12px;background:var(--el);border:1px solid var(--line);font-size:13.5px;font-weight:500;transition:all .2s}
+.cat i{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-style:normal}
+.cat i .ic{width:12px;height:12px}
+.cat .bolt{display:none;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#FFD60A}
+.cat .bolt .ic{width:10px;height:10px}
+.cat.sug .bolt{display:inline-flex}
+.cat[aria-pressed="true"]{border-color:var(--blue2);background:rgba(46,91,255,.2);box-shadow:0 0 0 3px rgba(46,91,255,.18)}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+.tg small{display:block;color:var(--sec);font-size:12.5px}
+.sw{position:relative;width:46px;height:28px;border-radius:99px;background:#2A3352;border:0;flex:none;transition:background-color .25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:99px;background:#fff;transition:transform .25s cubic-bezier(.3,1.4,.5,1);box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.sw[aria-checked="true"]{background:var(--mint)}
+.sw[aria-checked="true"]::after{transform:translateX(18px)}
+.assign{width:100%;margin-top:6px;height:48px;border-radius:14px}
+.toast{position:absolute;left:18px;right:18px;bottom:18px;padding:12px 14px;border-radius:14px;background:#10301F;border:1px solid rgba(46,230,166,.35);color:#9FF7D3;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:10px;transform:translateY(130%);opacity:0;transition:all .45s cubic-bezier(.2,.9,.25,1)}
+.toast.show{transform:none;opacity:1}
+.toast button{margin-left:auto;background:none;border:0;color:#fff;font-weight:700;font-size:13px}
+
+/* recurrentes */
+.rec{padding:22px}
+.rec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.rec-h .t{font-size:13px;color:var(--sec)}
+.rec-h .v{font-size:34px;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.rec-bar{display:flex;height:8px;border-radius:99px;overflow:hidden;margin:14px 0 6px;background:var(--el2)}
+.rec-bar span{height:100%}
+.rec-leg{display:flex;justify-content:space-between;font-size:12px;color:var(--sec)}
+.rec-list{margin-top:14px;display:flex;flex-direction:column}
+.ri{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.ri .lg{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+.ri .lg .ic{width:18px;height:18px}
+.ri .nm{font-weight:600;font-size:15px}
+.ri .sb{font-size:12.5px;color:var(--sec)}
+.ri .am{margin-left:auto;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;font-size:15px}
+.badge{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;border-radius:99px;font-size:11px;font-weight:700}
+.b-ok{background:rgba(46,230,166,.15);color:#7FF5C9}
+.b-soon{background:rgba(255,159,10,.16);color:#FFC266}
+.detect{margin-top:12px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:linear-gradient(100deg,rgba(139,92,246,.2),rgba(46,91,255,.14));border:1px solid rgba(139,92,246,.35);font-size:14px}
+.detect .ic{color:#C4B5FD;width:18px;height:18px}
+.detect b{display:block}
+.detect span{color:var(--sec);font-size:12.5px}
+.detect a{margin-left:auto;font-weight:700;color:#C4B5FD;font-size:13px}
+
+/* features */
+.feats{padding:100px 0}
+.fx{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:16px;align-items:start}
+.flist{display:flex;flex-direction:column;gap:8px}
+.fbtn{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px;border-radius:18px;background:transparent;border:1px solid transparent;transition:background-color .2s,border-color .2s}
+.fbtn:hover{background:rgba(255,255,255,.03)}
+.fbtn[aria-selected="true"]{background:var(--sf);border-color:var(--line2)}
+.fbtn .fi{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;color:#fff}
+.fbtn .fi .ic{width:20px;height:20px}
+.fbtn .ft{font-weight:600;font-size:16px;letter-spacing:-.2px}
+.fbtn .fs{font-size:13.5px;color:var(--sec)}
+.fbtn .grp{margin-left:auto;font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-align:right}
+.fpanel{padding:clamp(24px,3vw,36px);position:sticky;top:90px;overflow:hidden;min-height:440px}
+.fpanel .glow{position:absolute;inset:-30% -30% auto auto;width:80%;aspect-ratio:1;border-radius:999px;opacity:.35;filter:blur(30px);transition:background-color .4s;pointer-events:none}
+.fpanel h3{position:relative;margin:14px 0 10px;font-size:clamp(26px,3vw,36px);line-height:1.05;letter-spacing:-.035em;text-wrap:balance}
+.fpanel p.pitch{position:relative;margin:0;color:#C9D1E8;font-size:16.5px;text-wrap:pretty}
+.fsteps{position:relative;list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.fsteps li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.fsteps .k{width:26px;height:26px;border-radius:99px;display:grid;place-items:center;font-size:12.5px;font-weight:700;background:var(--el2)}
+.fsteps b{display:block;font-size:15px}
+.fsteps span{font-size:14px;color:var(--sec)}
+.fpanel .howto{position:relative;margin-top:6px;font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--mute)}
+.fade-swap{animation:swap .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes swap{from{opacity:0;transform:translateY(10px)}}
+@media (max-width:900px){.fx{grid-template-columns:1fr}.fpanel{position:relative;top:0;min-height:0}.fbtn .grp{display:none}}
+
+/* extras */
+.extras{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.ex{padding:20px;display:flex;flex-direction:column;gap:10px}
+.ex .ic{width:20px;height:20px;color:var(--sky)}
+.ex b{font-size:15.5px;letter-spacing:-.2px}
+.ex span{font-size:13.5px;color:var(--sec)}
+@media (max-width:1000px){.extras{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.extras{grid-template-columns:1fr}}
+
+/* friends */
+.friends .card{padding:22px}
+.fr-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.fr-row:first-of-type{border-top:0}
+.av{width:40px;height:40px;border-radius:99px;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.fr-row .nm{font-weight:600}
+.fr-row .sb{font-size:12.5px;color:var(--sec)}
+.fr-row .am{margin-left:auto;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.fr-row .am small{display:block;font-weight:500;font-size:12px;color:var(--sec)}
+.prog{height:6px;border-radius:99px;background:var(--el2);overflow:hidden;margin-top:6px;width:110px;margin-left:auto}
+.prog span{display:block;height:100%;background:var(--mint);border-radius:99px;width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.remind{display:flex;gap:10px;margin-top:14px}
+.remind .btn{flex:1;height:46px;border-radius:14px;font-size:14px}
+.ping{animation:ping .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes ping{40%{transform:scale(1.06) rotate(-2deg)}70%{transform:scale(.98) rotate(1deg)}}
+
+/* pro */
+.pro{padding:100px 0}
+.pro-box{position:relative;overflow:hidden;padding:clamp(28px,5vw,64px);border-radius:36px;background:linear-gradient(160deg,#141033,#0B0F24 55%);border:1px solid rgba(139,92,246,.3)}
+.pro-box::before{content:"";position:absolute;inset:-30% auto auto -10%;width:60%;aspect-ratio:1;border-radius:999px;background:radial-gradient(circle,rgba(139,92,246,.4),transparent 65%);pointer-events:none}
+.pro-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:start}
+.pro-grad{background:linear-gradient(100deg,#C4B5FD,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.perks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+.perk{display:flex;gap:12px}
+.perk i{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff}
+.perk i .ic{width:17px;height:17px}
+.perk b{display:block;font-size:15px}
+.perk span{font-size:13.5px;color:var(--sec)}
+.plans{display:flex;flex-direction:column;gap:12px}
+.seg{display:flex;padding:4px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.seg button{flex:1;height:38px;border-radius:10px;border:0;background:transparent;font-weight:600;font-size:14px;color:var(--sec);transition:all .25s}
+.seg button[aria-pressed="true"]{background:#fff;color:#0B0F24}
+.plan{padding:24px;border-radius:22px;background:rgba(255,255,255,.04);border:1px solid rgba(196,181,253,.3)}
+.plan .pr{font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.plan .pr small{font-size:16px;font-weight:600;color:var(--sec);letter-spacing:0}
+.plan .dt{margin-top:8px;color:var(--sec);font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.save{display:inline-flex;height:22px;padding:0 8px;border-radius:99px;background:rgba(46,230,166,.16);color:#7FF5C9;font-size:11px;font-weight:700;align-items:center;letter-spacing:.04em}
+.plan .btn{width:100%;margin-top:20px;background:linear-gradient(100deg,#8B5CF6,#6D4AE0);color:#fff;box-shadow:0 18px 40px -14px rgba(139,92,246,.8)}
+.free{font-size:13.5px;color:var(--sec);display:flex;gap:10px}
+.free .ic{color:var(--mint);margin-top:3px}
+@media (max-width:900px){.pro-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.perks{grid-template-columns:1fr}}
+
+/* privacy */
+.priv{padding:90px 0}
+.priv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pv{padding:24px;display:flex;flex-direction:column;gap:14px}
+.pv .ic{width:24px;height:24px;color:var(--mint)}
+.pv b{font-size:17px;letter-spacing:-.3px;line-height:1.25}
+.pv span{color:var(--sec);font-size:14px}
+.mask-demo{font-variant-numeric:tabular-nums;cursor:pointer;border-bottom:1px dashed var(--mute)}
+@media (max-width:1000px){.priv-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.priv-grid{grid-template-columns:1fr}}
+
+/* faq */
+.faq{padding:60px 0 90px}
+.faq-list{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+details{border-radius:18px;background:var(--sf);border:1px solid var(--line);padding:0 22px;transition:border-color .2s}
+details[open]{border-color:var(--line2)}
+summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;font-weight:600;font-size:16.5px;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary .ic{transition:transform .3s;color:var(--sec)}
+details[open] summary .ic{transform:rotate(180deg)}
+details p{margin:0 0 20px;color:var(--sec);font-size:15px}
+
+/* final */
+.final{padding:110px 0 130px;text-align:center;overflow:hidden}
+.final::before{content:"";position:absolute;left:50%;top:40%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.35),transparent 60%);pointer-events:none}
+.final .icon{position:relative;width:120px;height:120px;border-radius:28px;margin:0 auto;box-shadow:0 40px 80px -24px rgba(46,91,255,.9)}
+.final h2{position:relative;margin:36px auto 0;font-size:clamp(42px,7.6vw,100px);line-height:.93;letter-spacing:-.05em;font-weight:800;max-width:11em;text-wrap:balance}
+.final p{position:relative;margin:22px auto 0;color:var(--sec);font-size:18px;max-width:32em}
+.final .cta-row{justify-content:center;position:relative}
+
+footer{border-top:1px solid var(--line);padding:30px 0 44px;font-size:13px;color:var(--mute)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px}
+footer .brand{font-size:14px;font-weight:600;color:var(--sec)}
+footer .brand img{width:24px;height:24px;border-radius:7px}
+footer nav{display:flex;gap:24px}
+footer nav a:hover{color:var(--tx)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  [data-reveal]{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
-<x-dc>
-<helmet>
-<title>AgruPay — Tus gastos se anotan solos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;700&display=swap">
-<style>
-html{scroll-behavior:smooth}
-body{margin:0;background:#0B0E14;color:#EDF0F4;font-family:Geist,-apple-system,"SF Pro Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#8FA8FF;text-decoration:none}
-a:hover{color:#EDF0F4}
-*{box-sizing:border-box}
-::selection{background:#2E5BFF;color:#fff}
-@keyframes ap-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes ap-pulse{0%{box-shadow:0 0 0 0 rgba(46,91,255,.55)}100%{box-shadow:0 0 0 14px rgba(46,91,255,0)}}
-</style>
-</helmet>
 
-<div ref="{{ rootRef }}" style="position:relative;min-height:100vh;background:#0B0E14;overflow-x:clip">
-  <div data-progress="1" style="position:fixed;top:0;left:0;height:2px;width:0;background:#2E5BFF;z-index:60;box-shadow:0 0 12px #2E5BFF"></div>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/icon-192.png" alt="">AlTanto</a>
+    <nav class="links" aria-label="Secciones">
+      <a href="#como">Cómo funciona</a>
+      <a href="#tino">Tino</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#pro">Pro</a>
+      <a href="#privacidad">Privacidad</a>
+    </nav>
+    <a class="btn btn-pri" href="#descargar">Descargar</a>
+  </div>
+</header>
 
-  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(20px,3vw,40px);background:linear-gradient(rgba(11,14,20,.85),rgba(11,14,20,0))">
-    <a href="#top" style="display:flex;align-items:center;gap:10px;color:#EDF0F4">
-      <img src="assets/icon.png" alt="AgruPay" style="width:30px;height:30px;border-radius:8px">
-      <span style="font-weight:700;font-size:17px;letter-spacing:-0.4px">AgruPay</span>
-    </a>
-    <div data-navlinks="1" style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px;height:20px;overflow:hidden;font-size:14px;font-weight:500">
-      <a href="#top" style="color:#9AA3B2">Recorrido</a>
-      <a href="#funciones" style="color:#9AA3B2">Funciones</a>
-      <a href="#privacidad" style="color:#9AA3B2">Privacidad</a>
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="pill"><span class="dot"></span>Para iPhone · Hecha en Perú</span>
+        <h1><span class="y">Y…</span>¿ya estás <span class="grad">AlTanto</span> de tus gastos?</h1>
+        <p class="lead">Tu banco te escribe un correo por cada consumo. AlTanto lo lee, lo anota y te avisa en qué categoría quedó. Tú solo confirmas.</p>
+        <div class="cta-row">
+          <a class="btn btn-pri" href="#descargar"><svg class="apple" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.41 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.93 1.16 9.2.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.59-.75 2.99-.75 1.4 0 1.79.75 3.01.72 1.24-.02 2.03-1.13 2.79-2.25.88-1.29 1.24-2.53 1.26-2.6-.03-.01-2.42-.93-2.45-3.7zM14.07 5.85c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.1 1.77-.97 2.82 1.03.08 2.07-.52 2.71-1.28z"/></svg>Descargar en App Store</a>
+          <a class="btn btn-sec" href="#como">Ver cómo funciona</a>
+        </div>
+        <div class="trust">
+          <div class="logos"><img src="assets/bcp.jpg" alt="BCP"><img src="assets/bbva.png" alt="BBVA"><img src="assets/interbank.png" alt="Interbank"><img src="assets/scotiabank.png" alt="Scotiabank"><img src="assets/yape.png" alt="Yape"></div>
+          <span>BCP, BBVA, Interbank, Scotiabank, Yape y Plin</span>
+        </div>
+      </div>
+
+      <div class="phone-stage" id="stage">
+        <div class="phone" id="phone">
+          <div class="screen">
+            <div class="lock"></div>
+            <div class="island"></div>
+            <div class="status"><span>9:41</span><span class="r"><span class="ic" style="--i:url(assets/icons/signal.svg);width:15px;height:15px"></span><span class="ic" style="--i:url(assets/icons/wifi.svg);width:15px;height:15px"></span><span class="ic" style="--i:url(assets/icons/battery-full.svg);width:20px;height:20px"></span></span></div>
+            <div class="clock"><div class="d" id="lockDate">martes, 20 de octubre</div><div class="t">9:41</div></div>
+            <div class="stack" id="stack" aria-live="polite"></div>
+            <div class="homebar"></div>
+          </div>
+        </div>
+        <div class="float f1"><span class="ic" style="--i:url(assets/icons/sparkles.svg)"></span>Clasificado por Tino</div>
+        <div class="float f2"><span class="ic" style="--i:url(assets/icons/circle-check.svg)"></span>Sin escribir nada</div>
+      </div>
     </div>
-    <a href="#descargar" style="display:flex;align-items:center;height:40px;padding:0 18px;border-radius:12px;background:#2E5BFF;color:#fff;font-size:14px;font-weight:600;white-space:nowrap" style-hover="background:#4A70FF;color:#fff">Descargar</a>
-  </nav>
+  </section>
 
-  <section id="top" data-seq="1" style="position:relative;height:1020vh">
-    <div style="position:sticky;top:0;height:100vh;overflow:hidden;perspective:1600px">
-      <div data-glow="1" style="position:absolute;left:50%;top:50%;width:760px;height:760px;margin:-380px 0 0 -380px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.42),rgba(46,91,255,.08) 45%,transparent 70%);filter:blur(20px);pointer-events:none;will-change:transform,background"></div>
-      <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%);mask-image:radial-gradient(ellipse at center,#000 10%,transparent 65%)"></div>
+  <!-- BANCOS -->
+  <section class="banks" aria-label="Bancos y billeteras compatibles">
+    <div class="mono">Lee los correos de</div>
+    <div class="mq" id="mq"></div>
+  </section>
 
-      <div data-phone="1" style="position:absolute;left:50%;top:50%;width:360px;height:753px;margin:-376px 0 0 -180px;border-radius:56px;padding:12px;background:linear-gradient(160deg,#2A3242,#0F121A 40%,#1E222D);box-shadow:0 0 0 0.5px rgba(255,255,255,.14) inset,0 0 0 1.5px rgba(150,165,190,.35) inset;transform-style:preserve-3d;will-change:transform">
-        <!-- canto metálico: capas apiladas hacia atrás + botones laterales -->
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#58606E,#212429 14%,#212429 86%,#58606E);transform:translateZ(-2px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#565E6C,#202328 14%,#202328 86%,#565E6C);transform:translateZ(-4px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#545C6A,#202328 14%,#202328 86%,#545C6A);transform:translateZ(-6px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#525A68,#1F2227 14%,#1F2227 86%,#525A68);transform:translateZ(-8px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4F5765,#1E2126 14%,#1E2126 86%,#4F5765);transform:translateZ(-10px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4D5563,#1E2126 14%,#1E2126 86%,#4D5563);transform:translateZ(-12px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#4B5361,#1D2025 14%,#1D2025 86%,#4B5361);transform:translateZ(-14px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#49515F,#1C1F24 14%,#1C1F24 86%,#49515F);transform:translateZ(-16px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#474F5D,#1B1E23 14%,#1B1E23 86%,#474F5D);transform:translateZ(-18px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#454D5B,#1A1D22 14%,#1A1D22 86%,#454D5B);transform:translateZ(-20px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#434B59,#1A1D22 14%,#1A1D22 86%,#434B59);transform:translateZ(-22px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#404856,#191C21 14%,#191C21 86%,#404856);transform:translateZ(-24px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3E4654,#181B20 14%,#181B20 86%,#3E4654);transform:translateZ(-26px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3C4452,#181B20 14%,#181B20 86%,#3C4452);transform:translateZ(-28px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#3A4250,#171A1F 14%,#171A1F 86%,#3A4250);transform:translateZ(-30px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(90deg,#38404E,#16191E 14%,#16191E 86%,#38404E);transform:translateZ(-32px);pointer-events:none"></div>
-        <div style="position:absolute;inset:0;border-radius:56px;background:linear-gradient(160deg,#1C212C,#0C0E14 55%,#161A23);box-shadow:0 80px 140px -40px rgba(46,91,255,.55);transform:translateZ(-33px);pointer-events:none"></div>
-        <div style="position:absolute;left:-2px;top:150px;width:20px;height:34px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
-        <div style="position:absolute;left:-2px;top:212px;width:20px;height:62px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
-        <div style="position:absolute;left:-2px;top:290px;width:20px;height:62px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
-        <div style="position:absolute;left:calc(100% + 2px);top:236px;width:20px;height:96px;border-radius:4px;background:linear-gradient(90deg,#4A5366,#232833);transform-origin:0 50%;transform:translateZ(-6px) rotateY(90deg);pointer-events:none"></div>
+  <!-- CÓMO FUNCIONA -->
+  <section class="how" id="como">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="mono">Cómo funciona</span>
+        <h2 class="h2">Conectas tu correo una vez.<br><span style="color:var(--sec)">Lo demás pasa solo.</span></h2>
+      </div>
+      <div class="steps">
+        <article class="card step" data-reveal>
+          <span class="n">01</span>
+          <span class="glyph" style="background:rgba(46,91,255,.18);color:var(--sky)"><span class="ic" style="--i:url(assets/icons/inbox.svg)"></span></span>
+          <h3>Conecta Gmail u Outlook</h3>
+          <p>Puedes sumar varias cuentas de correo. AlTanto solo busca los correos de tus bancos y billeteras, en modo lectura.</p>
+          <span class="line"></span>
+        </article>
+        <article class="card step" data-reveal style="transition-delay:.1s">
+          <span class="n">02</span>
+          <span class="glyph" style="background:rgba(46,230,166,.15);color:var(--mint)"><span class="ic" style="--i:url(assets/icons/sparkles.svg)"></span></span>
+          <h3>Tino lo clasifica</h3>
+          <p>Reconoce el comercio («Uber», no «PAYU*UBER TRIP») y le pone categoría cuando está seguro. Si no, te pregunta una sola vez.</p>
+          <span class="line"></span>
+        </article>
+        <article class="card step" data-reveal style="transition-delay:.2s">
+          <span class="n">03</span>
+          <span class="glyph" style="background:rgba(255,159,10,.16);color:#FFC266"><span class="ic" style="--i:url(assets/icons/bell-ring.svg)"></span></span>
+          <h3>Te avisa y listo</h3>
+          <p>Un aviso 2 en 1 te dice si se registró y dónde quedó. Mantenlo presionado para corregirlo, y a las 21:00 te recuerda lo que faltó.</p>
+          <span class="line"></span>
+        </article>
+      </div>
+    </div>
+  </section>
 
-        <div style="position:relative;width:336px;height:729px;border-radius:44px;overflow:hidden;background:#0B0E14;transform:translateZ(1px)">
-          <div data-screen="1" style="--bg:#0B0E14;--sf:#161922;--el:#1E222D;--hl:rgba(255,255,255,.07);--lb:#EDF0F4;--sec:#9AA3B2;--ac:#0A84FF;--at:#64B3FF;--acs:rgba(10,132,255,.16);--tr:#2A3242;--sel:#232838;--pos:#10B981;position:absolute;left:0;top:0;width:393px;height:852px;transform:scale(.855);transform-origin:0 0;overflow:hidden;background:var(--bg);color:var(--lb)">
+  <!-- TINO -->
+  <section class="split" id="tino">
+    <div class="wrap split-grid">
+      <div class="copy" data-reveal>
+        <span class="mono">Conoce a Tino</span>
+        <h2 class="h2">Clasifica una vez.<br><span class="grad">AlTanto hace el resto.</span></h2>
+        <p class="lead">Tino es quien ordena tus gastos. Pone la categoría solo cuando el comercio está en su directorio con alta confianza; lo demás te lo sugiere con un rayo. Y cuando eliges, puedes convertirlo en regla.</p>
+        <ul class="ticks">
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>«Los que lleguen» crea la regla: lo próximo de ese comercio entra ya clasificado.</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>«Los anteriores» ordena también lo que tenías pendiente.</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>¿Te equivocaste? Tienes «Deshacer».</li>
+        </ul>
+      </div>
+      <div class="card demo" data-reveal>
+        <div class="mail">
+          <div class="from"><img src="assets/bbva.png" alt="">BBVA · Procesos <span style="margin-left:auto;font-weight:400;color:var(--mute);font-size:12px">hace 1 min</span></div>
+          <div class="raw">Consumo con tu tarjeta ••7712<br>Comercio: <b>DLC*WONG BENAVIDES LIMA</b><br>Monto: <b>S/ 142.30</b></div>
+        </div>
+        <div class="arrow"><span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></div>
+        <div class="sheet" id="sheet">
+          <div class="sheet-h">
+            <span class="mlogo">W</span>
+            <div><div class="nm">Wong</div><div class="sub">BBVA Débito · hoy, 9:38</div></div>
+            <span class="amt">S/ 142.30</span>
+          </div>
+          <div class="cats" id="cats" role="group" aria-label="Categoría"></div>
+          <div class="tg"><div>Los que lleguen<small>Crea una regla para Wong</small></div><button class="sw" role="switch" aria-checked="false" aria-label="Los que lleguen"></button></div>
+          <div class="tg"><div>Los anteriores<small>Clasifica también 3 pendientes de Wong</small></div><button class="sw" role="switch" aria-checked="false" aria-label="Los anteriores"></button></div>
+          <button class="btn btn-pri assign" id="assign">Asignar a Supermercado</button>
+          <div class="toast" id="toast"><span class="ic" style="--i:url(assets/icons/circle-check.svg)"></span><span id="toastTxt">Listo</span><button type="button" id="undo">Deshacer</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            <div data-scr="dash" style="position:absolute;inset:0;background:var(--bg);will-change:transform;transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-              <div data-sky="neb" style="position:absolute;inset:0;pointer-events:none;clip-path:circle(0px at 50% 100%)">
-                <div style="position:absolute;inset:0;background:#06061A"></div>
-                <div data-nglow="0" style="position:absolute;left:-135px;top:-120px;width:413px;height:413px;border-radius:999px;background:radial-gradient(circle,rgba(124,58,237,.55),transparent 68%)"></div>
-                <div data-nglow="1" style="position:absolute;left:195px;top:37px;width:334px;height:334px;border-radius:999px;background:radial-gradient(circle,rgba(219,39,119,.42),transparent 68%)"></div>
-                <div data-nglow="2" style="position:absolute;left:-0px;top:215px;width:354px;height:354px;border-radius:999px;background:radial-gradient(circle,rgba(8,145,178,.3),transparent 68%)"></div>
-                <div data-stars="neb" style="position:absolute;left:0;top:0;width:1px;height:1px;border-radius:9px"></div>
-                <div data-shoot="1" style="position:absolute;left:330px;top:70px;width:90px;height:1.6px;border-radius:9px;background:linear-gradient(90deg,#fff,rgba(255,255,255,0));transform:rotate(-18deg);opacity:0"></div>
-              </div>
-              <div data-sky="aur" style="position:absolute;inset:0;pointer-events:none;clip-path:circle(0px at 50% 100%)">
-                <div style="position:absolute;inset:0;background:#04110F"></div>
-                <div style="position:absolute;left:0;right:0;top:0;height:364px;background:linear-gradient(#01060D,#031219 45%,#05211F 78%,#04110F)"></div>
-                <div data-stars="aur" style="position:absolute;left:0;top:0;width:1px;height:1px;border-radius:9px"></div>
-                <div style="position:absolute;left:-40px;top:20px;width:472px;height:472px;border-radius:999px;background:radial-gradient(circle,rgba(43,227,160,.22),transparent 68%)"></div>
-                <div data-rib="0" style="position:absolute;left:-60px;top:40px;width:520px;height:110px;border-radius:50%;background:linear-gradient(rgba(34,211,238,0),rgba(34,211,238,.7) 30%,#34D399 65%,rgba(52,211,153,0));filter:blur(14px);opacity:.36"></div>
-                <div data-rib="1" style="position:absolute;left:-60px;top:110px;width:520px;height:70px;border-radius:50%;background:linear-gradient(rgba(167,243,208,0),rgba(167,243,208,.7) 30%,#10B981 65%,rgba(16,185,129,0));filter:blur(12px);opacity:.26"></div>
-                <div data-rib="2" style="position:absolute;left:-60px;top:10px;width:520px;height:56px;border-radius:50%;background:linear-gradient(rgba(129,140,248,0),rgba(129,140,248,.7) 30%,#22D3EE 65%,rgba(34,211,238,0));filter:blur(10px);opacity:.2"></div>
-                <svg width="393" height="420" viewBox="0 0 393 420" style="position:absolute;left:0;top:0"><defs><linearGradient id="apm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#010806"></stop><stop offset="1" stop-color="#04110F"></stop></linearGradient></defs><polygon points="0,340 31,316 71,334 118,304 165,324 216,310 259,332 307,300 354,322 393,314 393,390 0,390" fill="url(#apm)"></polygon></svg>
-              </div>
+  <!-- RECURRENTES -->
+  <section class="split">
+    <div class="wrap split-grid flip">
+      <div class="copy" data-reveal>
+        <span class="mono">Recurrentes</span>
+        <h2 class="h2">Lo que se cobra cada mes, <span class="grad">antes de que se cobre.</span></h2>
+        <p class="lead">AlTanto detecta tus suscripciones por su ritmo y su monto, junta tus pagos fijos y cuotas, y te dice cuánto del mes ya está comprometido.</p>
+        <ul class="ticks">
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>Suscripciones detectadas solas: tú solo las revisas.</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>Aviso el día que toca: «Gastos programados para hoy».</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>Las cuotas ya pagadas cuentan, y ves meses pasados con su mes marcado.</li>
+        </ul>
+      </div>
+      <div class="card rec" data-reveal>
+        <div class="rec-h"><div><div class="t">Recurrentes · octubre</div><div class="v" data-count="612.70">S/ 0.00</div></div><span class="badge b-ok">4 de 6 pagados</span></div>
+        <div class="rec-bar"><span style="width:58%;background:var(--mint)"></span><span style="width:42%;background:rgba(255,255,255,.12)"></span></div>
+        <div class="rec-leg"><span>Pagado S/ 355.10</span><span>Falta S/ 257.60</span></div>
+        <div class="rec-list">
+          <div class="ri"><span class="lg" style="background:#E50914;color:#fff">N</span><div><div class="nm">Netflix</div><div class="sb">día 12 · suscripción</div></div><div class="am">S/ 44.90<br><span class="badge b-ok">Pagado</span></div></div>
+          <div class="ri"><span class="lg" style="background:#1DB954;color:#04140A">S</span><div><div class="nm">Spotify</div><div class="sb">día 15 · suscripción</div></div><div class="am">S/ 21.90<br><span class="badge b-ok">Pagado</span></div></div>
+          <div class="ri"><span class="lg" style="background:rgba(255,214,10,.18);color:#FFD60A"><span class="ic" style="--i:url(assets/icons/zap.svg)"></span></span><div><div class="nm">Luz del Sur</div><div class="sb">día 24 · servicio</div></div><div class="am">S/ 128.00<br><span class="badge b-soon">En 4 días</span></div></div>
+          <div class="ri"><span class="lg" style="background:rgba(46,91,255,.2);color:var(--sky)"><span class="ic" style="--i:url(assets/icons/repeat.svg)"></span></span><div><div class="nm">Cuota laptop</div><div class="sb">cuota 5 de 12 · día 28</div></div><div class="am">S/ 129.60<br><span class="badge b-soon">En 8 días</span></div></div>
+        </div>
+        <div class="detect"><span class="ic" style="--i:url(assets/icons/sparkles.svg)"></span><div><b>2 suscripciones detectadas</b><span>iCloud+ y ChatGPT se cobran cada mes</span></div><a href="#funciones">Revisar</a></div>
+      </div>
+    </div>
+  </section>
 
-              <div data-dashscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;will-change:transform">
-                <div style="display:flex;flex-direction:column;gap:8px;padding:4px 2px 0;margin-bottom:20px">
-                  <div style="display:flex;align-items:center;gap:6px">
-                    <span style="font-size:13.5px;font-weight:600;color:var(--sec);flex:1;transition:background-color .8s ease,color .8s ease,border-color .8s ease">Gastos en Octubre 2026</span>
-                    <span style="width:28px;height:28px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-                    <span style="width:28px;height:28px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;opacity:.5;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:12px">
-                    <div style="display:flex;align-items:baseline;gap:6px">
-                      <span data-amount="1" style="font-size:46px;font-weight:700;letter-spacing:-1.8px;font-variant-numeric:tabular-nums">S/ 2,527</span>
-                      <span data-cents="1" style="font-size:18px;font-weight:600;color:var(--sec);font-variant-numeric:tabular-nums;transition:background-color .8s ease,color .8s ease,border-color .8s ease">.10</span>
-                    </div>
-                    <span style="width:32px;height:32px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:15px;height:15px;background:var(--sec);-webkit-mask:url(assets/icons/eye.svg) center/contain no-repeat;mask:url(assets/icons/eye.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-                  </div>
-                  <div style="align-self:flex-start;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:8px;background:var(--acs);color:var(--at);font-size:12.5px;font-weight:600;transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                    <span style="display:block;flex:none;width:11px;height:11px;background:var(--at);-webkit-mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span><span data-delta="1">S/ 233 vs. septiembre</span>
-                  </div>
-                </div>
+  <!-- FUNCIONES -->
+  <section class="feats" id="funciones">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="mono">Funciones de AlTanto</span>
+        <h2 class="h2">Pequeños trucos que te ahorran<br><span style="color:var(--sec)">el resto del trabajo.</span></h2>
+      </div>
+      <div class="fx" data-reveal>
+        <div class="flist" id="flist" role="tablist" aria-label="Funciones"></div>
+        <div class="card fpanel" id="fpanel" role="tabpanel" aria-live="polite"></div>
+      </div>
+      <div class="extras">
+        <div class="card ex" data-reveal><span class="ic" style="--i:url(assets/icons/landmark.svg)"></span><b>Sin contar dos veces</b><span>Lo que mueves entre tus propias cuentas se registra como traslado, no como gasto.</span></div>
+        <div class="card ex" data-reveal style="transition-delay:.06s"><span class="ic" style="--i:url(assets/icons/chart-column.svg)"></span><b>Analítica por comercio</b><span>Cuánto le dejas a cada lugar, mes a mes, y si vas más rápido que tu ritmo.</span></div>
+        <div class="card ex" data-reveal style="transition-delay:.12s"><span class="ic" style="--i:url(assets/icons/target.svg)"></span><b>Límites por categoría</b><span>La marca te dice por dónde va el mes y si tu gasto va más rápido que él.</span></div>
+        <div class="card ex" data-reveal style="transition-delay:.18s"><span class="ic" style="--i:url(assets/icons/lock.svg)"></span><b>Face ID</b><span>Bloquea la app y que empiece con los montos tapados si quieres.</span></div>
+      </div>
+    </div>
+  </section>
 
-                <div style="display:flex;flex-direction:column;gap:6px;padding:0 2px;margin-bottom:30px">
-                  <div style="display:flex;align-items:flex-start;gap:12px">
-                    <div style="flex:1;display:flex;flex-direction:column;gap:3px">
-                      <span style="font-size:15px;font-weight:600">Últimos 7 días</span>
-                      <span data-chartsub="1" style="font-size:12.5px;color:var(--sec);font-variant-numeric:tabular-nums;transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 576 · 13 movimientos</span>
-                    </div>
-                    <div style="display:flex;gap:2px;padding:2px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                      <span style="font-size:12px;font-weight:600;padding:6px 11px;border-radius:99px;background:var(--sel);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Semana</span>
-                      <span style="font-size:12px;color:var(--sec);padding:6px 11px;transition:background-color .8s ease,color .8s ease,border-color .8s ease">Mes</span>
-                    </div>
-                  </div>
-                  <div style="display:flex;align-items:flex-end;gap:10px;height:152px;padding:0 14px">
-                    <sc-for list="{{ bars }}" as="b" hint-placeholder-count="7">
-                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px">
-                        <div style="height:100px;width:100%;display:flex;align-items:flex-end;justify-content:center">
-                          <div data-bar="{{ b.i }}" style="width:29px;border-radius:5px;height:{{ b.h }}px;background:{{ b.bg }};transition:height .5s cubic-bezier(.3,1.4,.5,1),background-color .8s"></div>
-                        </div>
-                        <span style="font-size:11.5px;font-weight:{{ b.fw }};color:{{ b.fc }}">{{ b.l }}</span>
-                      </div>
-                    </sc-for>
-                  </div>
-                </div>
+  <!-- AMIGOS -->
+  <section class="split friends">
+    <div class="wrap split-grid flip">
+      <div class="copy" data-reveal>
+        <span class="mono">Entre amigos</span>
+        <h2 class="h2">Pagaste tú.<br><span class="grad">Que te devuelvan.</span></h2>
+        <p class="lead">Comparte un gasto con quienes estaban y AlTanto lleva la cuenta de cada uno. Les avisa por la app, o por WhatsApp a quien no la tiene, y detecta cuando te pagan por Yape o Plin.</p>
+        <ul class="ticks">
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>Partes iguales, contándote a ti, o el monto que puso cada uno.</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>«Recordar» les vuelve a avisar. Todo queda en Amigos › Cobros.</li>
+          <li><span class="ic" style="--i:url(assets/icons/check.svg)"></span>Y si quieres, compara tu mes con tus patas: tú eliges qué ve cada uno.</li>
+        </ul>
+      </div>
+      <div class="card" data-reveal>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px">
+          <div><div style="font-size:13px;color:var(--sec)">Cena en Barranco · S/ 240.00</div><div style="font-size:30px;font-weight:700;letter-spacing:-.04em">Te deben S/ 180.00</div></div>
+        </div>
+        <div class="fr-row"><span class="av" style="background:#3B2A72;color:#C4B5FD">MA</span><div><div class="nm">María</div><div class="sb">Pagó por Yape · ayer</div></div><div class="am">S/ 60.00<small>recuperado</small><div class="prog"><span data-w="100%"></span></div></div></div>
+        <div class="fr-row"><span class="av" style="background:#123A2E;color:#7FF5C9">DI</span><div><div class="nm">Diego</div><div class="sb">Avisado en la app</div></div><div class="am">S/ 60.00<small>pendiente</small><div class="prog"><span data-w="0%"></span></div></div></div>
+        <div class="fr-row"><span class="av" style="background:#4A2A12;color:#FFC266">LU</span><div><div class="nm">Lucía</div><div class="sb">Avisada por WhatsApp</div></div><div class="am">S/ 60.00<small>pendiente</small><div class="prog"><span data-w="0%"></span></div></div></div>
+        <div class="remind"><button class="btn btn-sec" type="button" id="remind"><span class="ic" style="--i:url(assets/icons/bell-ring.svg)"></span><span>Recordar</span></button><a class="btn btn-pri" href="#descargar"><span class="ic" style="--i:url(assets/icons/user-plus.svg)"></span>Invitar</a></div>
+      </div>
+    </div>
+  </section>
 
-                <div style="display:flex;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">OCTUBRE · ESTADÍSTICAS</span></div>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
-                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Neto</span><span style="font-size:19px;font-weight:700;color:var(--pos);white-space:nowrap;transition:background-color .8s ease,color .8s ease,border-color .8s ease">+S/ 1,388</span></div>
-                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Ritmo</span><span style="font-size:19px;font-weight:700">62%</span></div>
-                  <div style="display:flex;flex-direction:column;gap:5px;padding:10px 13px;border-radius:14px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="font-size:11.5px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">Por día</span><span style="font-size:19px;font-weight:700">S/ 145</span></div>
-                </div>
-
-                <div style="display:flex;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">ATAJOS</span></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Pendientes</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
-                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:30px;font-weight:700;color:var(--at);transition:background-color .8s ease,color .8s ease,border-color .8s ease">2</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">de este mes</span></div>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                    <div style="display:flex;align-items:center;gap:6px">
-                      <span style="font-size:16px;font-weight:600">Historial</span>
-                      <span data-badge="1" style="font-size:11px;font-weight:700;color:#fff;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--ac);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease">2</span>
-                      <span style="flex:1"></span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:2px"><span data-movcount="1" style="font-size:30px;font-weight:700">46</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">movimientos este mes</span></div>
-                  </div>
-                  <div data-tapt="tile-cat" style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Categorías</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
-                    <div style="display:flex;flex-direction:column;gap:10px">
-                      <div style="display:flex;align-items:center;gap:9px"><span style="width:30px;height:30px;border-radius:9px;background:rgba(255,159,10,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#FF9F0A;-webkit-mask:url(assets/icons/utensils.svg) center/contain no-repeat;mask:url(assets/icons/utensils.svg) center/contain no-repeat"></span></span><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:13.5px">Comida</span><span style="font-size:12px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 412.40</span></div></div>
-                      <div style="display:flex;align-items:center;gap:9px"><span style="width:30px;height:30px;border-radius:9px;background:rgba(64,200,224,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#40C8E0;-webkit-mask:url(assets/icons/shopping-cart.svg) center/contain no-repeat;mask:url(assets/icons/shopping-cart.svg) center/contain no-repeat"></span></span><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:13.5px">Supermercado</span><span style="font-size:12px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">S/ 386.20</span></div></div>
-                    </div>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:12px;padding:15px;min-height:128px;border-radius:20px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px;font-weight:600;flex:1">Amigos</span><span style="display:block;flex:none;width:13px;height:13px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;mask:url(assets/icons/chevron-right.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></div>
-                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:22px;font-weight:700">S/ 85</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">te deben</span><span style="font-size:13px;color:var(--sec);transition:background-color .8s ease,color .8s ease,border-color .8s ease">2 cobros</span></div>
-                  </div>
-                </div>
-              </div>
-              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(var(--bg) 50%,transparent);opacity:{{ dashFade }};pointer-events:none;transition:background-color .8s ease,color .8s ease,border-color .8s ease" data-dashfade="1"></div>
-              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;gap:8px">
-                <div style="display:flex;align-items:center;gap:8px;height:38px;padding:0 12px 0 8px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);transition:background-color .8s ease,color .8s ease,border-color .8s ease">
-                  <span style="width:22px;height:22px;border-radius:7px;background:var(--acs);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:12px;height:12px;background:var(--at);-webkit-mask:url(assets/icons/landmark.svg) center/contain no-repeat;mask:url(assets/icons/landmark.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-                  <span style="font-size:14px;font-weight:600;white-space:nowrap">Todas las cuentas</span>
-                  <span style="display:block;flex:none;width:11px;height:11px;background:var(--sec);-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span>
-                </div>
-                <span style="flex:1"></span>
-                <span data-tapt="ast" style="position:relative;width:38px;height:38px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:18px;height:18px;background:var(--at);-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:99px;background:var(--ac);border:2px solid var(--bg);transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-                <span data-tapt="gear" style="width:38px;height:38px;border-radius:99px;background:var(--sf);border:0.5px solid var(--hl);display:flex;align-items:center;justify-content:center;transition:background-color .8s ease,color .8s ease,border-color .8s ease"><span style="display:block;flex:none;width:18px;height:18px;background:var(--sec);-webkit-mask:url(assets/icons/settings.svg) center/contain no-repeat;mask:url(assets/icons/settings.svg) center/contain no-repeat;transition:background-color .8s ease,color .8s ease,border-color .8s ease"></span></span>
-              </div>
-              <div data-dim="dash" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none"></div>
+  <!-- PRO -->
+  <section class="pro" id="pro">
+    <div class="wrap">
+      <div class="pro-box" data-reveal>
+        <div class="pro-grid">
+          <div>
+            <span class="mono" style="color:#C4B5FD">Opcional</span>
+            <h2 class="h2" style="margin-top:16px">AlTanto <span class="pro-grad">Pro</span></h2>
+            <p class="lead" style="margin-top:16px">Todo lo que ya usas, sin límites. Lo esencial es gratis; Pro es para quien quiere ir más allá.</p>
+            <div class="perks">
+              <div class="perk"><i style="background:#0A84FF"><span class="ic" style="--i:url(assets/icons/chart-column.svg)"></span></i><div><b>Todo tu historial</b><span>Más allá de los últimos 3 meses.</span></div></div>
+              <div class="perk"><i style="background:#BF5AF2"><span class="ic" style="--i:url(assets/icons/sparkles.svg)"></span></i><div><b>Asistente con más memoria</b><span>Recuerda tus hábitos por más tiempo.</span></div></div>
+              <div class="perk"><i style="background:#40C8E0"><span class="ic" style="--i:url(assets/icons/arrow-up.svg)"></span></i><div><b>Respaldo en la nube</b><span>Categorías y reglas a salvo si cambias de teléfono.</span></div></div>
+              <div class="perk"><i style="background:#F28C28"><span class="ic" style="--i:url(assets/icons/eye.svg)"></span></i><div><b>Temas premium</b><span>Diez fondos animados para tu Resumen.</span></div></div>
+              <div class="perk"><i style="background:#FF453A"><span class="ic" style="--i:url(assets/icons/bell-ring.svg)"></span></i><div><b>Cobros más intensos</b><span>Que tus amigos no pasen por alto.</span></div></div>
+              <div class="perk"><i style="background:#8B5CF6"><span class="ic" style="--i:url(assets/icons/users.svg)"></span></i><div><b>Tu perfil, a tu manera</b><span>Cielos, aura y marco con brillo en Social.</span></div></div>
             </div>
-
-            <div data-scr="mov" style="position:absolute;inset:0;background:#0B0E14;opacity:0;will-change:opacity">
-              <div data-movscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;will-change:transform">
-                <div style="display:flex;flex-direction:column;gap:3px;padding:2px 2px 14px"><span style="font-size:32px;font-weight:700;letter-spacing:-0.8px">Movimientos</span><span data-movsub="1" style="font-size:13.5px;color:#9AA3B2">47 movimientos · octubre</span></div>
-                <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">TUS CUENTAS</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">Ocultar</span></div>
-                <div style="position:relative;height:122px;margin:0 -22px 12px;overflow:hidden">
-                  <div data-track="1" style="position:absolute;left:0;top:0;display:flex;gap:12px;padding:8px 88px 8px 22px;will-change:transform">
-                    <sc-for list="{{ cards }}" as="cd" hint-placeholder-count="6">
-                      <div data-card="{{ cd.key }}" style="position:relative;flex:none;width:152px;height:96px;border-radius:12px">
-                        <div data-ring="{{ cd.key }}" style="position:absolute;inset:-5px;border-radius:16px;border:2px solid #EDF0F4;opacity:{{ cd.ring }};transition:opacity .25s"></div>
-                        <div style="position:absolute;inset:0;border-radius:12px;overflow:hidden;background:{{ cd.bg }};box-shadow:0 3px 6px {{ cd.shadow }}">
-                          <div style="position:absolute;{{ cd.motif }}"></div>
-                          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,0) 60%);mix-blend-mode:soft-light"></div>
-                          <div style="position:absolute;inset:0;border-radius:12px;border:0.75px solid rgba(255,255,255,.25)"></div>
-                          <div style="position:absolute;inset:0;padding:9px 11px;display:flex;flex-direction:column;justify-content:space-between">
-                            <div style="display:flex;align-items:center;justify-content:space-between;height:20px">
-                              <span style="width:20px;height:20px;border-radius:99px;background:#fff center/cover no-repeat;background-image:url({{ cd.logo }});border:0.75px solid rgba(255,255,255,.6);opacity:{{ cd.logoO }}"></span>
-                              <span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.5px;color:rgba(255,255,255,.9)">{{ cd.digits }}</span>
-                            </div>
-                            <span style="width:20px;height:15px;border-radius:3px;background:linear-gradient(135deg,#F4DC9A,#C9A24E);border:0.5px solid rgba(0,0,0,.18)"></span>
-                            <div style="display:flex;flex-direction:column;gap:1px">
-                              <span style="font-size:13.5px;font-weight:700;color:#fff">{{ cd.title }}</span>
-                              <span style="font-size:10.5px;font-weight:500;color:rgba(255,255,255,.78)">{{ cd.line }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </sc-for>
-                  </div>
-                  <div style="position:absolute;right:0;top:0;bottom:0;display:flex;align-items:center">
-                    <div style="width:30px;height:100%;background:linear-gradient(90deg,rgba(11,14,20,0),#0B0E14)"></div>
-                    <div style="height:100%;display:flex;align-items:center;padding-right:22px;background:#0B0E14">
-                      <span style="width:52px;height:96px;border-radius:12px;border:1px dashed rgba(154,163,178,.45);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#64B3FF">Editar</span>
-                    </div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:8px;margin-bottom:12px">
-                  <div style="flex:1;display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:12px;background:#161922;border:0.5px solid rgba(255,255,255,.07)"><span style="display:block;flex:none;width:15px;height:15px;background:#8A93A3;-webkit-mask:url(assets/icons/search.svg) center/contain no-repeat;mask:url(assets/icons/search.svg) center/contain no-repeat"></span><span style="font-size:15px;color:#8A93A3">Buscar comercio o monto</span></div>
-                  <div style="display:flex;align-items:center;height:40px;padding:0 14px;border-radius:12px;background:#161922;border:0.5px solid rgba(255,255,255,.07);font-size:14px;font-weight:600;color:#64B3FF">Seleccionar</div>
-                </div>
-                <div style="display:flex;gap:4px;padding:4px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);margin-bottom:18px">
-                  <span style="flex:1;height:32px;border-radius:99px;background:#0A84FF;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center">Gastos</span>
-                  <span style="flex:1;height:32px;color:#9AA3B2;font-size:13px;display:flex;align-items:center;justify-content:center">Ingresos</span>
-                  <span style="flex:1;height:32px;color:#9AA3B2;font-size:13px;display:flex;align-items:center;justify-content:center">Por cobrar</span>
-                </div>
-                <sc-for list="{{ days }}" as="d" hint-placeholder-count="2">
-                  <div style="display:flex;flex-direction:column;margin-bottom:20px">
-                    <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">{{ d.title }}</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">{{ d.total }}</span></div>
-                    <div style="border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
-                      <sc-for list="{{ d.rows }}" as="r" hint-placeholder-count="2">
-                        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-top:{{ r.sep }}">
-                          <div style="position:relative;width:40px;height:40px;flex:none">
-                            <span style="position:absolute;inset:0;border-radius:11.8px;display:flex;align-items:center;justify-content:center;background:{{ r.bg }}"><span style="width:20px;height:20px;background:{{ r.fg }};-webkit-mask:url({{ r.icon }}) center/contain no-repeat;mask:url({{ r.icon }}) center/contain no-repeat"></span></span>
-                            <span style="position:absolute;right:-4px;bottom:-4px;width:17px;height:17px;border-radius:99px;border:2px solid #161922;background:#fff center/cover no-repeat;background-image:url({{ r.badge }});opacity:{{ r.bo }}"></span>
-                          </div>
-                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
-                            <span style="font-size:15.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
-                            <div style="display:flex;align-items:baseline;gap:8px">
-                              <span style="font-size:{{ r.subSize }};font-weight:{{ r.subW }};color:{{ r.subC }};padding:{{ r.subPad }};border-radius:99px;background:{{ r.subBg }}">{{ r.sub }}</span>
-                              <span style="font-size:12px;color:#8A93A3">{{ r.time }}</span>
-                            </div>
-                          </div>
-                          <span style="font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums">{{ r.amount }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </sc-for>
-              </div>
-              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
-              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;justify-content:flex-end">
-                <div style="display:flex;gap:2px;padding:3px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
-                  <span style="width:32px;height:32px;border-radius:99px;background:#232838;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#EDF0F4;-webkit-mask:url(assets/icons/list.svg) center/contain no-repeat;mask:url(assets/icons/list.svg) center/contain no-repeat"></span></span>
-                  <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#9AA3B2;-webkit-mask:url(assets/icons/chart-column.svg) center/contain no-repeat;mask:url(assets/icons/chart-column.svg) center/contain no-repeat"></span></span>
-                </div>
-              </div>
+          </div>
+          <div class="plans">
+            <div class="seg" role="group" aria-label="Plan"><button type="button" aria-pressed="true" data-plan="anual">Anual</button><button type="button" aria-pressed="false" data-plan="mensual">Mensual</button></div>
+            <div class="plan">
+              <div class="pr" id="price">S/ 99.90 <small id="per">al año</small></div>
+              <div class="dt" id="pdetail"><span>S/ 8.33 al mes</span><span class="save">AHORRA 35%</span></div>
+              <a class="btn" href="#descargar">Probar 7 días gratis</a>
             </div>
-
-            <div data-scr="cat" style="position:absolute;inset:0;background:#0B0E14;transform:translateX(100%);box-shadow:-20px 0 40px rgba(0,0,0,.5);will-change:transform">
-              <div style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column">
-                <div style="display:flex;flex-direction:column;gap:3px;padding:2px 2px 14px"><span style="font-size:32px;font-weight:700;letter-spacing:-0.8px">Categorías</span><span style="font-size:13.5px;color:#9AA3B2">octubre 2026</span></div>
-                <div style="display:flex;align-items:center;gap:18px;padding:14px 2px 0;margin-bottom:24px">
-                  <div style="position:relative;width:150px;height:150px;flex:none">
-                    <svg width="150" height="150" viewBox="0 0 150 150" style="transform:rotate(-90deg)">
-                      <sc-for list="{{ donut }}" as="s" hint-placeholder-count="5">
-                        <circle cx="75" cy="75" r="60" fill="none" stroke="{{ s.c }}" stroke-width="18" stroke-dasharray="{{ s.dash }}" stroke-dashoffset="{{ s.off }}"></circle>
-                      </sc-for>
-                    </svg>
-                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px"><span style="font-size:12px;color:#9AA3B2">Total</span><span style="font-size:20px;font-weight:700">S/ 2,612</span></div>
-                  </div>
-                  <div style="flex:1;display:flex;flex-direction:column;gap:9px">
-                    <sc-for list="{{ donut }}" as="s" hint-placeholder-count="5">
-                      <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:99px;background:{{ s.c }}"></span><span style="flex:1;font-size:13px">{{ s.short }}</span><span style="font-size:12.5px;color:#9AA3B2;font-variant-numeric:tabular-nums">{{ s.pct }}</span></div>
-                    </sc-for>
-                  </div>
-                </div>
-                <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">EN QUÉ SE FUE</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">Día 18 de 31</span></div>
-                <div style="border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
-                  <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
-                    <div style="display:flex;flex-direction:column;gap:10px;padding:13px 14px;border-top:{{ c.sep }}">
-                      <div style="display:flex;align-items:center;gap:12px">
-                        <span style="width:36px;height:36px;border-radius:10.6px;display:flex;align-items:center;justify-content:center;flex:none;background:{{ c.bg }}"><span style="width:18px;height:18px;background:{{ c.fg }};-webkit-mask:url({{ c.icon }}) center/contain no-repeat;mask:url({{ c.icon }}) center/contain no-repeat"></span></span>
-                        <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15.5px;font-weight:600">{{ c.name }}</span><span style="font-size:12.5px;color:{{ c.noteC }}">{{ c.note }}</span></div>
-                        <span style="font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums">{{ c.amount }}</span>
-                      </div>
-                      <div style="position:relative;height:12px;display:{{ c.barDisplay }}">
-                        <div style="position:absolute;left:0;right:0;top:2px;height:8px;border-radius:99px;background:#2A3242"></div>
-                        <div data-pace="{{ c.w }}" style="position:absolute;left:0;top:2px;height:8px;width:0;border-radius:99px;background:{{ c.fill }}"></div>
-                        <div style="position:absolute;top:0;height:12px;width:2px;left:58%;margin-left:-1px;background:#EDF0F4"></div>
-                      </div>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
-              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center"><span style="width:38px;height:38px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:18px;height:18px;background:#9AA3B2;-webkit-mask:url(assets/icons/chevron-left.svg) center/contain no-repeat;mask:url(assets/icons/chevron-left.svg) center/contain no-repeat"></span></span></div>
-            </div>
-
-            <div data-scr="ami" style="position:absolute;inset:0;background:#0B0E14;opacity:0;will-change:opacity">
-              <div data-amiscroll="1" style="position:absolute;left:0;right:0;top:0;padding:112px 22px 0;display:flex;flex-direction:column;gap:12px;will-change:transform">
-                <div style="border-radius:22px;background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden">
-                  <div style="height:104px;background:linear-gradient(135deg,#2E5BFF,#0A84FF 45%,#64B3FF);position:relative;overflow:hidden">
-                    <div style="position:absolute;right:-40px;top:-60px;width:200px;height:200px;border-radius:999px;border:18px solid rgba(255,255,255,.12)"></div>
-                  </div>
-                  <div style="position:relative;display:flex;align-items:flex-end;gap:12px;padding:0 14px;margin-top:-38px">
-                    <div style="width:92px;height:92px;border-radius:99px;background:rgba(10,132,255,.22) center/cover no-repeat;background-image:url({{ mePhoto }});border:4px solid #161922;box-shadow:0 2px 6px rgba(0,0,0,.18)"></div>
-                    <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:6px"><span style="font-size:20px;font-weight:700">Joseph M.</span><span style="font-size:12.5px;color:#9AA3B2">«Ahorrando para Cusco»</span></div>
-                  </div>
-                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px;padding:14px 16px">
-                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;color:#9AA3B2">Tu gasto de octubre</span><span style="font-size:28px;font-weight:700;letter-spacing:-0.5px">S/ 2,612.00</span></div>
-                    <span style="display:flex;align-items:center;gap:5px;height:26px;padding:0 8px 0 10px;border-radius:99px;background:rgba(10,132,255,.12);color:#64B3FF;font-size:11.5px;font-weight:600"><span style="display:block;flex:none;width:11px;height:11px;background:#64B3FF;-webkit-mask:url(assets/icons/eye.svg) center/contain no-repeat;mask:url(assets/icons/eye.svg) center/contain no-repeat"></span>lo ven 3 amigos<span style="display:block;flex:none;width:10px;height:10px;background:#64B3FF;-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat"></span></span>
-                  </div>
-                </div>
-                <div style="display:flex;gap:10px">
-                  <span style="flex:1;height:44px;border-radius:99px;background:#0A84FF;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:600"><span style="display:block;flex:none;width:13px;height:13px;background:#fff;-webkit-mask:url(assets/icons/user-plus.svg) center/contain no-repeat;mask:url(assets/icons/user-plus.svg) center/contain no-repeat"></span>Invitar</span>
-                  <span style="flex:1;height:44px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:600"><span style="display:block;flex:none;width:13px;height:13px;background:#EDF0F4;-webkit-mask:url(assets/icons/bell-ring.svg) center/contain no-repeat;mask:url(assets/icons/bell-ring.svg) center/contain no-repeat"></span>Cobrar</span>
-                </div>
-                <div style="display:flex;flex-direction:column">
-                  <div style="display:flex;justify-content:space-between;padding:0 2px 8px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#9AA3B2">DE TUS AMIGOS</span><span style="font-size:12.5px;font-weight:600;color:#9AA3B2">3 te comparten</span></div>
-                  <div style="display:flex;flex-direction:column;gap:10px">
-                    <sc-for list="{{ feed }}" as="f" hint-placeholder-count="3">
-                      <div data-feed="1" style="display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
-                        <div style="display:flex;align-items:center;gap:12px">
-                          <span style="width:44px;height:44px;border-radius:99px;flex:none;background:{{ f.bg }} center/cover no-repeat;background-image:url({{ f.photo }});box-shadow:{{ f.ringPro }}"></span>
-                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
-                            <div style="display:flex;align-items:center;gap:5px"><span style="font-size:16px;font-weight:600">{{ f.name }}</span><span style="display:{{ f.pro }}"><span style="display:block;flex:none;width:11px;height:11px;background:#C4B5FD;-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat"></span></span></div>
-                            <span style="font-size:12.5px;color:#9AA3B2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.status }}</span>
-                          </div>
-                          <span style="font-size:17px;font-weight:700">{{ f.total }}</span>
-                        </div>
-                        <div style="display:flex;gap:6px;overflow:hidden">
-                          <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="2">
-                            <span style="flex:none;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:99px;font-size:11.5px;font-weight:600;color:{{ ch.c }};background:{{ ch.bg }}"><span style="width:10px;height:10px;background:{{ ch.c }};-webkit-mask:url({{ ch.icon }}) center/contain no-repeat;mask:url({{ ch.icon }}) center/contain no-repeat"></span>{{ ch.t }}</span>
-                          </sc-for>
-                        </div>
-                      </div>
-                    </sc-for>
-                  </div>
-                </div>
-              </div>
-              <div style="position:absolute;left:0;right:0;top:0;height:112px;background:linear-gradient(#0B0E14 50%,rgba(11,14,20,0));pointer-events:none"></div>
-              <div style="position:absolute;left:22px;right:22px;top:54px;height:54px;display:flex;align-items:center;justify-content:flex-end">
-                <div style="display:flex;gap:2px;padding:3px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07)">
-                  <span style="width:32px;height:32px;border-radius:99px;background:#232838;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#EDF0F4;-webkit-mask:url(assets/icons/users.svg) center/contain no-repeat;mask:url(assets/icons/users.svg) center/contain no-repeat"></span></span>
-                  <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:15px;height:15px;background:#9AA3B2;-webkit-mask:url(assets/icons/hand-coins.svg) center/contain no-repeat;mask:url(assets/icons/hand-coins.svg) center/contain no-repeat"></span></span>
-                </div>
-              </div>
-            </div>
-
-            <div data-tabbar="1" style="position:absolute;left:0;right:0;bottom:0;height:120px;pointer-events:none">
-              <div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(rgba(0,0,0,0),var(--bg) 70%);transition:background .8s"></div>
-              <div style="position:absolute;left:16px;right:92px;bottom:26px;height:62px;border-radius:99px;background:rgba(36,40,52,.72);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:0.5px solid rgba(255,255,255,.12);display:flex;align-items:center;padding:4px;box-shadow:0 10px 30px rgba(0,0,0,.35)">
-                <div data-tabpill="1" style="position:absolute;top:4px;left:4px;width:67px;height:54px;border-radius:99px;background:rgba(255,255,255,.1);will-change:transform"></div>
-                <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
-                  <div data-tapt="{{ t.key }}" style="position:relative;flex:1;height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">
-                    <span data-tabicon="{{ t.key }}" style="width:21px;height:21px;background:#EDF0F4;-webkit-mask:url({{ t.icon }}) center/contain no-repeat;mask:url({{ t.icon }}) center/contain no-repeat"></span>
-                    <span data-tablabel="{{ t.key }}" style="font-size:10px;font-weight:600;color:#EDF0F4">{{ t.title }}</span>
-                  </div>
-                </sc-for>
-              </div>
-              <div data-tapt="plus" style="position:absolute;right:16px;bottom:26px;width:62px;height:62px;border-radius:99px;background:rgba(36,40,52,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.35)"><span style="display:block;flex:none;width:24px;height:24px;background:#EDF0F4;-webkit-mask:url(assets/icons/plus.svg) center/contain no-repeat;mask:url(assets/icons/plus.svg) center/contain no-repeat"></span></div>
-              <div data-bubble="1" data-tapt="bubble" style="position:absolute;right:19px;bottom:102px;width:56px;height:56px;border-radius:99px;background:rgba(36,40,52,.85);backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.4);transform-origin:50% 100%;box-shadow:0 10px 30px rgba(0,0,0,.4)"><span style="display:block;flex:none;width:20px;height:20px;background:#EDF0F4;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></div>
-            </div>
-
-            <div data-scrim="1" style="position:absolute;inset:0;background:#000;opacity:0;pointer-events:none"></div>
-
-            <div data-dict="1" style="position:absolute;left:0;right:0;bottom:0;height:620px;border-radius:28px 28px 0 0;background:#1E222D;transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:20px 16px 34px;will-change:transform">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span data-dicttitle="1" style="font-size:19px;font-weight:700;letter-spacing:-0.3px">Escuchando…</span><span data-dicthint="1" style="font-size:12.5px;color:#9AA3B2">Di el monto y en qué gastaste</span></div>
-                <span style="width:32px;height:32px;border-radius:99px;background:#161922;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:14px;height:14px;background:#9AA3B2;-webkit-mask:url(assets/icons/x.svg) center/contain no-repeat;mask:url(assets/icons/x.svg) center/contain no-repeat"></span></span>
-              </div>
-              <div style="display:flex;align-items:center;gap:16px;height:84px;padding:0 4px">
-                <span style="width:60px;height:60px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 0 0 8px rgba(10,132,255,.18)"><span style="display:block;flex:none;width:24px;height:24px;background:#fff;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
-                <div data-wave="1" style="flex:1;height:60px;display:flex;align-items:center;gap:3px">
-                  <sc-for list="{{ waveBars }}" as="w" hint-placeholder-count="28"><span data-wbar="1" style="flex:1;height:6px;border-radius:99px;background:#0A84FF"></span></sc-for>
-                </div>
-              </div>
-              <div style="min-height:66px;padding:0 4px;font-size:22px;font-weight:600;letter-spacing:-0.4px;line-height:1.25"><span data-said="1"></span><span data-caret="1" style="color:#0A84FF">|</span></div>
-              <div data-dcard="1" style="display:flex;flex-direction:column;padding:14px;border-radius:22px;background:#161922;border:0.5px solid rgba(255,255,255,.07);opacity:0;transform:translateY(-14px)">
-                <div style="display:flex;align-items:center;gap:12px">
-                  <span style="width:44px;height:44px;border-radius:13px;background:rgba(255,159,10,.22);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:22px;height:22px;background:#FF9F0A;-webkit-mask:url(assets/icons/utensils.svg) center/contain no-repeat;mask:url(assets/icons/utensils.svg) center/contain no-repeat"></span></span>
-                  <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16.5px;font-weight:600">Chifa</span><span style="font-size:12.5px;color:#9AA3B2">Comida · Por voz</span></div>
-                  <span style="font-size:19px;font-weight:700;letter-spacing:-0.3px">–S/ 40.00</span>
-                </div>
-                <div style="height:0.5px;background:rgba(255,255,255,.06);margin-top:12px"></div>
-                <div data-dpending="1" style="display:flex;align-items:center;gap:10px;padding-top:12px">
-                  <svg width="28" height="28" viewBox="0 0 28 28" style="transform:rotate(-90deg)"><circle cx="14" cy="14" r="12" fill="none" stroke="#2A3242" stroke-width="2.5"></circle><circle data-dring="1" cx="14" cy="14" r="12" fill="none" stroke="#0A84FF" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="0"></circle></svg>
-                  <span style="flex:1;font-size:12.5px;color:#9AA3B2">Se registra en 5 s</span>
-                  <span style="height:32px;padding:0 14px;border-radius:99px;background:#1E222D;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;font-size:13px;font-weight:600;color:#FF6961">Cancelar</span>
-                  <span style="height:32px;padding:0 14px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;font-size:13px;font-weight:600;color:#fff">Editar</span>
-                </div>
-                <div data-dsaved="1" style="display:none;align-items:center;gap:8px;padding-top:12px;font-size:13px;font-weight:600;color:#10B981"><span style="display:block;flex:none;width:16px;height:16px;background:#10B981;-webkit-mask:url(assets/icons/circle-check.svg) center/contain no-repeat;mask:url(assets/icons/circle-check.svg) center/contain no-repeat"></span>Registrado</div>
-              </div>
-              <span style="flex:1"></span>
-              <div style="display:flex;gap:10px">
-                <span style="width:46px;height:46px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
-                <span style="flex:1;height:46px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">Listo</span>
-              </div>
-            </div>
-
-            <div data-themesheet="1" style="position:absolute;left:0;right:0;bottom:0;height:300px;border-radius:28px 28px 0 0;background:var(--el);transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:10px 22px 0;will-change:transform;transition:background-color .8s">
-              <span style="align-self:center;width:36px;height:5px;border-radius:99px;background:rgba(255,255,255,.25)"></span>
-              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:22px;font-weight:700;letter-spacing:-0.5px">Apariencia</span><span style="font-size:13.5px;color:var(--sec);transition:color .8s">Temas · Premium</span></div>
-              <div style="display:flex;padding:6px 0 0"><span style="font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--sec);transition:color .8s">DE NOCHE</span></div>
-              <div style="display:flex;justify-content:space-between">
-                <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="5">
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:62px">
-                    <div style="position:relative;width:56px;height:56px">
-                      <div data-swring="{{ sw.key }}" style="position:absolute;inset:-4px;border-radius:99px;border:2px solid var(--lb);opacity:0;transition:opacity .25s"></div>
-                      <div data-tapt="sw-{{ sw.key }}" style="position:absolute;inset:0;border-radius:99px;background:{{ sw.g }}"></div>
-                    </div>
-                    <span style="font-size:11.5px;font-weight:600">{{ sw.name }}</span>
-                  </div>
-                </sc-for>
-              </div>
-              <span data-themeblurb="1" style="font-size:13px;color:var(--sec);text-align:center;transition:color .8s">Nubes de color que respiran y estrellas.</span>
-            </div>
-
-            <div data-sheet="1" style="position:absolute;left:0;right:0;bottom:0;height:760px;border-radius:28px 28px 0 0;background:#1E222D;transform:translateY(100%);display:flex;flex-direction:column;gap:14px;padding:10px 22px 0;will-change:transform">
-              <span style="align-self:center;width:36px;height:5px;border-radius:99px;background:rgba(255,255,255,.25)"></span>
-              <div style="display:flex;align-items:center;gap:8px;padding-top:8px"><span style="display:block;flex:none;width:20px;height:20px;background:#64B3FF;-webkit-mask:url(assets/icons/sparkles.svg) center/contain no-repeat;mask:url(assets/icons/sparkles.svg) center/contain no-repeat"></span><span style="font-size:24px;font-weight:700;letter-spacing:-0.5px">Tu resumen</span></div>
-              <span style="font-size:13.5px;color:#9AA3B2;margin-top:-8px">Sábado 18 de octubre</span>
-              <sc-for list="{{ brief }}" as="b" hint-placeholder-count="3">
-                <div data-brief="1" style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:20px;background:#161922;border:0.5px solid rgba(255,255,255,.07);opacity:0">
-                  <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:{{ b.bg }}"><span style="width:15px;height:15px;background:{{ b.fg }};-webkit-mask:url({{ b.icon }}) center/contain no-repeat;mask:url({{ b.icon }}) center/contain no-repeat"></span></span><span style="font-size:15.5px;font-weight:600">{{ b.title }}</span></div>
-                  <span style="font-size:14px;line-height:1.45;color:#9AA3B2">{{ b.body }}</span>
-                  <span style="align-self:flex-start;font-size:13px;font-weight:600;color:#64B3FF;padding:7px 12px;border-radius:99px;background:rgba(10,132,255,.2)">{{ b.cta }}</span>
-                </div>
-              </sc-for>
-              <div style="display:flex;align-items:center;gap:10px;height:48px;padding:0 8px 0 16px;border-radius:99px;background:#161922;border:0.5px solid rgba(255,255,255,.07);margin-top:4px">
-                <span data-typed="1" style="flex:1;font-size:15px;white-space:nowrap;overflow:hidden"></span>
-                <span style="width:34px;height:34px;border-radius:99px;background:#0A84FF;display:flex;align-items:center;justify-content:center"><span style="display:block;flex:none;width:16px;height:16px;background:#fff;-webkit-mask:url(assets/icons/mic.svg) center/contain no-repeat;mask:url(assets/icons/mic.svg) center/contain no-repeat"></span></span>
-              </div>
-            </div>
-
-            <div data-notif="1" style="position:absolute;left:10px;right:10px;top:54px;padding:13px 14px;border-radius:24px;background:rgba(44,49,62,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;gap:12px;align-items:flex-start;transform:translateY(-200%);opacity:0;box-shadow:0 20px 40px rgba(0,0,0,.4);z-index:5;will-change:transform">
-              <span style="width:38px;height:38px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none"><img src="assets/gmail.png" alt="Gmail" style="width:24px;height:24px;object-fit:contain"></span>
-              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
-                <div style="display:flex;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:600">Notificaciones BCP</span><span style="font-size:13px;color:#9AA3B2">ahora</span></div>
-                <span style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Realizaste un consumo con tu Tarjeta de Crédito BCP</span>
-                <span style="font-size:14px;color:#C5CBD6;line-height:1.3">Consumo de S/ 84.90 en PLAZA VEA con tu tarjeta ••4821.</span>
-              </div>
-            </div>
-            <div data-reg="1" style="position:absolute;left:0;right:0;top:186px;display:flex;justify-content:center;opacity:0;z-index:5;pointer-events:none">
-              <span style="display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:99px;background:rgba(10,132,255,.2);border:0.5px solid rgba(10,132,255,.4);font-size:10px;font-weight:700;letter-spacing:.06em;color:#64B3FF;backdrop-filter:blur(10px)"><span style="display:block;flex:none;width:10px;height:10px;background:#64B3FF;-webkit-mask:url(assets/icons/arrow-up.svg) center/contain no-repeat;mask:url(assets/icons/arrow-up.svg) center/contain no-repeat"></span>REGISTRADO EN AGRUPAY</span>
-            </div>
-
-            <div data-tap="1" style="position:absolute;left:0;top:0;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:99px;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.8);opacity:0;pointer-events:none;z-index:6;will-change:transform,opacity"></div>
-
-            <div style="position:absolute;left:0;right:0;top:0;height:54px;display:flex;justify-content:space-between;align-items:center;padding:6px 34px 0 44px;font-size:17px;font-weight:600;z-index:4;pointer-events:none;color:#EDF0F4">
-              <span>9:41</span>
-              <span style="display:flex;align-items:center;gap:6px"><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/signal.svg) center/contain no-repeat;mask:url(assets/icons/signal.svg) center/contain no-repeat"></span><span style="display:block;flex:none;width:17px;height:17px;background:#EDF0F4;-webkit-mask:url(assets/icons/wifi.svg) center/contain no-repeat;mask:url(assets/icons/wifi.svg) center/contain no-repeat"></span><span style="display:block;flex:none;width:22px;height:22px;background:#EDF0F4;-webkit-mask:url(assets/icons/battery-full.svg) center/contain no-repeat;mask:url(assets/icons/battery-full.svg) center/contain no-repeat"></span></span>
-            </div>
-            <div style="position:absolute;top:11px;left:50%;margin-left:-62px;width:124px;height:36px;border-radius:20px;background:#000;z-index:7"></div>
-            <div style="position:absolute;bottom:8px;left:50%;margin-left:-70px;width:140px;height:5px;border-radius:99px;background:rgba(255,255,255,.6);z-index:7"></div>
+            <div class="free"><span class="ic" style="--i:url(assets/icons/circle-check.svg)"></span>Gratis sigues teniendo 3 meses de historial, respaldo local y todos los temas de uno y dos colores.</div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <sc-for list="{{ panels }}" as="pn" hint-placeholder-count="0">
-        <div data-panel="{{ pn.i }}" style="position:absolute;top:50%;display:flex;flex-direction:column;gap:18px;max-width:min(470px,88vw);opacity:0;will-change:opacity,transform,filter">
-          <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8FA8FF">{{ pn.tag }}</span>
-          <h2 style="margin:0;font-size:clamp(36px,4.4vw,60px);line-height:1;letter-spacing:-0.04em;font-weight:700;text-wrap:balance">{{ pn.title }}</h2>
-          <p style="margin:0;font-size:17px;line-height:1.5;color:#9AA3B2;text-wrap:pretty">{{ pn.body }}</p>
-        </div>
-      </sc-for>
-      <div data-panel="0" style="position:absolute;left:clamp(20px,6vw,96px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;max-width:min(520px,88vw);will-change:opacity,transform,filter">
-        <div style="display:flex;align-items:center;gap:10px;align-self:flex-start;white-space:nowrap;height:32px;padding:0 14px 0 10px;border-radius:99px;background:rgba(46,91,255,.14);border:0.5px solid rgba(46,91,255,.45);font-size:13px;font-weight:500;color:#B8C8FF">
-          <span style="width:8px;height:8px;border-radius:99px;background:#2E5BFF;animation:ap-pulse 1.6s infinite"></span>Para iPhone · Hecha en Perú
-        </div>
-        <h1 style="margin:0;font-size:clamp(46px,6.2vw,88px);line-height:.95;letter-spacing:-0.045em;font-weight:800;text-wrap:balance">Tus gastos se anotan <span style="background:linear-gradient(100deg,#2E5BFF 10%,#8FA8FF 60%,#EDF0F4);-webkit-background-clip:text;background-clip:text;color:transparent">solos.</span></h1>
-        <p style="margin:0;font-size:18px;line-height:1.5;color:#9AA3B2;max-width:26em;text-wrap:pretty">Vincula tu Gmail y AgruPay lee los correos de tu banco. Cada consumo, Yapeo y Plin aparece en tu iPhone sin que escribas nada.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:12px">
-          <a href="#descargar" style="display:flex;align-items:center;white-space:nowrap;height:52px;padding:0 24px;border-radius:14px;background:#EDF0F4;color:#0B0E14;font-size:15px;font-weight:600" style-hover="background:#fff;color:#0B0E14">Descargar en App Store</a>
-        </div>
+  <!-- PRIVACIDAD -->
+  <section class="priv" id="privacidad">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="mono">Privacidad</span>
+        <h2 class="h2">Tus gastos se quedan<br><span class="grad">en tu iPhone.</span></h2>
       </div>
-
-      <div data-hint="1" style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none">
-        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#8A93A3">DESLIZA</span>
-        <span style="width:1px;height:40px;background:linear-gradient(#8FA8FF,transparent)"></span>
-      </div>
-      <div data-ticks="1" style="position:absolute;right:clamp(10px,1.6vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;pointer-events:none">
-        <sc-for list="{{ ticks }}" as="tk" hint-placeholder-count="8"><span data-tick="{{ tk }}" style="width:2px;height:24px;border-radius:2px;background:rgba(255,255,255,.18);transition:all .4s"></span></sc-for>
+      <div class="priv-grid">
+        <div class="card pv" data-reveal><span class="ic" style="--i:url(assets/icons/inbox.svg)"></span><b>Solo lectura</b><span>Busca únicamente los correos de tus bancos. No escribe, no borra, no envía.</span></div>
+        <div class="card pv" data-reveal style="transition-delay:.06s"><span class="ic" style="--i:url(assets/icons/lock.svg)"></span><b>Cifrado en el teléfono</b><span>Tus movimientos del correo no se suben a ningún servidor.</span></div>
+        <div class="card pv" data-reveal style="transition-delay:.12s"><span class="ic" style="--i:url(assets/icons/users.svg)"></span><b>Tú decides qué se ve</b><span>Con amigos solo se comparte lo que marcaste, persona por persona.</span></div>
+        <div class="card pv" data-reveal style="transition-delay:.18s"><span class="ic" style="--i:url(assets/icons/eye.svg)"></span><b>Montos ocultos</b><span>Toca el ojo y <span class="mask-demo" id="maskDemo" role="button" tabindex="0">S/ 2,612.00</span> pasa a S/ •••.</span></div>
       </div>
     </div>
   </section>
 
-  <button data-skip="1" type="button" style="position:fixed;right:clamp(16px,2vw,28px);bottom:24px;z-index:55;display:flex;align-items:center;gap:8px;height:42px;padding:0 16px 0 18px;border-radius:13px;border:0.5px solid rgba(255,255,255,.16);background:rgba(22,25,34,.78);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#EDF0F4;font:600 14px Geist,-apple-system,system-ui,sans-serif;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s ease,background-color .2s ease" style-hover="background:rgba(46,91,255,.9)">Saltar recorrido<span style="display:block;width:14px;height:14px;background:#EDF0F4;-webkit-mask:url(assets/icons/chevron-down.svg) center/contain no-repeat;mask:url(assets/icons/chevron-down.svg) center/contain no-repeat"></span></button>
-
-  <section style="position:relative;z-index:2;padding:60px 0 100px;display:flex;flex-direction:column;gap:28px">
-    <div style="text-align:center;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8A93A3">LEE LOS CORREOS DE</div>
-    <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)">{{ marquee }}</div>
-  </section>
-
-  <section id="funciones" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 24px;display:flex;flex-direction:column;gap:40px">
-    <h2 data-reveal="0" style="opacity:0;transform:translateY(20px);margin:0;font-size:clamp(36px,4.6vw,58px);line-height:1;letter-spacing:-0.04em;font-weight:700;max-width:14em;text-wrap:balance">Todo lo demás, también resuelto.</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px">
-      <sc-for list="{{ features }}" as="ft" hint-placeholder-count="6">
-        <div data-reveal="{{ ft.delay }}" data-tilt="1" style="opacity:0;transform:translateY(20px);position:relative;padding:clamp(22px,2.4vw,28px);border-radius:24px;background:#161922;border:0.5px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:flex-start;gap:16px;overflow:hidden;transition:border-color .3s" style-hover="border-color:rgba(46,91,255,.5)">
-          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:#8FA8FF">{{ ft.tag }}</div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="font-size:21px;line-height:1.2;font-weight:700;letter-spacing:-0.5px;text-wrap:balance">{{ ft.title }}</div>
-            <div style="font-size:15px;line-height:1.5;color:#9AA3B2;text-wrap:pretty">{{ ft.body }}</div>
-          </div>
-        </div>
-      </sc-for>
-    </div>
-  </section>
-
-  <section id="privacidad" style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:100px 24px">
-    <div data-reveal="0" style="opacity:0;transform:translateY(20px);position:relative;border-radius:36px;padding:clamp(36px,6vw,80px);background:#161922;border:0.5px solid rgba(255,255,255,.07);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:48px;align-items:end">
-      <div style="position:absolute;inset:0;background:radial-gradient(800px circle at 0% 100%,rgba(46,91,255,.22),transparent 60%);pointer-events:none"></div>
-      <div style="position:relative;display:flex;flex-direction:column;gap:20px">
-        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#8FA8FF">PRIVACIDAD</div>
-        <h2 style="margin:0;font-size:clamp(36px,4.6vw,58px);line-height:1;letter-spacing:-0.04em;font-weight:700;text-wrap:balance">Tus gastos se quedan en tu iPhone.</h2>
-      </div>
-      <div style="position:relative;display:flex;flex-direction:column">
-        <sc-for list="{{ privacy }}" as="pv" hint-placeholder-count="3">
-          <div style="display:flex;gap:16px;padding:18px 0;border-top:0.5px solid rgba(255,255,255,.08)">
-            <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#8FA8FF;padding-top:3px">{{ pv.n }}</span>
-            <span style="font-size:17px;line-height:1.45">{{ pv.t }}</span>
-          </div>
-        </sc-for>
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="wrap">
+      <div class="sec-head" data-reveal style="text-align:center;align-items:center"><span class="mono">Preguntas</span><h2 class="h2">Lo que todos preguntan</h2></div>
+      <div class="faq-list">
+        <details data-reveal><summary>¿Qué bancos y billeteras funcionan?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>BCP, BBVA, Interbank, Scotiabank (incluidas sus constancias), Yape y Plin. Si tu banco te envía correos de tus consumos, AlTanto los puede leer desde Gmail u Outlook.</p></details>
+        <details data-reveal><summary>¿AlTanto lee todos mis correos?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>No. Solo busca los correos que envían tus bancos y billeteras, y en modo lectura. Puedes detener la lectura de un correo cuando quieras y tus movimientos se quedan en el teléfono.</p></details>
+        <details data-reveal><summary>¿Y si pago en efectivo?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>Mantén presionado el «+» y dilo: «Almuerzo de hoy, 25 soles». También puedes escribirlo, o anotarlo desde un widget o un atajo de Siri.</p></details>
+        <details data-reveal><summary>¿Necesito crear una cuenta?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>No para empezar. AlTanto funciona también sin cuenta: anotas tus gastos a mano, por voz o desde un atajo. La cuenta sirve para lo social y el respaldo.</p></details>
+        <details data-reveal><summary>¿Cuánto cuesta?<span class="ic" style="--i:url(assets/icons/chevron-down.svg)"></span></summary><p>Lo esencial es gratis. AlTanto Pro cuesta S/ 12.90 al mes o S/ 99.90 al año, con 7 días de prueba gratis.</p></details>
       </div>
     </div>
   </section>
 
-  <section id="descargar" style="position:relative;z-index:2;padding:120px 24px 140px;display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center">
-    <div data-reveal="0" style="opacity:0;transform:translateY(20px);position:relative">
-      <div style="position:absolute;inset:-40px;border-radius:999px;background:radial-gradient(circle,rgba(46,91,255,.6),transparent 65%);filter:blur(10px)"></div>
-      <img src="assets/icon.png" alt="AgruPay" style="position:relative;width:112px;height:112px;border-radius:25px;box-shadow:0 30px 60px -20px rgba(46,91,255,.7)">
+  <!-- CTA FINAL -->
+  <section class="final" id="descargar">
+    <div class="wrap">
+      <img class="icon" src="assets/icon-512.png" alt="AlTanto" data-reveal>
+      <h2 data-reveal>Tu banco te escribe.<br><span class="grad">AlTanto te avisa.</span></h2>
+      <p data-reveal>Deja de anotar y empieza a entender en qué se te va el mes. Gratis para iPhone.</p>
+      <div class="cta-row" data-reveal>
+        <a class="btn btn-pri" href="#" style="height:60px;padding:0 30px;font-size:17px;border-radius:18px"><svg class="apple" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.41 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.93 1.16 9.2.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.59-.75 2.99-.75 1.4 0 1.79.75 3.01.72 1.24-.02 2.03-1.13 2.79-2.25.88-1.29 1.24-2.53 1.26-2.6-.03-.01-2.42-.93-2.45-3.7zM14.07 5.85c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.1 1.77-.97 2.82 1.03.08 2.07-.52 2.71-1.28z"/></svg>Descargar en App Store</a>
+      </div>
     </div>
-    <h2 data-reveal="80" style="opacity:0;transform:translateY(20px);margin:0;font-size:clamp(44px,7vw,88px);line-height:.95;letter-spacing:-0.045em;font-weight:800;max-width:11em;text-wrap:balance">Deja de anotar. Empieza a entender.</h2>
-    <p data-reveal="140" style="opacity:0;transform:translateY(20px);margin:0;font-size:18px;color:#9AA3B2;max-width:30em">Funciona también sin cuenta: anotas tus gastos a mano, por voz o desde un atajo.</p>
-    <a data-reveal="200" href="#" style="opacity:0;transform:translateY(20px);display:flex;align-items:center;height:60px;padding:0 32px;border-radius:18px;background:#2E5BFF;color:#fff;font-size:17px;font-weight:600;box-shadow:0 20px 50px -15px rgba(46,91,255,.8)" style-hover="background:#4A70FF;color:#fff">Descargar en App Store</a>
   </section>
+</main>
 
-  <footer style="position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:32px 24px 48px;border-top:0.5px solid rgba(255,255,255,.08);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;font-size:13px;color:#8A93A3">
-    <div style="display:flex;align-items:center;gap:10px"><img src="assets/icon.png" alt="" style="width:22px;height:22px;border-radius:6px"><span>© 2026 AgruPay</span></div>
-    <div style="display:flex;gap:24px"><a href="#" style="color:#8A93A3">Privacidad</a><a href="#" style="color:#8A93A3">Términos</a><a href="#" style="color:#8A93A3">Soporte</a></div>
-  </footer>
-</div>
-</x-dc>
-<script type="text/x-dc" data-dc-script>
-const IC = n => 'assets/icons/' + n + '.svg';
-const SEP = '0.5px solid rgba(255,255,255,.06)';
-const THEMES = {
-  base: { bg: '#0B0E14', sf: '#161922', el: '#1E222D', hl: 'rgba(255,255,255,.07)', lb: '#EDF0F4', sec: '#9AA3B2', ac: '#0A84FF', at: '#64B3FF', acs: 'rgba(10,132,255,.16)', tr: '#2A3242', sel: '#232838', pos: '#10B981', glow: 'rgba(46,91,255,.42)' },
-  neb: { bg: '#06061A', sf: 'rgba(16,14,44,.84)', el: '#15133A', hl: 'rgba(190,170,255,.16)', lb: '#F1EEFF', sec: '#A9A6CC', ac: '#8B5CF6', at: '#C4B5FD', acs: 'rgba(139,92,246,.22)', tr: 'rgba(190,170,255,.16)', sel: 'rgba(139,92,246,.24)', pos: '#5EEAD4', glow: 'rgba(139,92,246,.5)' },
-  aur: { bg: '#04110F', sf: 'rgba(8,30,27,.86)', el: '#0B2522', hl: 'rgba(110,231,183,.14)', lb: '#E8FFF6', sec: '#9CC3B6', ac: '#34D399', at: '#6EE7B7', acs: 'rgba(52,211,153,.22)', tr: 'rgba(110,231,183,.14)', sel: 'rgba(52,211,153,.24)', pos: '#6EE7B7', glow: 'rgba(52,211,153,.42)' },
-};
-const PANELS = [
-  null,
-  { tag: '01 — CORREO', title: 'Te llega el correo del banco. AgruPay lo anota.', body: 'Vincula tu Gmail y AgruPay lee los correos de BCP, BBVA, Interbank, Scotiabank, Yape y Plin. Solo lectura: no escribimos ni enviamos correos.' },
-  { tag: '02 — MOVIMIENTOS', title: 'Tus tarjetas, en un carrusel.', body: 'Cada cuenta se viste como la de su banco. Toca una para ver solo sus movimientos, o «Todas» para verlo todo.' },
-  { tag: '03 — RITMO', title: 'Sabes si vas rápido antes de fin de mes.', body: 'Ves de un vistazo en qué se te fue el mes. Y a las categorías que quieras ponles un límite: la marca te dice por dónde va el mes y si vas más rápido que él.' },
-  { tag: '04 — AMIGOS', title: 'Y si quieres, lo comparas con tus patas.', body: 'Tú eliges, por persona, si ve tu total del mes, algunas categorías o nada. Ellos deciden lo mismo contigo.' },
-  { tag: '05 — VOZ', title: 'Dicta tus gastos.', body: 'Mantén presionado el + y di el monto y en qué gastaste. Cada movimiento se registra solo a los 5 segundos, salvo que lo canceles o lo edites.' },
-  { tag: '06 — TEMAS PREMIUM', title: 'Un cielo vivo en tu Resumen.', body: 'Nebulosa, Aurora, Atardecer y más: fondos animados que tiñen toda la app.' },
-  { tag: '07 — ASISTENTE', title: 'Pregúntale a tu mes.', body: 'Cada día, un resumen con lo que cambió. Y respuestas sobre tus números cuando las necesites.' },
-];
+<footer>
+  <div class="wrap">
+    <span class="brand"><img src="assets/icon-192.png" alt="">© 2026 AlTanto</span>
+    <nav aria-label="Legal"><a href="#">Privacidad</a><a href="#">Términos</a><a href="#">Soporte</a></nav>
+  </div>
+</footer>
 
-class Component extends DCLogic {
-  rootRef = React.createRef();
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const icon = n => `<span class="ic" style="--i:url(assets/icons/${n}.svg)"></span>`;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  componentDidMount() {
-    const root = this.rootRef.current;
-    const q = s => root.querySelector(s), qa = s => [...root.querySelectorAll(s)];
-    this.io = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target, d = +el.getAttribute('data-reveal') || 0;
-      el.style.transition = `opacity .9s cubic-bezier(.2,.8,.2,1) ${d}ms, transform .9s cubic-bezier(.2,.8,.2,1) ${d}ms`;
-      el.style.opacity = '1'; el.style.transform = 'none';
-      this.io.unobserve(el);
-    }), { threshold: .18 });
-    const scan = () => qa('[data-reveal]').forEach(el => { if (!el.__o) { el.__o = 1; this.io.observe(el); } });
-    scan(); this.scanT = setTimeout(scan, 800);
-    this.mx = 0; this.my = 0;
-    this.onMove = e => {
-      this.mx = e.clientX / innerWidth - .5; this.my = e.clientY / innerHeight - .5;
-      const card = e.target.closest && e.target.closest('[data-tilt]');
-      if (card) { const r = card.getBoundingClientRect(); card.style.background = `radial-gradient(400px circle at ${e.clientX - r.left}px ${e.clientY - r.top}px, rgba(46,91,255,.16), #161922 60%)`; }
-    };
-    addEventListener('mousemove', this.onMove, { passive: true });
+  // Barra superior sólida al bajar
+  const nav = $('#nav');
+  const onScroll = () => nav.classList.toggle('solid', scrollY > 20);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-    // stars
-    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    qa('[data-stars]').forEach(el => {
-      const n = el.getAttribute('data-stars') === 'neb' ? 80 : 55, maxY = el.getAttribute('data-stars') === 'neb' ? 600 : 320;
-      const tint = el.getAttribute('data-stars') === 'neb' ? '233,227,255' : '230,255,244';
-      el.style.boxShadow = Array.from({ length: n }, () => `${Math.round(rnd() * 393)}px ${Math.round(rnd() * maxY)}px 0 ${rnd() < .15 ? 1 : 0}px rgba(${tint},${(.35 + rnd() * .6).toFixed(2)})`).join(',');
-    });
+  // Fecha real en la pantalla de bloqueo
+  try {
+    const d = new Date().toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
+    $('#lockDate').textContent = d;
+  } catch (e) {}
 
-    const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
-    const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const E = {};
-    ['seq', 'phone', 'glow', 'progress', 'dashscroll', 'movscroll', 'amiscroll', 'track', 'sheet', 'scrim', 'notif', 'reg', 'tap', 'amount', 'cents', 'delta', 'chartsub', 'badge', 'movcount', 'typed', 'hint', 'screen', 'dict', 'said', 'caret', 'dcard', 'dpending', 'dsaved', 'dring', 'dicthint', 'themesheet', 'themeblurb', 'bubble', 'tabpill', 'shoot', 'movsub', 'skip'].forEach(k => E[k] = q(`[data-${k}]`));
-    E.dash = q('[data-scr="dash"]'); E.mov = q('[data-scr="mov"]'); E.cat = q('[data-scr="cat"]'); E.ami = q('[data-scr="ami"]');
-    E.dim = q('[data-dim="dash"]'); E.neb = q('[data-sky="neb"]'); E.aur = q('[data-sky="aur"]');
-    const panels = qa('[data-panel]').sort((a, b) => a.getAttribute('data-panel') - b.getAttribute('data-panel'));
-    const ticks = qa('[data-tick]'), wbars = qa('[data-wbar]'), nglow = qa('[data-nglow]'), ribs = qa('[data-rib]');
-    const tabKeys = ['tab-res', 'tab-mov', 'tab-met', 'tab-ami'];
-    const offsetIn = (el, stop) => { let x = 0, y = 0; while (el && el !== stop) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return { x, y }; };
-    // [rotX, rotY, rotZ, txFrac, tyFrac, scale]
-    const C = [.04, .16, .30, .43, .555, .685, .815, .945];
-    const P = [[24, -26, 9, .2, 0, .92], [0, 16, -2, -.2, 0, 1], [0, -16, 2, .2, 0, 1], [0, 16, -2, -.2, 0, 1], [0, -16, 2, .2, 0, 1], [0, 16, -2, -.2, 0, 1], [0, -14, 2, .2, 0, 1], [0, 14, -2, -.2, 0, 1]];
-    const WIN = [[-1, .085], [.105, .215], [.235, .355], [.375, .485], [.505, .615], [.635, .745], [.765, .875], [.895, 2]];
-    const TAPS = [['tab-mov', .232, .03], ['card-bcp', .3, .03], ['tab-res', .367, .025], ['tile-cat', .388, .028], ['tab-ami', .497, .03], ['plus', .632, .05], ['bubble', .66, .025], ['tab-res', .757, .025], ['gear', .773, .025], ['sw-neb', .795, .025], ['sw-aur', .833, .025], ['ast', .887, .03]];
-    const phrase = '¿En qué gasté más esta semana?', said = 'Cuarenta soles en el chifa con tarjeta';
-    // El inicio del recorrido es corto: el primer 3 % del scroll lleva al hero directo al primer capítulo
-    const A0 = .03, mapP = r => r < A0 ? lerp(.06, .105, r / A0) : lerp(.105, 1, (r - A0) / (1 - A0));
-    let snap = true, panelH = [];
-    const measure = () => { panelH = panels.map(el => el.offsetHeight); };
-    const seqRange = () => { const top = E.seq.getBoundingClientRect().top + scrollY; return [top, top + E.seq.offsetHeight]; };
-    // Saltos sin reproducir el recorrido: se llega de golpe y la animación no persigue el scroll
-    const jump = y => { snap = true; scrollTo({ top: y, behavior: 'instant' }); };
-    this.onNav = e => {
-      const a = e.target.closest && e.target.closest('a[href^="#"]');
-      if (a) {
-        const id = a.getAttribute('href').slice(1), [s0, s1] = seqRange();
-        if (!id || id === 'top') { e.preventDefault(); jump(0); history.replaceState(null, '', location.pathname); return; }
-        const tgt = document.getElementById(id); if (!tgt) return;
-        const y = tgt.getBoundingClientRect().top + scrollY;
-        if (y >= s1 && scrollY < s1) { e.preventDefault(); jump(s1); setTimeout(() => scrollTo({ top: y, behavior: 'smooth' }), 60); history.replaceState(null, '', '#' + id); }
-        return;
-      }
-      if (e.target.closest && e.target.closest('[data-skip]')) jump(seqRange()[1]);
-    };
-    root.addEventListener('click', this.onNav);
-    let ps = 0, smx = 0, smy = 0, lastStage = -1, lastAmt = '', lastTheme = '', lastTab = '';
-    const tabX = k => 4 + tabKeys.indexOf(k) * (E.tabpill.parentElement.clientWidth - 8) / 4;
+  // Aparición al hacer scroll
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in'); io.unobserve(e.target);
+    e.target.querySelectorAll('[data-count]').forEach(countUp);
+    e.target.querySelectorAll('.prog span').forEach(s => s.style.width = s.dataset.w);
+  }), { threshold: .15, rootMargin: '0px 0px -40px' });
+  $$('[data-reveal]').forEach(el => io.observe(el));
 
-    const frame = () => {
-      const r = E.seq.getBoundingClientRect();
-      const h = document.documentElement.scrollHeight - innerHeight;
-      E.progress.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
-      const raw = clamp(-r.top / Math.max(1, r.height - innerHeight));
-      const showSkip = r.top < innerHeight * .5 && r.bottom > innerHeight * 1.2;
-      E.skip.style.opacity = showSkip ? '1' : '0'; E.skip.style.pointerEvents = showSkip ? 'auto' : 'none';
-      if (r.bottom < -100 || r.top > innerHeight) return;
-      const p = window.__apP != null ? window.__apP : mapP(raw);
-      ps = window.__apP != null || snap ? p : ps + (p - ps) * .12; snap = false;
-      smx += (this.mx - smx) * .06; smy += (this.my - smy) * .06;
-      const W = innerWidth, H = innerHeight, narrow = W < 900, time = performance.now() / 1000;
-
-      let i = 0; while (i < WIN.length - 1 && ps > WIN[i][1] - .012) i++;
-      let j = i, t = 0;
-      if (i > 0 && ps < WIN[i][0] + .012) { j = i; i = i - 1; t = ss(WIN[i][1] - .012, WIN[j][0] + .012, ps); }
-      const pose = P[i].map((v, k) => lerp(v, P[j][k], t));
-      // En pantallas angostas el celular usa el espacio entre la barra y la tarjeta de texto
-      let fit = Math.min(1.05, (H * .86) / 753), tx = pose[3] * W, ty = pose[4] * H;
-      if (narrow) {
-        const top = 70, bottom = lerp(panelH[i] || 0, panelH[j] || 0, t) + 96, avail = Math.max(140, H - top - bottom);
-        fit = Math.min(1.05, avail * .94 / 753, W * .82 / 360); tx = 0; ty = top + avail / 2 - H / 2;
-      }
-      E.phone.style.transform = `translate3d(${tx}px,${ty}px,0) rotateX(${pose[0] - smy * 6}deg) rotateY(${pose[1] + smx * 8}deg) rotateZ(${pose[2]}deg) scale(${fit * pose[5]})`;
-      E.glow.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${1 + Math.sin(ps * 14) * .06})`;
-
-      // 1 · correo
-      const nIn = ss(.12, .14, ps) * (1 - ss(.185, .2, ps));
-      E.notif.style.transform = `translateY(calc(${lerp(-100, 0, nIn)}% - ${((1 - nIn) * 70).toFixed(1)}px))`;
-      E.notif.style.opacity = nIn.toFixed(3);
-      const reg = ss(.16, .17, ps) * (1 - ss(.205, .215, ps));
-      E.reg.style.opacity = (reg * (.6 + .4 * Math.abs(Math.sin(time * 6)))).toFixed(3);
-      const added = ss(.17, .2, ps);
-      const amt = 2527.1 + 84.9 * added;
-      const s = 'S/ ' + Math.floor(amt).toLocaleString('en-US'), c = '.' + String(Math.round((amt % 1) * 100)).padStart(2, '0');
-      if (s + c !== lastAmt) {
-        lastAmt = s + c; E.amount.textContent = s; E.cents.textContent = c;
-        E.delta.textContent = 'S/ ' + Math.round(233 + 85 * added) + ' vs. septiembre';
-        E.chartsub.textContent = 'S/ ' + Math.round(576 + 85 * added) + ' · ' + (added > .5 ? 14 : 13) + ' movimientos';
-        E.badge.textContent = added > .5 ? '3' : '2'; E.movcount.textContent = added > .5 ? '47' : '46';
-        const tb = q('[data-bar="6"]'); if (tb) tb.style.height = Math.round(lerp(20, 60, added)) + 'px';
-      }
-
-      // tabs
-      const tab = ps < .232 ? 'tab-res' : ps < .367 ? 'tab-mov' : ps < .497 ? 'tab-res' : ps < .757 ? 'tab-ami' : 'tab-res';
-      if (tab !== lastTab) {
-        lastTab = tab;
-        E.tabpill.style.transition = 'transform .35s cubic-bezier(.3,1.3,.5,1)';
-        E.tabpill.style.transform = `translateX(${tabX(tab) - 4}px)`;
-        tabKeys.forEach(k => { const on = k === tab; q(`[data-tabicon="${k}"]`).style.background = on ? 'var(--at)' : '#EDF0F4'; q(`[data-tablabel="${k}"]`).style.color = on ? 'var(--at)' : '#EDF0F4'; });
-      }
-      E.mov.style.opacity = tab === 'tab-mov' ? 1 : 0;
-      E.ami.style.opacity = tab === 'tab-ami' ? 1 : 0;
-      const trackX = -70 * ss(.26, .285, ps);
-      E.track.style.transform = `translateX(${trackX}px)`;
-      const bcp = ps > .3;
-      qa('[data-ring]').forEach(el => { const key = el.getAttribute('data-ring'); el.style.opacity = (bcp ? key === 'bcp' : key === 'all') ? 1 : 0; });
-      E.movsub.textContent = bcp ? '14 movimientos · BCP Crédito' : '47 movimientos · octubre';
-      E.movscroll.style.transform = `translateY(${-260 * ss(.315, .35, ps)}px)`;
-
-      // categorías
-      const dashY = -230 * ss(.372, .382, ps) * (1 - ss(.75, .76, ps));
-      E.dashscroll.style.transform = `translateY(${dashY}px)`;
-      const ct = ss(.392, .41, ps) * (1 - ss(.493, .5, ps));
-      E.cat.style.transform = `translateX(${(1 - ct) * 100}%)`;
-      E.dash.style.transform = `translateX(${-ct * 30}%)`;
-      E.dim.style.opacity = (ct * .35).toFixed(3);
-      const catFill = ss(.41, .46, ps);
-      E.cat.querySelectorAll('[data-pace]').forEach((el, k) => { el.style.width = (+el.getAttribute('data-pace') * ss(0, 1, catFill * 1.4 - k * .1)) + '%'; });
-      E.amiscroll.style.transform = `translateY(${-150 * ss(.56, .6, ps)}px)`;
-
-      // voz
-      const bub = ss(.638, .65, ps) * (1 - ss(.66, .668, ps));
-      E.bubble.style.opacity = bub.toFixed(3); E.bubble.style.transform = `scale(${lerp(.4, 1, bub)})`;
-      const ds = ss(.664, .68, ps) * (1 - ss(.743, .755, ps));
-      E.dict.style.transform = `translateY(${(1 - ds) * 100}%)`;
-      const sayN = Math.round(said.length * ss(.685, .71, ps));
-      if (E.said.textContent.length !== sayN) E.said.textContent = said.slice(0, sayN);
-      E.caret.style.opacity = Math.sin(time * 7) > 0 ? 1 : 0;
-      const listening = ps > .68 && ps < .713;
-      wbars.forEach((b, k) => { const v = listening ? .25 + .75 * Math.abs(Math.sin(time * 5 + k * .7) * Math.sin(time * 2.3 + k * .31)) : .1; b.style.height = Math.round(6 + v * 48) + 'px'; });
-      const dc = ss(.712, .722, ps);
-      E.dcard.style.opacity = dc; E.dcard.style.transform = `translateY(${(1 - dc) * -14}px)`;
-      E.dring.style.strokeDashoffset = (75.4 * ss(.722, .738, ps)).toFixed(1);
-      const saved = ps > .738;
-      E.dpending.style.display = saved ? 'none' : 'flex'; E.dsaved.style.display = saved ? 'flex' : 'none';
-      E.dicthint.textContent = saved ? '1 movimiento registrado por voz' : 'Di el monto y en qué gastaste';
-
-      // temas
-      const thS = ss(.778, .79, ps) * (1 - ss(.858, .87, ps));
-      E.themesheet.style.transform = `translateY(${(1 - thS) * 100}%)`;
-      const nebR = 1100 * ss(.797, .815, ps), aurR = 1100 * ss(.835, .853, ps);
-      E.neb.style.clipPath = `circle(${nebR.toFixed(0)}px at 70px 770px)`;
-      E.aur.style.clipPath = `circle(${aurR.toFixed(0)}px at 200px 770px)`;
-      const theme = ps > .84 ? 'aur' : ps > .802 ? 'neb' : 'base';
-      if (theme !== lastTheme) {
-        lastTheme = theme; const T = THEMES[theme];
-        ['bg', 'sf', 'el', 'hl', 'lb', 'sec', 'ac', 'at', 'acs', 'tr', 'sel', 'pos'].forEach(k => E.screen.style.setProperty('--' + k, T[k]));
-        E.glow.style.background = `radial-gradient(circle,${T.glow},rgba(46,91,255,.06) 45%,transparent 70%)`;
-        qa('[data-swring]').forEach(el => el.style.opacity = el.getAttribute('data-swring') === theme ? 1 : 0);
-        E.themeblurb.textContent = theme === 'aur' ? 'Cintas boreales sobre un cielo nocturno.' : 'Nubes de color que respiran y estrellas.';
-        qa('[data-bar]').forEach(b => { b.style.background = b.getAttribute('data-bar') === '6' ? 'var(--ac)' : 'var(--tr)'; });
-      }
-      if (nebR > 0) {
-        const br = .5 + .5 * Math.sin(time * 2 * Math.PI / 14);
-        nglow[0].style.transform = `translate(${24 * br}px,${-8 * br}px) scale(${1 + .2 * br})`;
-        nglow[1].style.transform = `scale(${1.1 - .15 * (.5 + .5 * Math.sin(time * .37))})`;
-        nglow[2].style.transform = `scale(${1 + .12 * (.5 + .5 * Math.sin(time * .31))})`;
-        const cyc = (time / 11) % 1, pr = Math.min(cyc / .09, 1);
-        E.shoot.style.opacity = cyc < .09 ? (1 - pr * .6) : 0;
-        E.shoot.style.transform = `translate(${-260 * pr}px,${86 * pr}px) rotate(-18deg)`;
-      }
-      if (aurR > 0) {
-        const sw = Math.sin(time * 2 * Math.PI / 16);
-        ribs.forEach((rb, k) => { const d = [-28, 22, -14][k]; rb.style.transform = `translateX(${d * sw}px) skewY(${Math.sin(time / 9 * 6.28 + k * 1.6) * 6}deg)`; rb.style.opacity = ([.26, .18, .12][k] + [.14, .12, .1][k] * (.5 + .5 * Math.sin(time * 1.05 + k))) * 1.4; });
-      }
-
-      // asistente
-      const sh = ss(.897, .915, ps);
-      E.sheet.style.transform = `translateY(${(1 - sh) * 100}%)`;
-      E.scrim.style.opacity = (Math.max(sh, ds) * .5).toFixed(3);
-      E.sheet.querySelectorAll('[data-brief]').forEach((el, k) => { const o = ss(.91 + k * .012, .925 + k * .012, ps); el.style.opacity = o; el.style.transform = `translateY(${(1 - o) * 16}px)`; });
-      const n = Math.round(phrase.length * ss(.955, .985, ps));
-      if (E.typed.textContent.length !== n) E.typed.textContent = phrase.slice(0, n);
-
-      // toques
-      let tapO = 0, tapS = 1;
-      for (const [k, at, dur] of TAPS) {
-        const w = clamp((ps - (at - dur / 2)) / dur);
-        if (w > 0 && w < 1) {
-          const el = root.querySelector(`[data-tapt="${k}"]`) || (k === 'card-bcp' ? q('[data-card="bcp"]') : null);
-          if (el) {
-            const o = offsetIn(el, E.screen);
-            let dy = 0, dx = 0;
-            if (el.closest('[data-dashscroll]')) dy = dashY;
-            if (el.closest('[data-movscroll]')) dy = -260 * ss(.315, .35, ps);
-            if (el.closest('[data-track]')) dx = trackX;
-            E.tap.style.left = (o.x + el.offsetWidth / 2 + dx) + 'px'; E.tap.style.top = (o.y + el.offsetHeight / 2 + dy) + 'px';
-          }
-          if (k === 'plus') { tapO = Math.sin(w * Math.PI); tapS = w < .2 ? lerp(1.4, .85, w * 5) : w < .8 ? .85 + .05 * Math.sin(time * 10) : lerp(.85, 1.2, (w - .8) * 5); }
-          else { tapO = Math.sin(w * Math.PI); tapS = w < .5 ? lerp(1.4, .8, w * 2) : lerp(.8, 1.2, (w - .5) * 2); }
-        }
-      }
-      E.tap.style.opacity = tapO.toFixed(3); E.tap.style.transform = `scale(${tapS})`;
-
-      // paneles
-      let active = 0;
-      panels.forEach((el, k) => {
-        const [a, b] = WIN[k];
-        const o = ss(a - .02, a + .015, ps) * (1 - ss(b - .015, b + .02, ps));
-        if (o > .5) active = k;
-        const dir = k % 2 ? 1 : -1;
-        el.style.opacity = o.toFixed(3);
-        el.style.transform = narrow ? `translateY(${(1 - o) * 30}px)` : `translate(${(1 - o) * 40 * dir}px, -50%)`;
-        el.style.filter = o > .99 ? 'none' : `blur(${((1 - o) * 12).toFixed(1)}px)`;
-        el.style.pointerEvents = o > .5 ? 'auto' : 'none';
-      });
-      if (active !== lastStage) {
-        lastStage = active;
-        ticks.forEach((tk, k) => { tk.style.background = k === active ? '#EDF0F4' : 'rgba(255,255,255,.18)'; tk.style.height = k === active ? '40px' : '24px'; });
-      }
-      E.hint.style.opacity = narrow ? '0' : String(1 - ss(0, .4, raw / A0));
-    };
-    this.onResize = () => {
-      const narrow = innerWidth < 900;
-      panels.forEach(el => {
-        const k = +el.getAttribute('data-panel');
-        if (narrow) Object.assign(el.style, { top: 'auto', bottom: '80px', left: '16px', right: '16px', margin: '0 auto', padding: '18px 20px', borderRadius: '22px', background: 'rgba(11,14,20,.82)', backdropFilter: 'blur(14px)' });
-        else Object.assign(el.style, { top: '50%', bottom: '', margin: '', padding: '', background: '', backdropFilter: '', left: k % 2 ? 'auto' : 'clamp(20px,6vw,96px)', right: k % 2 ? 'clamp(20px,6vw,96px)' : 'auto' });
-        const h = el.querySelector('h1,h2'), b = el.querySelector('p');
-        if (h.__fs == null) { h.__fs = h.style.fontSize; b.__fs = b.style.fontSize; b.__lh = b.style.lineHeight; el.__gap = el.style.gap; }
-        h.style.fontSize = narrow ? (k ? 'clamp(26px,6.4vw,36px)' : 'clamp(34px,8.4vw,52px)') : h.__fs;
-        b.style.fontSize = narrow ? '15px' : b.__fs; b.style.lineHeight = narrow ? '1.45' : b.__lh;
-        el.style.gap = narrow ? '12px' : el.__gap;
-      });
-      measure();
-      q('[data-ticks]').style.display = narrow ? 'none' : 'flex';
-      q('[data-navlinks]').style.visibility = innerWidth < 600 ? 'hidden' : 'visible';
-    };
-    this.onResize(); addEventListener('resize', this.onResize);
-    document.fonts && document.fonts.ready.then(() => !this.dead && this.onResize());
-    window.__apStep = frame;
-    const loop = () => { if (this.dead) return; this.raf = requestAnimationFrame(loop); frame(); };
-    loop();
-  }
-  componentWillUnmount() {
-    this.dead = 1; cancelAnimationFrame(this.raf); clearTimeout(this.scanT);
-    this.io && this.io.disconnect();
-    removeEventListener('mousemove', this.onMove); this.rootRef.current && this.rootRef.current.removeEventListener('click', this.onNav); removeEventListener('resize', this.onResize);
+  const money = v => 'S/ ' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function countUp(el) {
+    const to = +el.dataset.count, t0 = performance.now(), dur = reduce ? 0 : 1400;
+    const tick = t => { const k = dur ? Math.min(1, (t - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3); el.textContent = money(to * e); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
   }
 
-  renderVals() {
-    const vals = [62, 140, 210, 35, 88, 41, 20], labels = ['J', 'V', 'S', 'D', 'L', 'M', 'X'];
-    const bars = vals.map((v, i) => ({ i, h: i === 6 ? 20 : Math.max(4, Math.round(v / 210 * 100)), l: labels[i], bg: i === 6 ? 'var(--ac)' : 'var(--tr)', fw: i === 6 ? 600 : 400, fc: i === 6 ? 'var(--at)' : 'var(--sec)' }));
-    const cat = { Comida: ['utensils', '#FF9F0A'], Supermercado: ['shopping-cart', '#40C8E0'], Transporte: ['car', '#0A84FF'], Suscripciones: ['repeat', '#BF5AF2'], Entretenimiento: ['tv', '#5E5CE6'], Salud: ['briefcase-medical', '#FF375F'], Sin: ['inbox', '#98989D'] };
-    const hex2 = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
-    const row = (name, c, sub, time, amount, badge) => {
-      const [ic, col] = cat[c], un = c === 'Sin';
-      return { name, icon: IC(ic), fg: col, bg: hex2(col, .22), sub, time, amount, badge: badge || 'assets/yape.png', bo: badge ? 1 : 0,
-        subSize: un ? '11px' : '12.5px', subW: un ? 600 : 400, subC: un ? '#64B3FF' : '#9AA3B2', subPad: un ? '3px 8px' : '0', subBg: un ? 'rgba(10,132,255,.2)' : 'transparent' };
-    };
-    const withSep = rs => rs.map((r, k) => ({ ...r, sep: k ? SEP : '0' }));
-    const days = [
-      { title: 'HOY', total: 'S/ 222.30', rows: withSep([row('Plaza Vea', 'Supermercado', 'Supermercado', '09:42', 'S/ 84.90', 'assets/bcp.jpg'), row('Jorge M.', 'Sin', 'Asignar categoría', '21:04', 'S/ 120.00', 'assets/yape.png'), row('Uber', 'Transporte', 'Transporte', '08:15', 'S/ 17.40', 'assets/bcp.jpg')]) },
-      { title: 'AYER', total: 'S/ 158.40', rows: withSep([row('Tambo', 'Comida', 'Comida', '19:20', 'S/ 12.40', 'assets/yape.png'), row('Netflix', 'Suscripciones', 'Suscripciones', '07:00', 'S/ 44.90', 'assets/bbva.png'), row('Inkafarma', 'Salud', 'Salud', '13:31', 'S/ 56.30', 'assets/interbank.png'), row('Andrea R.', 'Sin', 'Asignar categoría', '22:02', 'S/ 44.80', 'assets/plin.png')]) },
-    ];
-    const cards = [
-      { key: 'all', bg: 'linear-gradient(135deg,#3A3A40,#16161A)', shadow: 'rgba(22,22,26,.45)', motif: 'width:137px;height:137px;right:-60px;bottom:-75px;border-radius:999px;border:10px solid rgba(255,255,255,.12)', logo: 'assets/icon.png', logoO: 0, digits: '5 cuentas', title: 'Todas', line: '47 movimientos', ring: 1 },
-      { key: 'bcp', bg: 'linear-gradient(135deg,#0A3A9E,#002169)', shadow: 'rgba(0,33,105,.45)', motif: 'inset:0;background:linear-gradient(90deg,#FF7800,rgba(255,120,0,.75));opacity:.9;clip-path:polygon(62% 100%,86% 100%,110% 0,86% 0)', logo: 'assets/bcp.jpg', logoO: 1, digits: '•• 4821', title: 'BCP Crédito', line: '14 movimientos', ring: 0 },
-      { key: 'bbva', bg: 'linear-gradient(135deg,#1973B8,#072146)', shadow: 'rgba(7,33,70,.45)', motif: 'width:144px;height:144px;right:-58px;top:-58px;border-radius:999px;border:14px solid rgba(255,255,255,.10)', logo: 'assets/bbva.png', logoO: 1, digits: '•• 0193', title: 'BBVA Débito', line: '9 movimientos', ring: 0 },
-      { key: 'ibk', bg: 'linear-gradient(135deg,#12B563,#05783D)', shadow: 'rgba(5,120,61,.45)', motif: 'inset:0;background:rgba(0,57,166,.85);clip-path:ellipse(60% 70% at 100% 100%)', logo: 'assets/interbank.png', logoO: 1, digits: '•• 7710', title: 'Interbank', line: '6 movimientos', ring: 0 },
-      { key: 'yape', bg: 'linear-gradient(135deg,#8E2BA3,#4A0F5C)', shadow: 'rgba(74,15,92,.45)', motif: 'width:152px;height:106px;right:-70px;bottom:-50px;border-radius:50%;background:radial-gradient(rgba(16,212,194,.75),rgba(16,212,194,0) 70%)', logo: 'assets/yape.png', logoO: 1, digits: '', title: 'Yape', line: '12 movimientos', ring: 0 },
-      { key: 'plin', bg: 'linear-gradient(135deg,#16C7E0,#0070B8)', shadow: 'rgba(0,112,184,.45)', motif: 'width:152px;height:106px;right:-70px;bottom:-50px;border-radius:50%;background:radial-gradient(rgba(124,242,255,.75),rgba(124,242,255,0) 70%)', logo: 'assets/plin.png', logoO: 1, digits: '', title: 'Plin', line: '6 movimientos', ring: 0 },
-    ];
-    const D = [['Comida', 412], ['Supermercado', 386], ['Entretenimiento', 240], ['Transporte', 128], ['Suscripciones', 66]];
-    const short = { Supermercado: 'Super.', Entretenimiento: 'Entr.', Transporte: 'Transp.', Suscripciones: 'Suscr.' };
-    const tot = D.reduce((s, d) => s + d[1], 0), circ = 2 * Math.PI * 60;
-    let acc = 0;
-    const donut = D.map(([n, v]) => { const len = v / tot * circ; const o = { c: cat[n][1], dash: `${Math.max(0, len - 3)} ${circ}`, off: -acc, short: short[n] || n, pct: Math.round(v / tot * 100) + '%' }; acc += len; return o; });
-    const cats = [
-      ['Comida', 'S/ 412.40', 'Vas más rápido que el mes', '#FF9F0A', 69, '#FF9F0A'],
-      ['Supermercado', 'S/ 386.20', 'Sin límite', '#9AA3B2', 0, ''],
-      ['Entretenimiento', 'S/ 240.00', 'Pasaste el límite por S/ 40', '#FF6961', 100, '#FF6961'],
-      ['Transporte', 'S/ 128.30', 'Vas a buen ritmo', '#10B981', 43, '#0A84FF'],
-      ['Suscripciones', 'S/ 66.80', 'Vas a buen ritmo', '#10B981', 55, '#0A84FF'],
-    ].map(([n, a, note, nc, w, fill], k) => { const [ic, col] = cat[n]; return { name: n, amount: a, note, noteC: nc, w, fill, icon: IC(ic), fg: col, bg: hex2(col, .22), barDisplay: w ? 'block' : 'none', sep: k ? SEP : '0' }; });
-    const chip = (n, v) => ({ t: n + ' ' + v, c: cat[n][1], bg: hex2(cat[n][1], .14), icon: IC(cat[n][0]) });
-    const peng = ({ coat, beak, face = 'high', tuft = 'spikes', extra, accent }) => {
-      const N = '#1e1a6b', R = 'stroke="' + N + '" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"';
-      const body = 'M215 560 C205 470 200 390 222 320 C245 250 310 228 370 228 C440 228 500 250 515 320 C530 390 525 470 520 560 C520 600 460 616 370 616 C280 616 215 600 215 560 Z';
-      const fc = face === 'high' ? 'M370 302 C350 270 298 262 264 290 C236 316 232 380 236 450 C240 520 242 580 246 630 L496 630 C498 580 500 520 502 450 C504 380 500 316 476 290 C442 262 390 270 370 302 Z' : 'M240 480 C262 436 320 420 370 420 C420 420 478 436 500 480 C502 540 500 590 496 630 L246 630 C242 590 238 540 240 480 Z';
-      const tf = tuft === 'leaf' ? 'M386 238 C368 228 352 212 362 202 C372 193 390 206 398 220 C406 204 426 196 436 206 C444 218 428 232 410 238 Z' : 'M356 240 L346 196 L372 222 L382 182 L398 220 L424 190 L416 240 Z';
-      const eye = (x, y) => `<circle cx="${x}" cy="${y}" r="24" fill="${N}"/><circle cx="${x - 9}" cy="${y - 9}" r="8" fill="#fff"/><circle cx="${x + 9}" cy="${y + 10}" r="3.5" fill="#fff"/>`;
-      const ex = extra === 'gentoo' ? '<path d="M282 322 C290 300 322 294 344 310 C328 314 312 318 294 328 Z M476 322 C468 300 436 294 414 310 C430 314 446 318 464 328 Z" fill="#fff"/>'
-        : extra === 'emperor' ? `<path d="M226 360 C250 370 268 410 262 452 C250 440 236 420 228 400 Z M514 360 C490 370 472 410 478 452 C490 440 504 420 512 400 Z" fill="${accent}"/>` : '';
-      const crest = extra === 'rockhopper' ? `<path d="M336 326 C308 314 268 300 214 286 C238 300 236 302 206 310 C236 314 240 318 214 334 C258 326 290 330 334 338 Z M422 326 C450 314 490 300 544 286 C520 300 522 302 552 310 C522 314 518 318 544 334 C500 326 468 330 424 338 Z" fill="${accent}" stroke="${N}" stroke-width="4" stroke-linejoin="round"/>` : '';
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="180 180 390 390"><defs><clipPath id="b"><path d="${body}"/></clipPath></defs>`
-        + `<path d="${tf}" fill="${coat}" ${R}/>`
-        + `<path d="M248 445 C212 428 172 385 166 342 C162 318 180 310 202 322 C238 342 258 372 264 402 Z" fill="${coat}" ${R}/>`
-        + `<path d="M502 448 C540 468 576 508 586 544 C591 566 576 574 554 563 C530 550 512 532 500 522 Z" fill="${coat}" ${R}/>`
-        + `<path d="${body}" fill="${coat}"/><g clip-path="url(#b)"><path d="${fc}" fill="#fff"/>${ex}</g><path d="${body}" fill="none" ${R}/>`
-        + eye(318, 352) + eye(440, 355) + crest
-        + `<path d="M346 374 C348 360 408 358 412 374 C414 394 396 408 379 408 C361 408 344 394 346 374 Z" fill="${beak}" stroke="${N}" stroke-width="6" stroke-linejoin="round"/>`
-        + `<path d="M368 386 C374 380 386 380 392 386 C388 395 372 395 368 386 Z" fill="#f06a7a" stroke="${N}" stroke-width="3"/></svg>`;
-      return '"data:image/svg+xml,' + encodeURIComponent(svg) + '"';
-    };
-    const feed = [
-      { photo: peng({ coat: '#2b2f4a', beak: '#ff9f0a', extra: 'rockhopper', accent: '#ffd23f' }), ini: 'A', name: 'Andrea', status: '«Este mes sí cumplo»', total: 'S/ 1,930.00', bg: 'rgba(255,159,10,.2)', fg: '#FF9F0A', pro: 'block', ringPro: '0 0 0 2px #0B0E14, 0 0 0 4px #8B5CF6', chips: [chip('Comida', '538'), chip('Transporte', '210')] },
-      { photo: peng({ coat: '#1f6f5c', beak: '#ff6b3d', face: 'low', tuft: 'leaf', extra: 'gentoo' }), ini: 'D', name: 'Diego', status: 'Su gasto de octubre', total: 'S/ 1,412.50', bg: 'rgba(16,185,129,.2)', fg: '#10B981', pro: 'none', ringPro: 'none', chips: [chip('Comida', '305'), chip('Supermercado', '290')] },
-      { photo: peng({ coat: '#5b3f8c', beak: '#ffb020', extra: 'emperor', accent: '#ffc94d' }), ini: 'M', name: 'Mafer', status: '«Modo ahorro»', total: 'S/ 2,240.80', bg: 'rgba(191,90,242,.2)', fg: '#D8A6F0', pro: 'none', ringPro: 'none', chips: [chip('Comida', '790'), chip('Entretenimiento', '320')] },
-    ];
-    const tabs = [['tab-res', 'chart-pie', 'Resumen'], ['tab-mov', 'list', 'Movimientos'], ['tab-met', 'target', 'Metas'], ['tab-ami', 'users', 'Amigos']].map(([key, ic, title]) => ({ key, icon: IC(ic), title }));
-    const sw = (stops, pos) => `radial-gradient(circle at ${pos}, ${stops.map((s, i) => `#${s} ${Math.round(i / (stops.length - 1) * 100)}%`).join(',')})`;
-    const swatches = [
-      { key: 'neb', name: 'Nebulosa', g: sw(['C084FC', '6D28D9', '06061A'], '30% 30%') },
-      { key: 'obs', name: 'Obsidiana', g: sw(['F6E7B8', 'B8892F', '0B0A08'], '30% 30%') },
-      { key: 'aur', name: 'Aurora', g: sw(['A5F3FC', '10B981', '04110F'], '30% 30%') },
-      { key: 'sun', name: 'Atardecer', g: sw(['FDE68A', 'FB7185', '3B0F2E'], '30% 70%') },
-      { key: 'aby', name: 'Abismo', g: sw(['CFFAFE', '22D3EE', '0E7490', '03141A'], '30% 30%') },
-    ];
-    const brief = [
-      { title: 'Vas S/ 318 arriba de septiembre', body: 'A esta altura del mes pasado llevabas S/ 2,294. La diferencia está casi toda en Entretenimiento.', cta: 'Ver categorías', icon: IC('trending-up'), fg: '#64B3FF', bg: 'rgba(10,132,255,.2)' },
-      { title: 'Comida va más rápido que el mes', body: 'Llevas el 69% de tu límite y va el 58% del mes. Te quedan S/ 188 para 13 días.', cta: 'Ver Comida', icon: IC('utensils'), fg: '#FF9F0A', bg: 'rgba(255,159,10,.2)' },
-      { title: 'Luz del Sur se cobra en 4 días', body: 'El mes pasado fueron S/ 128.00.', cta: 'Ver comprometido', icon: IC('zap'), fg: '#FFD60A', bg: 'rgba(255,214,10,.2)' },
-    ];
-    const features = [
-      { tag: 'DIVIDIR', title: 'Por cobrar', body: 'Divide una cuenta entre amigos y AgruPay detecta cuándo te pagan por Yape o Plin.' },
-      { tag: 'RECURRENTES', title: 'Lo comprometido', body: 'Suscripciones y pagos fijos del mes, con recordatorio antes de que se cobren.' },
-      { tag: 'WIDGETS', title: 'Tu límite en la pantalla de inicio', body: 'Mira cómo vas en una categoría sin abrir la app.' },
-      { tag: 'SIRI', title: 'Atajos', body: 'Anota un gasto desde Siri o un atajo, sin abrir la app.' },
-      { tag: 'BLOQUEO', title: 'Face ID y montos ocultos', body: 'Bloquea la app y tapa las cifras con un toque cuando alguien mira.' },
-      { tag: 'CUENTAS', title: 'Sin contar dos veces', body: 'Marca tus cuentas y lo que se mueve entre ellas se registra como traslado, no como gasto.' },
-    ].map((f, i) => ({ ...f, delay: (i % 3) * 90 }));
-    const privacy = [
-      { n: '01', t: 'Solo lectura. No escribimos ni enviamos correos.' },
-      { n: '02', t: 'Tus movimientos se guardan en tu iPhone, no en un servidor.' },
-      { n: '03', t: 'Con amigos solo se comparten los totales que tú marcaste.' },
-    ];
-    const panels = PANELS.slice(1).map((p, k) => ({ ...p, i: k + 1 }));
-    const banks = [['bcp.jpg', 'BCP'], ['bbva.png', 'BBVA'], ['interbank.png', 'Interbank'], ['scotiabank.png', 'Scotiabank'], ['mibanco.png', 'Mibanco'], ['yape.png', 'Yape'], ['plin.png', 'Plin'], ['gmail.png', 'Gmail'], ['outlook.png', 'Outlook', 6]];
-    const h = React.createElement;
-    // Dos filas en sentidos opuestos; la segunda arranca por la mitad para mostrar los que la primera aún no enseña
-    const half = Math.ceil(banks.length / 2), rows = [banks, [...banks.slice(half), ...banks.slice(0, half)]];
-    const marquee = h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } }, rows.map((list, r) =>
-      h('div', { key: r, style: { display: 'flex', gap: 14, width: 'max-content', animation: `ap-marquee ${r ? 38 : 32}s linear infinite${r ? ' reverse' : ''}` } },
-        [...list, ...list].map(([src, name, pad], k) => h('div', { key: k, style: { display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 12px', borderRadius: 18, background: '#161922', border: '0.5px solid rgba(255,255,255,.07)', flex: 'none' } },
-          h('div', { style: { width: 44, height: 44, borderRadius: 12, background: '#fff', overflow: 'hidden', padding: pad || 0, boxSizing: 'border-box' } }, h('img', { src: 'assets/' + src, alt: name, style: { width: '100%', height: '100%', objectFit: pad ? 'contain' : 'cover' } })),
-          h('span', { style: { fontSize: 17, fontWeight: 600, color: '#EDF0F4' } }, name))))));
-    return { rootRef: this.rootRef, bars, days, cards, donut, cats, feed, mePhoto: peng({ coat: '#1d3a6e', beak: '#ffb020' }), tabs, swatches, brief, features, privacy, panels, marquee,
-      ticks: [0, 1, 2, 3, 4, 5, 6, 7], waveBars: Array.from({ length: 28 }, (_, k) => k), dashFade: 1 };
+  // Avisos 2 en 1 en la pantalla de bloqueo (textos con el formato real de la app)
+  const NOTIFS = [
+    { t: 'Gasto clasificado', b: 'Uber · S/ 18.50 — Transporte' },
+    { t: 'Yape registrado · sin clasificar', b: 'Carla Ríos · S/ 25.00 — ¿Qué fue? Elige una vez y lo recordamos.' },
+    { t: 'Gasto clasificado', b: 'Wong · S/ 142.30 — Supermercado', rule: true },
+    { t: 'Gastos programados para hoy', b: 'Netflix S/ 44.90' },
+    { t: 'Plin clasificado', b: 'Jorge Salas · S/ 40.00 — Comida', rule: true },
+    { t: 'Gasto clasificado', b: 'Rappi · S/ 36.90 — Delivery' },
+    { t: '1 gasto por clasificar', b: 'Hoy: 6 de 7 listos. Clasifica el que falta.' },
+  ];
+  const stack = $('#stack');
+  const make = (n, when) => {
+    const el = document.createElement('div');
+    el.className = 'notif';
+    el.innerHTML = `<img src="assets/icon-192.png" alt=""><div class="b"><div class="top"><span>AlTanto</span><span>${when}</span></div><div class="tt">${n.t}</div><div class="bd">${n.b}${n.rule ? '<span class="tag">tu regla</span>' : ''}</div></div>`;
+    return el;
+  };
+  let ni = 0;
+  const push = () => {
+    const n = NOTIFS[ni % NOTIFS.length]; ni++;
+    $$('.notif .top span:last-child').forEach((s, k) => s.textContent = (k + 1) * 2 + ' min');
+    const el = make(n, 'ahora');
+    el.classList.add('enter'); stack.prepend(el);
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('enter')));
+    const all = stack.children;
+    [...all].forEach((c, k) => { c.style.transform = k ? `scale(${1 - k * .03})` : ''; c.style.opacity = k > 2 ? 0 : 1 - k * .12; });
+    if (all.length > 4) { const last = all[all.length - 1]; last.classList.add('leave'); setTimeout(() => last.remove(), 600); }
+  };
+  push(); push(); push();
+  if (!reduce) setInterval(() => { if (!document.hidden) push(); }, 2800);
+
+  // Inclinación del celular con el mouse
+  const phone = $('#phone'), stage = $('#stage');
+  if (!reduce && matchMedia('(pointer:fine)').matches) {
+    stage.addEventListener('mousemove', e => { const r = stage.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; phone.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`; });
+    stage.addEventListener('mouseleave', () => phone.style.transform = '');
   }
-}
+
+  // Marquesina de bancos
+  const BANKS = [['bcp.jpg', 'BCP'], ['bbva.png', 'BBVA'], ['interbank.png', 'Interbank'], ['scotiabank.png', 'Scotiabank'], ['mibanco.png', 'Mibanco'], ['yape.png', 'Yape'], ['plin.png', 'Plin'], ['gmail.png', 'Gmail', 1], ['outlook.png', 'Outlook', 1]];
+  const chip = ([src, name, pad]) => `<div class="chip"><img src="assets/${src}" alt="" class="${pad ? 'pad' : ''}">${name}</div>`;
+  const half = Math.ceil(BANKS.length / 2), rowB = [...BANKS.slice(half), ...BANKS.slice(0, half)];
+  $('#mq').innerHTML = [BANKS, rowB].map((l, r) => `<div class="mq-row${r ? ' rev' : ''}">${[...l, ...l].map(chip).join('')}</div>`).join('');
+
+  // Demo de Tino
+  const CATS = [
+    { n: 'Supermercado', c: '#40C8E0', i: 'shopping-cart', sug: true },
+    { n: 'Comida', c: '#FF9F0A', i: 'utensils' },
+    { n: 'Transporte', c: '#30D158', i: 'car' },
+    { n: 'Salud', c: '#FF453A', i: 'briefcase-medical' },
+    { n: 'Entretenimiento', c: '#BF5AF2', i: 'tv' },
+  ];
+  const catsEl = $('#cats'), assign = $('#assign'), toast = $('#toast');
+  let picked = 'Supermercado';
+  catsEl.innerHTML = CATS.map(c => `<button type="button" class="cat${c.sug ? ' sug' : ''}" aria-pressed="${c.sug}" data-n="${c.n}"><i style="background:${c.c}33;color:${c.c}">${icon(c.i)}</i>${c.n}<span class="bolt">${icon('zap')}Tino</span></button>`).join('');
+  catsEl.addEventListener('click', e => {
+    const b = e.target.closest('.cat'); if (!b) return;
+    picked = b.dataset.n;
+    $$('.cat').forEach(x => x.setAttribute('aria-pressed', x === b));
+    assign.textContent = 'Asignar a ' + picked;
+  });
+  $$('.sw').forEach(s => s.addEventListener('click', () => s.setAttribute('aria-checked', s.getAttribute('aria-checked') !== 'true')));
+  let toastT;
+  assign.addEventListener('click', () => {
+    const [rule, past] = $$('.sw').map(s => s.getAttribute('aria-checked') === 'true');
+    let msg = 'Wong quedó en ' + picked;
+    if (rule && past) msg = 'Regla creada · 4 gastos en ' + picked;
+    else if (rule) msg = 'Regla creada: Wong → ' + picked;
+    else if (past) msg = '4 gastos de Wong en ' + picked;
+    $('#toastTxt').textContent = msg;
+    toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('show'), 3800);
+  });
+  $('#undo').addEventListener('click', () => { toast.classList.remove('show'); $$('.sw').forEach(s => s.setAttribute('aria-checked', 'false')); });
+
+  // Funciones con su guía (los mismos textos que Configuración › Funciones de AlTanto)
+  const FEATS = [
+    { id: 'split', title: 'Dividir un pago', sub: 'Un pago, varias categorías', grp: 'Ordena tus gastos', i: 'chart-pie', c: '#40C8E0', hook: 'Un pago, varias categorías',
+      pitch: 'Ese Yape de S/ 150 fue mercado y almuerzo. Sepáralo y cada parte cuenta en su propia categoría y su límite.',
+      steps: [['Abre el pago', 'En Movimientos, toca el pago que quieres separar.'], ['Toca «Separar por categoría»', 'Está al final del detalle, debajo de Categoría, Etiquetas y Repetir.'], ['Reparte el monto', 'Al cambiar una parte, la siguiente se ajusta sola para que siempre cuadre con el pago.'], ['El pago se cuenta por partes', 'Cada parte suma en su categoría. Puedes editar o deshacer la división desde el mismo detalle.']] },
+    { id: 'rules', title: 'Reglas por comercio', sub: 'Clasifica una vez, se aplica siempre', grp: 'Ordena tus gastos', i: 'sparkles', c: '#5E5CE6', hook: 'Clasifica una vez. AlTanto hace el resto.',
+      pitch: 'Al clasificar Wong como Supermercado, lo que llegue de Wong entra ya clasificado. Y si quieres, también lo anterior.',
+      steps: [['Abre lo que está sin categoría', 'En Movimientos, los gastos sin categoría se agrupan por comercio.'], ['Elige su categoría', 'La sugerida llega marcada con el rayo: si es la correcta, ya está elegida.'], ['Activa «Los que lleguen»', '«Los anteriores» clasifica también lo pendiente. Si te equivocas, aparece «Deshacer».'], ['Revisa tus reglas', 'En Configuración › Presupuesto y categorías ves cuántas tienes y cuánto clasifican.']] },
+    { id: 'owed', title: 'Marcar por cobrar', sub: 'Lleva la cuenta de lo que te deben', grp: 'Entre amigos', i: 'hand-coins', c: '#30D158', hook: 'Pagaste tú. Que te devuelvan.',
+      pitch: 'Comparte el gasto con quienes estaban y AlTanto lleva la cuenta de cada uno, les avisa y te ayuda a recordarles.',
+      steps: [['Abre el gasto que pagaste', 'La cena, el taxi, las entradas: cualquier gasto donde pusiste por otros.'], ['Toca «Compartir»', 'Si aún no sabes cuánto pone cada uno, toca «Después» y queda por repartir.'], ['Elige con quién y cuánto', 'Se reparte en partes iguales, contándote a ti. Con «Avisarles ahora» les llega un aviso, o un WhatsApp.'], ['Sigue el cobro', '«Recordar» les vuelve a avisar, y todo queda en Amigos › Cobros.']] },
+    { id: 'voice', title: 'Dictar con el «+»', sub: 'Mantén presionado y habla', grp: 'Registra más rápido', i: 'mic', c: '#2E5BFF', hook: '¿Pagaste en efectivo? Solo dilo.',
+      pitch: 'Mantén presionado el «+» y di «Almuerzo de hoy, 25 soles». Monto, nota y categoría quedan listos para guardar.',
+      steps: [['Mantén presionado el «+»', 'Va directo al dictado. Si solo lo tocas, eliges entre Dictar y Escribir.'], ['Di qué compraste y cuánto costó', 'Puedes dictar varios gastos seguidos. Si falta el monto, AlTanto te lo pregunta.'], ['Revisa y guarda', 'Toca una tarjeta para corregirla. Guarda y por unos segundos tendrás «Deshacer».']] },
+    { id: 'widgets', title: 'Widgets', sub: 'Tu mes en la pantalla de inicio', grp: 'Fuera de la app', i: 'chart-column', c: '#FF9F0A', hook: 'Tu mes, sin abrir la app',
+      pitch: 'Ritmo del mes, lo que llevas hoy o un botón para anotar un gasto, en tu pantalla de inicio o de bloqueo.',
+      steps: [['Edita tu pantalla de inicio', 'Mantén presionado un espacio vacío, toca «Editar» › «Añadir widget» y busca AlTanto.'], ['Elige el que te sirve', 'Hay seis. Ritmo del mes y Límite de categoría también van en la pantalla bloqueada.'], ['Úsalo sin abrir la app', 'En «Anota en un toque», tus gastos rápidos se registran con un toque.']] },
+    { id: 'eye', title: 'Ocultar montos', sub: 'Enseña la app sin enseñar cifras', grp: 'Privacidad', i: 'eye', c: '#8E8E9A', hook: 'Enseña tu pantalla, no tus cifras',
+      pitch: 'Toca el ojo del Resumen y los montos pasan a S/ •••. Las fechas y porcentajes se siguen viendo.',
+      steps: [['Toca el ojo del Resumen', 'Está junto al monto del mes. Funciona en cualquier momento.'], ['Las cifras se tapan', 'Solo cambian los montos: fechas, conteos y porcentajes se siguen viendo.'], ['Que empiece tapado', 'En Configuración › Bloqueo, activa «Ocultar montos al abrir».']] },
+  ];
+  const flist = $('#flist'), fpanel = $('#fpanel');
+  flist.innerHTML = FEATS.map((f, k) => `<button class="fbtn" role="tab" id="tab-${f.id}" aria-selected="${!k}" data-k="${k}"><span class="fi" style="background:${f.c}">${icon(f.i)}</span><span><span class="ft">${f.title}</span><br><span class="fs">${f.sub}</span></span><span class="grp">${f.grp}</span></button>`).join('');
+  const showFeat = k => {
+    const f = FEATS[k];
+    $$('.fbtn').forEach(b => b.setAttribute('aria-selected', +b.dataset.k === k));
+    fpanel.setAttribute('aria-labelledby', 'tab-' + f.id);
+    fpanel.innerHTML = `<div class="glow" style="background:${f.c}"></div><div class="fade-swap"><span class="mono" style="color:${f.c === '#8E8E9A' ? 'var(--sky)' : f.c}">${f.grp}</span><h3>${f.hook}</h3><p class="pitch">${f.pitch}</p><ol class="fsteps">${f.steps.map(([t, d], i) => `<li><span class="k" style="color:${f.c}">${i + 1}</span><div><b>${t}</b><span>${d}</span></div></li>`).join('')}</ol></div>`;
+  };
+  let fk = 0, fAuto = null;
+  flist.addEventListener('click', e => { const b = e.target.closest('.fbtn'); if (!b) return; fk = +b.dataset.k; showFeat(fk); clearInterval(fAuto); });
+  flist.addEventListener('keydown', e => {
+    if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return; e.preventDefault();
+    fk = (fk + (e.key === 'ArrowDown' ? 1 : FEATS.length - 1)) % FEATS.length; showFeat(fk); $$('.fbtn')[fk].focus(); clearInterval(fAuto);
+  });
+  showFeat(0);
+  if (!reduce && matchMedia('(min-width: 901px)').matches) {
+    const fio = new IntersectionObserver(([e]) => { clearInterval(fAuto); if (e.isIntersecting) fAuto = setInterval(() => { fk = (fk + 1) % FEATS.length; showFeat(fk); }, 6500); }, { threshold: .4 });
+    fio.observe(fpanel);
+    fpanel.addEventListener('mouseenter', () => clearInterval(fAuto));
+  }
+
+  // Recordar a los amigos
+  $('#remind').addEventListener('click', e => {
+    const b = e.currentTarget; b.classList.remove('ping'); void b.offsetWidth; b.classList.add('ping');
+    b.querySelector('span:last-child').textContent = 'Recordado a Diego y Lucía';
+    setTimeout(() => b.querySelector('span:last-child').textContent = 'Recordar', 2600);
+  });
+
+  // Planes Pro
+  const PLANS = { anual: ['S/ 99.90', 'al año', '<span>S/ 8.33 al mes</span><span class="save">AHORRA 35%</span>'], mensual: ['S/ 12.90', 'al mes', '<span>Cancela cuando quieras</span>'] };
+  $$('.seg button').forEach(b => b.addEventListener('click', () => {
+    $$('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const [p, per, d] = PLANS[b.dataset.plan];
+    $('#price').innerHTML = `${p} <small>${per}</small>`; $('#pdetail').innerHTML = d;
+  }));
+
+  // Ojo de montos ocultos
+  const md = $('#maskDemo');
+  const toggleMask = () => md.textContent = md.textContent.includes('•') ? 'S/ 2,612.00' : 'S/ •••';
+  md.addEventListener('click', toggleMask);
+  md.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMask(); } });
+  if (!reduce) setInterval(() => { if (!document.hidden && !md.matches(':hover')) toggleMask(); }, 2400);
+})();
 </script>
 </body>
 </html>
