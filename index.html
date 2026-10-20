@@ -258,10 +258,12 @@ section{position:relative}
 .pro-grad{background:linear-gradient(100deg,#C4B5FD,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent}
 .perks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
 .perk{display:flex;gap:12px}
-.perk i{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff}
-.perk i .ic{width:17px;height:17px}
+.perk i{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;color:#fff;position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 8px 18px -8px rgba(0,0,0,.6)}
+.perk i::before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.24),rgba(255,255,255,0) 60%)}
+.perk i .ic{position:relative;color:#fff;font-size:0}
+.perk i .ic{width:22px;height:22px}
 .perk b{display:block;font-size:15px}
-.perk span{font-size:13.5px;color:var(--sec)}
+.perk div>span{font-size:13.5px;color:var(--sec)}
 .plans{display:flex;flex-direction:column;gap:12px}
 .seg{display:flex;padding:4px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
 .seg button{flex:1;height:38px;border-radius:10px;border:0;background:transparent;font-weight:600;font-size:14px;color:var(--sec);transition:all .25s}
@@ -529,12 +531,12 @@ footer nav a:hover{color:var(--tx)}
             <h2 class="h2" style="margin-top:16px">AlTanto <span class="pro-grad">Pro</span></h2>
             <p class="lead" style="margin-top:16px">Todo lo que ya usas, sin límites. Lo esencial es gratis; Pro es para quien quiere ir más allá.</p>
             <div class="perks">
-              <div class="perk"><i style="background:#0A84FF"><span class="ic" style="--i:url(assets/icons/chart-column.svg)"></span></i><div><b>Todo tu historial</b><span>Más allá de los últimos 3 meses.</span></div></div>
-              <div class="perk"><i style="background:#BF5AF2"><span class="ic" style="--i:url(assets/icons/sparkles.svg)"></span></i><div><b>Asistente con más memoria</b><span>Recuerda tus hábitos por más tiempo.</span></div></div>
-              <div class="perk"><i style="background:#40C8E0"><span class="ic" style="--i:url(assets/icons/arrow-up.svg)"></span></i><div><b>Respaldo en la nube</b><span>Categorías y reglas a salvo si cambias de teléfono.</span></div></div>
-              <div class="perk"><i style="background:#F28C28"><span class="ic" style="--i:url(assets/icons/eye.svg)"></span></i><div><b>Temas premium</b><span>Diez fondos animados para tu Resumen.</span></div></div>
+              <div class="perk"><i style="background:#0A84FF"><span class="ic" style="--i:url(assets/icons/history.svg)"></span></i><div><b>Todo tu historial</b><span>Más allá de los últimos 3 meses.</span></div></div>
+              <div class="perk"><i style="background:#BF5AF2"><span class="ic" style="--i:url(assets/icons/brain.svg)"></span></i><div><b>Asistente con más memoria</b><span>Recuerda tus hábitos por más tiempo.</span></div></div>
+              <div class="perk"><i style="background:#40C8E0"><span class="ic" style="--i:url(assets/icons/cloud-upload.svg)"></span></i><div><b>Respaldo en la nube</b><span>Categorías y reglas a salvo si cambias de teléfono.</span></div></div>
+              <div class="perk"><i style="background:#F28C28"><span class="ic" style="--i:url(assets/icons/palette.svg)"></span></i><div><b>Temas premium</b><span>Diez fondos animados para tu Resumen.</span></div></div>
               <div class="perk"><i style="background:#FF453A"><span class="ic" style="--i:url(assets/icons/bell-ring.svg)"></span></i><div><b>Cobros más intensos</b><span>Que tus amigos no pasen por alto.</span></div></div>
-              <div class="perk"><i style="background:#8B5CF6"><span class="ic" style="--i:url(assets/icons/users.svg)"></span></i><div><b>Tu perfil, a tu manera</b><span>Cielos, aura y marco con brillo en Social.</span></div></div>
+              <div class="perk"><i style="background:#8B5CF6"><span class="ic" style="--i:url(assets/icons/user-round-plus.svg)"></span></i><div><b>Tu perfil, a tu manera</b><span>Cielos, aura y marco con brillo en Social.</span></div></div>
             </div>
           </div>
           <div class="plans">
